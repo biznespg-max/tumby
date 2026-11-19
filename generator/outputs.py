@@ -40,7 +40,10 @@ def spec_md(c, parts, facades, geo, bands):
     a = L.append
     a(f"# {c['name']}\n")
     a(f"Корпус {c['width']} × {c['height']} × {c['depth']} мм (Ш × В × Г), подвесной, 2 ящика.  ")
-    a(f"Глубина с фасадом: {c['depth'] + c['facade_t']} мм (умывальник 447 мм).\n")
+    sk = c["sink"]
+    a(f"Артикул: **{c['article']}**. Умывальник: {sk['brand']} {sk['series']} {sk['size']} "
+      f"({sk['width']} × {sk['depth']} × {sk['height']} мм, EAN {sk['ean']}).  ")
+    a(f"Глубина с фасадом: {c['depth'] + c['facade_t']} мм (умывальник {sk['depth']} мм).\n")
 
     a("## Детали (входят в файл для ViyarPro)\n")
     for key, sh in c["sheets"].items():
@@ -81,7 +84,7 @@ def spec_md(c, parts, facades, geo, bands):
     a("## Фурнитура\n")
     a("| Позиция | Код ВіЯр | Кол-во |")
     a("|---|---|---|")
-    a("| Направляющие прихованого монтажа SC L=400 Muller Profi Line 18 мм, 3D, повне висування, з дотягувачем | 42135 | 2 компл. |")
+    a(f"| {c['runner_name']} | {c['runner_code']} | 2 компл. |")
     a(f"| Конфирмат 7×50 + заглушки в цвет | — | {confirmats} + 10 запас |")
     a("| Саморез 4×16 (направляющие к боковинам) | — | ~24 |")
     a("| Саморез 4×25 (фасад к ящику изнутри) | — | 8 |")
@@ -130,7 +133,8 @@ def drawing_svg(c, parts, facades, geo):
     out = []
     a = out.append
     total_w = pad * 3 + W * s + D * s + 40
-    top_off = 140 * s + 30
+    sk = c["sink"]
+    top_off = sk["height"] * s + 30
     total_h = pad * 2 + top_off + H * s + 60 + 390 * s + 60
     a(f'<svg xmlns="http://www.w3.org/2000/svg" width="{total_w:.0f}" height="{total_h:.0f}" '
       f'viewBox="0 0 {total_w:.0f} {total_h:.0f}" font-family="Arial" font-size="11">')
@@ -145,8 +149,10 @@ def drawing_svg(c, parts, facades, geo):
         fy = y_top + i * (fh + c["facade_mid_gap"]) * s
         a(f'<rect x="{ox + c["facade_side_gap"]*s}" y="{fy}" width="{fw*s}" height="{fh*s}" fill="#e8eef5" stroke="#333"/>')
         a(f'<text x="{ox + W*s/2}" y="{fy + fh*s/2}" text-anchor="middle">{f["code"]} {_n(fw)}×{_n(fh)}</text>')
-    a(f'<rect x="{ox - 5*s}" y="{oy - 140*s}" width="{800*s}" height="{140*s}" fill="none" stroke="#1E90FF" stroke-dasharray="4 3"/>')
-    a(f'<text x="{ox + W*s/2}" y="{oy - 140*s/2 + 4}" text-anchor="middle" fill="#1E90FF">Adamant Quanto 80 (800×447×140)</text>')
+    over = (sk["width"] - W) / 2
+    a(f'<rect x="{ox - over*s}" y="{oy - sk["height"]*s}" width="{sk["width"]*s}" height="{sk["height"]*s}" fill="none" stroke="#1E90FF" stroke-dasharray="4 3"/>')
+    a(f'<text x="{ox + W*s/2}" y="{oy - sk["height"]*s/2 + 4}" text-anchor="middle" fill="#1E90FF">{sk["brand"]} {sk["series"]} {sk["size"]} ({sk["width"]}×{sk["depth"]}×{sk["height"]})</text>')
+    a(f'<text x="{ox}" y="{pad + 18}" fill="#666">{c["article"]} — {c["name"]}</text>')
     a(f'<text x="{ox + W*s/2}" y="{oy + H*s + 16}" text-anchor="middle">{W}</text>')
     a(f'<text x="{ox - 6}" y="{oy + H*s/2}" text-anchor="end">{H}</text>')
 

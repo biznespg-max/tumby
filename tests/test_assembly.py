@@ -9,8 +9,11 @@ import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
-from tumba.config import CONFIG
-from tumba import model
+import pytest
+
+from generator import config, model
+
+PRODUCTS = config.all_products()
 
 X, Y, Z = (1, 0, 0), (0, 1, 0), (0, 0, 1)
 
@@ -95,7 +98,13 @@ def check_unit(parts_by_code, unit, t):
     return len(faces), missing
 
 
-def test_assembly():
+def _cfg(prod):
+    return config.product_config(*prod)
+
+
+@pytest.mark.parametrize("prod", PRODUCTS, ids=lambda p: f"{p[0]}-{p[1]}-{p[2]}")
+def test_assembly(prod):
+    CONFIG = _cfg(prod)
     parts, facades, geo = model.build(CONFIG)
     by_code = {p.code: p for p in parts}
     total = 0
@@ -108,18 +117,23 @@ def test_assembly():
     return total
 
 
-def test_fits_sink_and_runners():
-    c = CONFIG
+@pytest.mark.parametrize("prod", PRODUCTS, ids=lambda p: f"{p[0]}-{p[1]}-{p[2]}")
+def test_fits_sink_and_runners(prod):
+    c = _cfg(prod)
+    sk = c["sink"]
     parts, facades, geo = model.build(c)
-    assert c["depth"] + c["facade_t"] <= 447, "тумба глубже умывальника"
-    assert c["width"] <= 800, "тумба шире умывальника"
+    assert c["depth"] + c["facade_t"] <= sk["depth"], "тумба глубже умывальника"
+    assert c["width"] <= sk["width"], "тумба шире умывальника"
+    assert c["width"] <= min(c["runner_max_width"], 2 * c["runner_nl"]), "направляющие не для такой ширины"
     inner_depth = c["depth"] - c["t"]          # до задних царг
     assert all(p.t == c["sheets"][p.material]["thickness"] for p in parts), "толщина детали не совпадает с материалом"
     assert not any(p.edges for p in parts if p.material == "corpus"), "МДФ под покраску не кромкуется"
     assert inner_depth >= c["runner_nl"] + 3, "направляющая не помещается по глубине"
     # верх короба верхнего ящика ниже чаши (чаша опускается максимум на 140 мм)
     top_box_top = geo["top_drawer_box_bottom"] + c["drawer_top_box_h"]
-    assert top_box_top <= c["height"] - 140 + 10, f"короб упирается в чашу: {top_box_top}"
+    assert top_box_top <= c["height"] - sk["height"] + 10, f"короб упирается в чашу: {top_box_top}"
+    # вырез под сифон уже коробки и крылья не вырождаются
+    assert geo["wing_w"] >= 100, f"крылья верхнего ящика слишком узкие: {geo['wing_w']}"
     # вырез под сифон перекрывает слив
     assert geo["u_from"] <= c["drain_from_front"] - 35
     # короб нижнего ящика не доходит до верхнего
@@ -127,6 +141,7 @@ def test_fits_sink_and_runners():
 
 
 if __name__ == "__main__":
-    n = test_assembly()
-    test_fits_sink_and_runners()
-    print(f"OK: {n} отверстий в пласти, все попадают в ответные отверстия в торцах; габариты в норме")
+    for prod in PRODUCTS:
+        n = test_assembly(prod)
+        test_fits_sink_and_runners(prod)
+        print(f"OK {_cfg(prod)['article']}: {n} отверстий в пласти сходятся с торцами; габариты в норме")

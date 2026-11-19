@@ -50,6 +50,10 @@ def build(c):
     t = c["t"]
     W, H, D = c["width"], c["height"], c["depth"]
     iw = W - 2 * t                     # внутренняя ширина корпуса
+    max_w = min(c["runner_max_width"], 2 * c["runner_nl"])
+    if W > max_w:
+        raise ValueError(f"Корпус {W} мм шире допустимого для направляющих L={c['runner_nl']} "
+                         f"(макс. {max_w} мм). Нужны другие направляющие или другая конструкция.")
     fd, ed, edp = c["conf_face_d"], c["conf_edge_d"], c["conf_edge_depth"]
 
     def face(x, y):
