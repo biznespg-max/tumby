@@ -26,7 +26,7 @@ def check(parts):
     errors = []
     for p in parts:
         for h in p.holes:
-            if h.side == "face":
+            if h.side in ("face", "back"):
                 r = h.d / 2
                 if not (r <= h.x <= p.l - r and r <= h.y <= p.w - r):
                     errors.append(f"{p.code}: отверстие в пласти вне детали ({h.x}, {h.y})")
@@ -36,6 +36,14 @@ def check(parts):
                     errors.append(f"{p.code}: отверстие в торце {h.side} вне детали ({pos})")
                 if h.depth >= length:
                     errors.append(f"{p.code}: отверстие в торце {h.side} глубже детали")
+    # отверстия в одной пласти не пересекаются
+    for p in parts:
+        for side in ("face", "back"):
+            hs = [h for h in p.holes if h.side == side]
+            for i, a in enumerate(hs):
+                for b in hs[i + 1:]:
+                    if ((a.x - b.x) ** 2 + (a.y - b.y) ** 2) ** 0.5 < (a.d + b.d) / 2 + 2:
+                        errors.append(f"{p.code}: отверстия ({a.x}, {a.y}) и ({b.x}, {b.y}) слишком близко")
     return errors
 
 

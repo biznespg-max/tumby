@@ -1,5 +1,5 @@
-"""Виртуальная сборка: каждое отверстие под конфирмат в пласти должно
-попадать в отверстие в торце соседней детали, и наоборот.
+"""Виртуальная сборка на минификсах: каждый шток в пласти попадает в отверстие в торце
+соседней детали, у каждого торцевого отверстия есть эксцентрик, снаружи отверстий нет.
 
 Запуск: python -m pytest tests  (или python tests/test_assembly.py)
 """
@@ -15,90 +15,7 @@ from generator import config, model
 
 PRODUCTS = config.all_products()
 
-X, Y, Z = (1, 0, 0), (0, 1, 0), (0, 0, 1)
-
-
-def add(*vs):
-    return tuple(sum(c) for c in zip(*vs))
-
-
-def mul(v, k):
-    return tuple(c * k for c in v)
-
-
-def placements(c, geo):
-    """(код детали, начало, ось x детали, ось y детали, нормаль) для каждого экземпляра."""
-    t, W, H, D = c["t"], c["width"], c["height"], c["depth"]
-    iw, wi, L = geo["inner_width"], geo["drawer_inner_width"], c["drawer_len"]
-    tc = t
-    rec, ww, zf = c["drawer_bottom_recess"], geo["wing_w"], geo["u_from"]
-    if c.get("one_sided"):
-        sides = [("K1Л", (0, 0, D), mul(Z, -1), Y, X), ("K1П", (W - t, 0, 0), Z, Y, X)]
-    else:
-        sides = [("K1", (0, 0, 0), Z, Y, X), ("K1", (W - t, 0, 0), Z, Y, X)]
-    corpus = sides + [
-        ("K2", (t, 0, geo["front_offset"]), X, Z, Y),
-        ("K3", (t, H - c["front_rail_h"], geo["front_offset"]), X, Y, Z),
-        ("K4", (t, H - c["rear_top_rail_h"], D - t), X, Y, Z),
-        ("K5", (t, t, D - t), X, Y, Z),
-    ]
-    t = c["t_box"]
-    uf_x0 = (wi - c["u_width"] - 2 * t) / 2
-    wo = wi + 2 * t
-    bottom_box = [
-        ("N1", (0, 0, 0), Z, Y, X), ("N1", (wo - t, 0, 0), Z, Y, X),
-        ("N2", (t, 0, 0), X, Y, Z), ("N3", (t, 0, L - t), X, Y, Z),
-        ("N4", (t, rec, t), X, Z, Y),
-    ]
-    top_box = [
-        ("V1", (0, 0, 0), Z, Y, X), ("V1", (wo - t, 0, 0), Z, Y, X),
-        ("V2", (t, 0, 0), X, Y, Z),
-        ("V3", (t, 0, L - t), X, Y, Z), ("V3", (t + wi - ww, 0, L - t), X, Y, Z),
-        ("V4", (t + ww, 0, zf), Z, Y, X), ("V4", (t + wi - ww - t, 0, zf), Z, Y, X),
-        ("V5", (t + uf_x0, rec + t, zf - t), X, Y, Z),
-        ("V6", (t, rec, t), X, Z, Y),
-        ("V7", (t, rec, zf), X, Z, Y), ("V7", (t + wi - ww, rec, zf), X, Z, Y),
-    ]
-    return {"Корпус": (corpus, tc), "Нижний ящик": (bottom_box, t), "Верхний ящик": (top_box, t)}
-
-
-def holes_3d(part, origin, ex, ey, en):
-    half = part.t / 2
-    face, edge = [], []
-    for h in part.holes:
-        if h.side == "face":
-            face.append(add(origin, mul(ex, h.x), mul(ey, h.y), mul(en, half)))
-        elif h.side == "left":
-            edge.append(add(origin, mul(ey, h.y), mul(en, half)))
-        elif h.side == "right":
-            edge.append(add(origin, mul(ex, part.l), mul(ey, h.y), mul(en, half)))
-        elif h.side == "bottom":
-            edge.append(add(origin, mul(ex, h.x), mul(en, half)))
-    return face, edge
-
-
-def close(a, b, tol=0.6):
-    return all(abs(p - q) <= tol for p, q in zip(a, b))
-
-
-def check_unit(parts_by_code, unit, t):
-    faces, edges = [], []
-    for code, origin, ex, ey, en in unit:
-        f, e = holes_3d(parts_by_code[code], origin, ex, ey, en)
-        faces += [(code, p, en) for p in f]
-        edges += [(code, p) for p in e]
-    used = set()
-    missing = []
-    for code, p, en in faces:
-        targets = [add(p, mul(en, t / 2)), add(p, mul(en, -t / 2))]
-        hit = [i for i, (c2, e) in enumerate(edges) if c2 != code and any(close(e, q) for q in targets)]
-        if not hit:
-            missing.append(f"{code}: отверстие в пласти {p} никуда не попадает")
-        used.update(hit)
-    for i, (code, e) in enumerate(edges):
-        if i not in used:
-            missing.append(f"{code}: отверстие в торце {e} без ответного в пласти")
-    return len(faces), missing
+from generator.joints import add, mul, sub, dot, close, face_normal, hole_point, _box_center, _inst_center
 
 
 def _cfg(prod):
@@ -106,18 +23,55 @@ def _cfg(prod):
 
 
 @pytest.mark.parametrize("prod", PRODUCTS, ids=lambda p: f"{p[0]}-{p[1]}-{p[2]}")
-def test_assembly(prod):
-    CONFIG = _cfg(prod)
-    parts, facades, geo = model.build(CONFIG)
+def test_minifix_assembly(prod):
+    """Каждый шток попадает в отверстие в торце соседней детали, у каждого торцевого отверстия
+    есть эксцентрик на 24 мм, все отверстия в пласти смотрят внутрь изделия, конфирматов нет."""
+    c = _cfg(prod)
+    parts, facades, geo = model.build(c)
     by_code = {p.code: p for p in parts}
-    total = 0
     problems = []
-    for name, (unit, t) in placements(CONFIG, geo).items():
-        n, missing = check_unit(by_code, unit, t)
-        total += n
-        problems += [f"[{name}] {m}" for m in missing]
+    for uname, unit in geo["units"].items():
+        center = _box_center(by_code, unit)
+        edges = []
+        for j, inst in enumerate(unit):
+            p = by_code[inst[0]]
+            for h in p.holes:
+                if h.side in ("left", "right", "bottom"):
+                    edges.append((j, h, hole_point(p, inst, h)))
+        used = set()
+        for i, inst in enumerate(unit):
+            p = by_code[inst[0]]
+            n = face_normal(inst[2], inst[3])
+            for h in p.holes:
+                if h.side not in ("face", "back"):
+                    continue
+                assert h.depth is not None and h.depth < p.t, f"{p.code}: сквозное отверстие ({h.x}, {h.y})"
+                sign = 1 if h.side == "face" else -1
+                if h.d == 15:
+                    continue
+                pt = hole_point(p, inst, h)
+                hit = [k for k, (j, eh, ept) in enumerate(edges)
+                       if j != i and close(ept, add(pt, mul(n, sign * p.t / 2)))]
+                if not hit:
+                    problems.append(f"[{uname}] {p.code}: шток ({h.x}, {h.y}, {h.side}) никуда не попадает")
+                used.update(hit)
+        for k, (j, eh, ept) in enumerate(edges):
+            p = by_code[unit[j][0]]
+            if k not in used:
+                problems.append(f"[{uname}] {p.code}: отверстие в торце {eh.side} без штока")
+            if eh.side == "left":
+                want = (24, eh.y)
+            elif eh.side == "right":
+                want = (p.l - 24, eh.y)
+            else:
+                want = (eh.x, 24)
+            if not any(h.d == 15 and abs(h.x - want[0]) < 0.1 and abs(h.y - want[1]) < 0.1 for h in p.holes):
+                problems.append(f"[{uname}] {p.code}: нет эксцентрика у торцевого отверстия {eh.side}")
+    # декор: на односторонних деталях корпуса снаружи (лицевая пласть) отверстий нет
+    if c.get("one_sided"):
+        for code in ("K1Л", "K1П"):
+            assert not [h for h in by_code[code].holes if h.side == "face"], f"{code}: отверстия на декоре"
     assert not problems, "\n".join(problems)
-    return total
 
 
 @pytest.mark.parametrize("prod", PRODUCTS, ids=lambda p: f"{p[0]}-{p[1]}-{p[2]}")
@@ -155,6 +109,6 @@ def test_fits_sink_and_runners(prod):
 
 if __name__ == "__main__":
     for prod in PRODUCTS:
-        n = test_assembly(prod)
+        test_minifix_assembly(prod)
         test_fits_sink_and_runners(prod)
-        print(f"OK {_cfg(prod)['article']}: {n} отверстий в пласти сходятся с торцами; габариты в норме")
+        print(f"OK {_cfg(prod)['article']}: минификсы сходятся, габариты в норме")

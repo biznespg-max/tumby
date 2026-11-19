@@ -239,4 +239,8 @@ def build(c):
         "top_drawer_box_bottom": c["facade_bottom_gap"] + fh + c["facade_mid_gap"] + 20,
         "bottom_drawer_box_bottom": c["t"] + 3,
     }
+    if c.get("joint", "minifix") == "minifix":
+        from . import joints
+        fixed = {p.code for p in parts if p.material == "corpus"} if c.get("one_sided") else set()
+        parts, geometry["units"] = joints.apply_minifix(c, parts, geometry, fixed)
     return parts, facades, geometry

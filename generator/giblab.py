@@ -6,7 +6,7 @@ ViyarPro принимает этот формат на странице «Кон
 
   кромка:   elb - нижний торец, elt - верхний, ell - левый, elr - правый
   отверстия в торцах: bt - нижний (коорд. x), bl - левый (y), br - правый (y)
-  отверстия в пласти: bf (x, y), операция XNC side="true"
+  отверстия в пласти: bf (x, y), операция XNC side="true" (лицевая) / side="false" (обратная, те же x/y)
   mirVert="true" (начало - левый нижний угол), bySizeDetail="true" (чистовой размер)
   размеры: dl/dw - чистовые, l/w/cl/cw/jl/jw - чистовые минус толщина кромки
 """
@@ -153,24 +153,30 @@ def _product_part(p, pid, band_info):
 
 
 def _xnc(p, pid, ids):
-    if not p.holes:
-        return ""
-    prog = [_tag("program", {"dx": float(p.l), "dy": float(p.w), "dz": float(p.t)}, False)]
-    for d in dict.fromkeys(h.d for h in p.holes):
-        prog.append(_tag("tool", {"name": f"D{_fmt(float(d))}", "d": float(d)}))
-    for h in p.holes:
-        depth = p.t + THROUGH_EXTRA if h.depth is None else h.depth
-        name = f"D{_fmt(float(h.d))}"
-        if h.side == "face":
-            prog.append(_tag("bf", {"x": float(h.x), "y": float(h.y), "dp": float(depth), "ac": 1, "av": False, "name": name}))
-        else:
-            tag, coord = EDGE_HOLE[h.side]
-            prog.append(_tag(tag, {"ver": 2, coord: float(getattr(h, coord)), "dp": float(depth), "ac": 1, "m": True, "name": name}))
-    prog.append("</program>")
-    program = '<?xml version="1.0" encoding="UTF-8"?>' + "".join(prog)
-    attrs = {"program": program, "count": 1, "side": True, "turn": 0, "mirHor": False, "mirVert": True,
-             "bySizeDetail": True, "priceBore": 0, "countBore": len(p.holes), "costBore": 0, "priceMill": 0,
-             "countMill": 0, "costMill": 0, "priceCut": 0, "countCut": 0, "costCut": 0, "price": 0, "cost": 0,
-             "typeId": "XNC", "costMaterial": 0, "costOperation": 0, "costTotal": 0, "printable": True,
-             "startNewPage": True, "id": ids.next("op")}
-    return _tag("operation", attrs, False) + _tag("part", {"id": pid}) + "</operation>"
+    """Одна операция XNC на сторону: лицевая (side="true", вместе с торцевыми) и обратная (side="false")."""
+    front = [h for h in p.holes if h.side != "back"]
+    back = [h for h in p.holes if h.side == "back"]
+    out = ""
+    for holes, side in ((front, True), (back, False)):
+        if not holes:
+            continue
+        prog = [_tag("program", {"dx": float(p.l), "dy": float(p.w), "dz": float(p.t)}, False)]
+        for d in dict.fromkeys(h.d for h in holes):
+            prog.append(_tag("tool", {"name": f"D{_fmt(float(d))}", "d": float(d)}))
+        for h in holes:
+            depth = p.t + THROUGH_EXTRA if h.depth is None else h.depth
+            name = f"D{_fmt(float(h.d))}"
+            if h.side in ("face", "back"):
+                prog.append(_tag("bf", {"x": float(h.x), "y": float(h.y), "dp": float(depth), "ac": 1, "av": False, "name": name}))
+            else:
+                tag, coord = EDGE_HOLE[h.side]
+                prog.append(_tag(tag, {"ver": 2, coord: float(getattr(h, coord)), "dp": float(depth), "ac": 1, "m": True, "name": name}))
+        prog.append("</program>")
+        program = '<?xml version="1.0" encoding="UTF-8"?>' + "".join(prog)
+        attrs = {"program": program, "count": 1, "side": side, "turn": 0, "mirHor": False, "mirVert": True,
+                 "bySizeDetail": True, "priceBore": 0, "countBore": len(holes), "costBore": 0, "priceMill": 0,
+                 "countMill": 0, "costMill": 0, "priceCut": 0, "countCut": 0, "costCut": 0, "price": 0, "cost": 0,
+                 "typeId": "XNC", "costMaterial": 0, "costOperation": 0, "costTotal": 0, "printable": True,
+                 "startNewPage": True, "id": ids.next("op")}
+        out += _tag("operation", attrs, False) + _tag("part", {"id": pid}) + "</operation>"
+    return out
