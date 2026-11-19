@@ -37,8 +37,8 @@ def placements(c, geo):
     else:
         sides = [("K1", (0, 0, 0), Z, Y, X), ("K1", (W - t, 0, 0), Z, Y, X)]
     corpus = sides + [
-        ("K2", (t, 0, 0), X, Z, Y),
-        ("K3", (t, H - c["front_rail_h"], 0), X, Y, Z),
+        ("K2", (t, 0, geo["front_offset"]), X, Z, Y),
+        ("K3", (t, H - c["front_rail_h"], geo["front_offset"]), X, Y, Z),
         ("K4", (t, H - c["rear_top_rail_h"], D - t), X, Y, Z),
         ("K5", (t, t, D - t), X, Y, Z),
     ]
@@ -125,11 +125,11 @@ def test_fits_sink_and_runners(prod):
     c = _cfg(prod)
     sk = c["sink"]
     parts, facades, geo = model.build(c)
-    assert c["depth"] + c["facade_t"] <= sk["depth"], "тумба глубже умывальника"
+    assert c["depth"] + (0 if c.get("facade_inset") else c["facade_t"]) <= sk["depth"], "тумба глубже умывальника"
     assert c["width"] <= sk["width"], "тумба шире умывальника"
     max_w = c["runner_max_width"] if not c.get("runner_two_l_rule", True) else min(c["runner_max_width"], 2 * c["runner_nl"])
     assert c["width"] <= max_w, "направляющие не для такой ширины"
-    inner_depth = c["depth"] - c["t"]          # до задних царг
+    inner_depth = c["depth"] - c["t"] - geo["front_offset"]   # от фасада до задних царг
     assert all(p.t == c["sheets"][p.material]["thickness"] for p in parts), "толщина детали не совпадает с материалом"
     if not c.get("corpus_band"):
         assert not any(p.edges for p in parts if p.material == "corpus"), "МДФ под покраску не кромкуется"
@@ -142,7 +142,7 @@ def test_fits_sink_and_runners(prod):
     # вырез под сифон уже коробки и крылья не вырождаются
     assert geo["wing_w"] >= 100, f"крылья верхнего ящика слишком узкие: {geo['wing_w']}"
     # вырез под сифон перекрывает слив
-    assert geo["u_from"] <= c["drain_from_front"] - 35
+    assert geo["u_from"] <= c["drain_from_front"] - geo["front_offset"] - 35
     # верхний ящик проходит под передней царгой (она стоит на ребре у фасада)
     assert top_box_top + 5 <= c["height"] - c["front_rail_h"], "короб верхнего ящика упирается в переднюю царгу"
     # фальш-панель держится на царге K3 (перекрытие по высоте не меньше 40 мм)

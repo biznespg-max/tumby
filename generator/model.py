@@ -72,7 +72,9 @@ def build(c):
     ce = _all_edges(cb) if cb else {}
 
     # ------------------------------------------------------------------ корпус
-    bottom_conf = [50, D / 2, D - 50]          # по глубине, от переднего края
+    f0 = c["facade_t"] if c.get("facade_inset") else 0   # вкладные фасады: дно и царга K3 отступают на толщину фасада
+    Db = D - f0                                # глубина дна
+    bottom_conf = [f0 + 50, f0 + Db / 2, D - 50]   # по глубине боковины, от её переднего торца
     rail_f = c["front_rail_h"]
     rail_f_y0 = H - rail_f                     # низ передней верхней царги
     front_rail_conf = [20, rail_f - 20]
@@ -86,7 +88,7 @@ def build(c):
 
     side_holes = (
         [face(z, half) for z in bottom_conf]
-        + [face(half, rail_f_y0 + y) for y in front_rail_conf]
+        + [face(f0 + half, rail_f_y0 + y) for y in front_rail_conf]
         + [face(rear_x, rt_y0 + y) for y in rt_conf]
         + [face(rear_x, t + y) for y in rb_conf]
     )
@@ -102,16 +104,21 @@ def build(c):
                           dict(ce), side_holes,
                           "x - глубина от переднего торца, y - высота от низа. Левая и правая одинаковые.", "corpus"))
 
-    parts.append(Part("K2", "Дно", "Корпус", iw, D, t, 1, dict(ce),
-                      [edge("left", z) for z in bottom_conf]
-                      + [edge("right", z) for z in bottom_conf]
-                      + [face(x, D - half) for x in rail_bottom_x],
-                      "Нижний торец (y=0) - передний." + (" Лицом (декор) вниз." if c.get("one_sided") else ""), "corpus"))
+    bm = c.get("bottom_material", "corpus")
+    be = _all_edges(c["bottom_band"]) if c.get("bottom_band") else dict(ce)
+    parts.append(Part("K2", "Дно", "Корпус", iw, Db, t, 1, be,
+                      [edge("left", z - f0) for z in bottom_conf]
+                      + [edge("right", z - f0) for z in bottom_conf]
+                      + [face(x, Db - half) for x in rail_bottom_x],
+                      "Нижний торец (y=0) - передний."
+                      + (f" Отступает от переднего края боковин на {f0} мм (за фасадом)." if f0 else "")
+                      + (" Лицом (декор) вниз." if c.get("one_sided") and bm == "corpus" else ""), bm))
 
     parts.append(Part("K3", "Царга передняя верхняя", "Корпус", iw, rail_f, t, 1, dict(ce),
                       [edge("left", y) for y in front_rail_conf]
                       + [edge("right", y) for y in front_rail_conf],
-                      "Стоит на ребре заподлицо с передним краем, верхний торец - под умывальником. Закрыта фасадом.", "corpus"))
+                      ("Стоит на ребре" + (f" с отступом {f0} мм от переднего края боковин (за вкладным фасадом)" if f0 else " заподлицо с передним краем")
+                       + ", верхний торец - под умывальником. Закрыта фасадом."), "corpus"))
 
     parts.append(Part("K4", "Царга задняя верхняя", "Корпус", iw, rt_h, t, 1, dict(ce),
                       [edge("left", y) for y in rt_conf] + [edge("right", y) for y in rt_conf],
@@ -159,7 +166,7 @@ def build(c):
     # --- верхний ящик: П-образный вырез под сифон
     ht = c["drawer_top_box_h"]
     uw = c["u_width"]
-    zf = c["drain_from_front"] - c["siphon_clearance"]   # задняя грань передней стенки выреза
+    zf = c["drain_from_front"] - f0 - c["siphon_clearance"]   # задняя грань передней стенки выреза (от переда короба)
     wing_w = (wi - uw - 2 * t) / 2                        # ширина "крыла"
     lu = L - zf                                           # длина стенки выреза
     strip_d = zf - t                                      # глубина передней полосы дна
@@ -203,7 +210,9 @@ def build(c):
                       "Нижний торец - передний (стык с передней полосой)."))
 
     # ------------------------------------------------------------------ фасады (МДФ)
-    fw = W - 2 * c["facade_side_gap"]
+    inset = bool(c.get("facade_inset"))
+    fw = (iw if inset else W) - 2 * c["facade_side_gap"]
+    fx = (t if inset else 0) + c["facade_side_gap"]   # левый край фасада от левого края корпуса
     ph = c.get("facade_panel_h", 0)            # фальш-панель (0 - без неё)
     gaps = c["facade_top_gap"] + c["facade_bottom_gap"] + c["facade_mid_gap"] * (2 if ph else 1)
     fh = (H - gaps - ph) / 2
@@ -217,6 +226,7 @@ def build(c):
     y = H - c["facade_top_gap"]                # верх фасада, от низа корпуса
     for f in facades:
         f["top"] = y
+        f["x"] = fx
         y -= f["h"] + c["facade_mid_gap"]
     if c.get("facades_in_cut"):                # фасады из того же листа - в файл порезки
         for f in facades:
@@ -225,7 +235,7 @@ def build(c):
 
     geometry = {
         "inner_width": iw, "drawer_inner_width": wi, "drawer_outer_width": wi + 2 * t,
-        "u_from": zf, "wing_w": wing_w, "facade_w": fw, "facade_h": fh,
+        "u_from": zf, "wing_w": wing_w, "facade_w": fw, "facade_h": fh, "front_offset": f0,
         "top_drawer_box_bottom": c["facade_bottom_gap"] + fh + c["facade_mid_gap"] + 20,
         "bottom_drawer_box_bottom": c["t"] + 3,
     }

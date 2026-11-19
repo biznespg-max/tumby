@@ -43,7 +43,10 @@ def spec_md(c, parts, facades, geo, bands):
     sk = c["sink"]
     a(f"Артикул: **{c['article']}**. Умывальник: {sk['brand']} {sk['series']} {sk['size']} "
       f"({sk['width']} × {sk['depth']} × {sk['height']} мм, EAN {sk['ean']}).  ")
-    a(f"Глубина с фасадом: {c['depth'] + c['facade_t']} мм (умывальник {sk['depth']} мм).\n")
+    if c.get("facade_inset"):
+        a(f"Фасады вкладные (вровень с боковинами), глубина тумбы {c['depth']} мм (умывальник {sk['depth']} мм).\n")
+    else:
+        a(f"Глубина с фасадом: {c['depth'] + c['facade_t']} мм (умывальник {sk['depth']} мм).\n")
 
     a("## Детали (входят в файл для ViyarPro)\n")
     for key, sh in c["sheets"].items():
@@ -106,7 +109,8 @@ def spec_md(c, parts, facades, geo, bands):
     a("| Саморез 4×25 (фасад к ящику изнутри) | — | 8 |")
     if any(f["code"] == "F0" for f in facades):
         a("| Саморез 4×30 (фальш-панель F0 к царге K3 изнутри) | — | 4–6 |")
-    a("| Ручки (выбрать под фасад) | — | 2 |")
+    if c.get("handles", "Ручки (выбрать под фасад)"):
+        a(f"| {c.get('handles', 'Ручки (выбрать под фасад)')} | — | 2 |")
     a("| Крепление к стене: 2 анкера/шурупа 8×80 через заднюю верхнюю царгу или 2 навеса для подвесных тумб | — | 1 компл. |")
     a("| Сифон компактный (плоский) | — | 1 |")
     a("")
@@ -137,7 +141,11 @@ def spec_md(c, parts, facades, geo, bands):
     a("## Сборка\n")
     a(c.get("assembly_step0", "0. Детали корпуса красятся до сборки. Под конфирматы на видимых боковинах — заглушки в цвет или подкраска шляпок."))
     a("1. Корпус: боковины K1" + ("Л и K1П" if c.get("one_sided") else "") + " + дно K2 + задняя нижняя царга K5 + передняя царга K3 + задняя верхняя царга K4 на конфирматах.")
-    a("2. Направляющие к боковинам саморезами 4×16, передний край — по краю корпуса, высота — по фасадам.")
+    if c.get("facade_inset"):
+        a(f"2. Направляющие к боковинам саморезами 4×16, передний край — с отступом {c['facade_t']} мм + 2 мм от переднего торца боковины "
+          "(вкладной фасад встаёт вровень с корпусом), высота — по фасадам.")
+    else:
+        a("2. Направляющие к боковинам саморезами 4×16, передний край — по краю корпуса, высота — по фасадам.")
     a("3. Нижний ящик: боковины N1 + передняя N2 + задняя N3 + дно N4 (дно поднято на 13 мм).")
     a("4. Верхний ящик: боковины V1, передняя V2, половинки задней V3, стенки выреза V4 и V5, дно V6 + V7. "
       "Вырез под сифон получается без фрезеровки — только из прямоугольных деталей.")
@@ -172,7 +180,7 @@ def drawing_svg(c, parts, facades, geo):
     a(f'<rect x="{ox}" y="{oy}" width="{W*s}" height="{H*s}" fill="#f4f4f4" stroke="#999"/>')
     for f in facades:
         fy = oy + (H - f["top"]) * s
-        a(f'<rect x="{ox + c["facade_side_gap"]*s}" y="{fy}" width="{fw*s}" height="{f["h"]*s}" fill="#e8eef5" stroke="#333"/>')
+        a(f'<rect x="{ox + f.get("x", c["facade_side_gap"])*s}" y="{fy}" width="{fw*s}" height="{f["h"]*s}" fill="#e8eef5" stroke="#333"/>')
         a(f'<text x="{ox + W*s/2}" y="{fy + f["h"]*s/2 + 4}" text-anchor="middle">{f["code"]} {_n(fw)}×{_n(f["h"])}</text>')
     over = (sk["width"] - W) / 2
     a(f'<rect x="{ox - over*s}" y="{oy - sk["height"]*s}" width="{sk["width"]*s}" height="{sk["height"]*s}" fill="none" stroke="#1E90FF" stroke-dasharray="4 3"/>')
@@ -185,17 +193,21 @@ def drawing_svg(c, parts, facades, geo):
     sx = ox + W * s + pad + 20
     a(f'<text x="{sx}" y="{pad}" font-size="13" font-weight="bold">Разрез сбоку (перед слева)</text>')
     a(f'<rect x="{sx}" y="{oy}" width="{D*s}" height="{H*s}" fill="none" stroke="#333"/>')
-    a(f'<rect x="{sx}" y="{oy + (H - t)*s}" width="{D*s}" height="{t*s}" fill="#ccc"/>')
-    a(f'<rect x="{sx}" y="{oy}" width="{t*s}" height="{c["front_rail_h"]*s}" fill="#ccc"/>')
+    f0 = geo.get("front_offset", 0)
+    a(f'<rect x="{sx + f0*s}" y="{oy + (H - t)*s}" width="{(D - f0)*s}" height="{t*s}" fill="#ccc"/>')
+    a(f'<rect x="{sx + f0*s}" y="{oy}" width="{t*s}" height="{c["front_rail_h"]*s}" fill="#ccc"/>')
     a(f'<rect x="{sx + (D - t)*s}" y="{oy}" width="{t*s}" height="{c["rear_top_rail_h"]*s}" fill="#ccc"/>')
     a(f'<rect x="{sx + (D - t)*s}" y="{oy + (H - t - c["rear_bottom_rail_h"])*s}" width="{t*s}" height="{c["rear_bottom_rail_h"]*s}" fill="#ccc"/>')
     for yb, hb in ((geo["bottom_drawer_box_bottom"], c["drawer_bottom_box_h"]),
                    (geo["top_drawer_box_bottom"], c["drawer_top_box_h"])):
-        a(f'<rect x="{sx}" y="{oy + (H - yb - hb)*s}" width="{c["drawer_len"]*s}" height="{hb*s}" fill="#fff6e0" stroke="#b07a00"/>')
+        a(f'<rect x="{sx + f0*s}" y="{oy + (H - yb - hb)*s}" width="{c["drawer_len"]*s}" height="{hb*s}" fill="#fff6e0" stroke="#b07a00"/>')
+    if f0:
+        for f in facades:
+            a(f'<rect x="{sx}" y="{oy + (H - f["top"])*s}" width="{f0*s}" height="{f["h"]*s}" fill="#e8eef5" stroke="#333"/>')
     dz = c["drain_from_front"]
     a(f'<line x1="{sx + dz*s}" y1="{oy - 30}" x2="{sx + dz*s}" y2="{oy + 260*s}" stroke="#1E90FF" stroke-dasharray="4 3"/>')
     a(f'<text x="{sx + dz*s + 4}" y="{oy - 18}" fill="#1E90FF">слив {dz}</text>')
-    a(f'<text x="{sx + D*s/2}" y="{oy + H*s + 16}" text-anchor="middle">{D} (+{c["facade_t"]} фасад)</text>')
+    a(f'<text x="{sx + D*s/2}" y="{oy + H*s + 16}" text-anchor="middle">{D}{"" if f0 else f" (+{c['facade_t']} фасад)"}</text>')
 
     # Верхний ящик в плане
     px, py = pad, oy + H * s + 60

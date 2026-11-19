@@ -44,7 +44,8 @@ def product_config(model_key, sink_key, size, override=None):
         "ean": sz.get("ean", ""),
     }
     c["width"] = sz["width"] + m["width_from_sink"]
-    c["depth"] = s["depth"] - m["facade_t"] + m["depth_from_sink"]
+    # накладные фасады стоят перед корпусом, вкладные - внутри, вровень с торцами боковин
+    c["depth"] = s["depth"] + m["depth_from_sink"] - (0 if m.get("facade_inset") else m["facade_t"])
     # центр слива от переднего края корпуса (задний край корпуса = задний край умывальника)
     c["drain_from_front"] = c["depth"] - s["drain_from_back"]
     return c
