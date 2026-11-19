@@ -194,12 +194,20 @@ def build(c):
 
     # ------------------------------------------------------------------ фасады (МДФ)
     fw = W - 2 * c["facade_side_gap"]
-    fh_total = H - c["facade_top_gap"] - c["facade_mid_gap"] - c["facade_bottom_gap"]
-    fh = fh_total / 2
-    facades = [
+    ph = c.get("facade_panel_h", 0)            # фальш-панель (0 - без неё)
+    gaps = c["facade_top_gap"] + c["facade_bottom_gap"] + c["facade_mid_gap"] * (2 if ph else 1)
+    fh = (H - gaps - ph) / 2
+    facades = []
+    if ph:
+        facades.append({"code": "F0", "name": "Фальш-панель (неподвижная, на царгу K3)", "w": fw, "h": ph})
+    facades += [
         {"code": "F1", "name": "Фасад верхнего ящика", "w": fw, "h": fh},
         {"code": "F2", "name": "Фасад нижнего ящика", "w": fw, "h": fh},
     ]
+    y = H - c["facade_top_gap"]                # верх фасада, от низа корпуса
+    for f in facades:
+        f["top"] = y
+        y -= f["h"] + c["facade_mid_gap"]
 
     geometry = {
         "inner_width": iw, "drawer_inner_width": wi, "drawer_outer_width": wi + 2 * t,

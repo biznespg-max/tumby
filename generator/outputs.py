@@ -90,6 +90,8 @@ def spec_md(c, parts, facades, geo, bands):
     a(f"| Конфирмат 7×50 + заглушки в цвет | — | {confirmats} + 10 запас |")
     a("| Саморез 4×16 (направляющие к боковинам) | — | ~24 |")
     a("| Саморез 4×25 (фасад к ящику изнутри) | — | 8 |")
+    if any(f["code"] == "F0" for f in facades):
+        a("| Саморез 4×30 (фальш-панель F0 к царге K3 изнутри) | — | 4–6 |")
     a("| Ручки (выбрать под фасад) | — | 2 |")
     a("| Крепление к стене: 2 анкера/шурупа 8×80 через заднюю верхнюю царгу или 2 навеса для подвесных тумб | — | 1 компл. |")
     a("| Сифон компактный (плоский) | — | 1 |")
@@ -122,7 +124,11 @@ def spec_md(c, parts, facades, geo, bands):
     a("4. Верхний ящик: боковины V1, передняя V2, половинки задней V3, стенки выреза V4 и V5, дно V6 + V7. "
       "Вырез под сифон получается без фрезеровки — только из прямоугольных деталей.")
     a("5. Отверстия под задние крючки направляющих в задних стенках — по шаблону из инструкции направляющих.")
-    a("6. Фасады к передним стенкам ящиков изнутри саморезами 4×25, отрегулировать 3D-регулировкой направляющих.")
+    if any(f["code"] == "F0" for f in facades):
+        a("6. Фальш-панель F0 — к царге K3 изнутри саморезами 4×30 (зазор 2 мм до умывальника, по краям вровень с фасадами ящиков). "
+          "Фасады ящиков — к передним стенкам ящиков изнутри саморезами 4×25, отрегулировать 3D-регулировкой направляющих.")
+    else:
+        a("6. Фасады к передним стенкам ящиков изнутри саморезами 4×25, отрегулировать 3D-регулировкой направляющих.")
     a("7. Повесить корпус, установить умывальник на силикон (он лежит на боковинах и царгах).")
     return "\n".join(L) + "\n"
 
@@ -146,11 +152,10 @@ def drawing_svg(c, parts, facades, geo):
     ox, oy = pad, pad + top_off
     a(f'<text x="{ox}" y="{pad}" font-size="13" font-weight="bold">Вид спереди</text>')
     a(f'<rect x="{ox}" y="{oy}" width="{W*s}" height="{H*s}" fill="#f4f4f4" stroke="#999"/>')
-    y_top = oy + c["facade_top_gap"] * s
-    for i, f in enumerate(facades):
-        fy = y_top + i * (fh + c["facade_mid_gap"]) * s
-        a(f'<rect x="{ox + c["facade_side_gap"]*s}" y="{fy}" width="{fw*s}" height="{fh*s}" fill="#e8eef5" stroke="#333"/>')
-        a(f'<text x="{ox + W*s/2}" y="{fy + fh*s/2}" text-anchor="middle">{f["code"]} {_n(fw)}×{_n(fh)}</text>')
+    for f in facades:
+        fy = oy + (H - f["top"]) * s
+        a(f'<rect x="{ox + c["facade_side_gap"]*s}" y="{fy}" width="{fw*s}" height="{f["h"]*s}" fill="#e8eef5" stroke="#333"/>')
+        a(f'<text x="{ox + W*s/2}" y="{fy + f["h"]*s/2 + 4}" text-anchor="middle">{f["code"]} {_n(fw)}×{_n(f["h"])}</text>')
     over = (sk["width"] - W) / 2
     a(f'<rect x="{ox - over*s}" y="{oy - sk["height"]*s}" width="{sk["width"]*s}" height="{sk["height"]*s}" fill="none" stroke="#1E90FF" stroke-dasharray="4 3"/>')
     a(f'<text x="{ox + W*s/2}" y="{oy - sk["height"]*s/2 + 4}" text-anchor="middle" fill="#1E90FF">{sk["brand"]} {sk["series"]} {sk["size"]} ({sk["width"]}×{sk["depth"]}×{sk["height"]})</text>')

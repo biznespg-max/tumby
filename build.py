@@ -65,9 +65,11 @@ def main():
         c, parts, facades, area, holes = build_one(*prod)
         if only and c["article"] not in only:
             continue
-        f = facades[0]
+        fd = [f for f in facades if f["code"] != "F0"]
+        fp = [f for f in facades if f["code"] == "F0"]
+        ftxt = (f"{fp[0]['w']:g} × {fp[0]['h']:g} + " if fp else "") + f"{fd[0]['w']:g} × {fd[0]['h']:g} (2 шт)"
         rows.append(f"| [{c['article']}]({c['article']}/spec.md) | {c['name']} | "
-                    f"{c['width']} × {c['height']} × {c['depth']} | {f['w']:g} × {f['h']:g} (2 шт) | "
+                    f"{c['width']} × {c['height']} × {c['depth']} | {ftxt} | "
                     f"{sum(p.count for p in parts)} | {area:.2f} м² | {holes} |")
         print(f"{c['article']}: {sum(p.count for p in parts)} деталей, {area:.2f} м2, {holes} отверстий")
     if not only:

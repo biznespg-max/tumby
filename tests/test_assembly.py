@@ -139,6 +139,10 @@ def test_fits_sink_and_runners(prod):
     assert geo["u_from"] <= c["drain_from_front"] - 35
     # верхний ящик проходит под передней царгой (она стоит на ребре у фасада)
     assert top_box_top + 5 <= c["height"] - c["front_rail_h"], "короб верхнего ящика упирается в переднюю царгу"
+    # фальш-панель держится на царге K3 (перекрытие по высоте не меньше 40 мм)
+    for f in facades:
+        if f["code"] == "F0":
+            assert min(f["top"], c["height"]) - max(f["top"] - f["h"], c["height"] - c["front_rail_h"]) >= 40
     # короб нижнего ящика не доходит до верхнего
     assert geo["bottom_drawer_box_bottom"] + c["drawer_bottom_box_h"] < geo["top_drawer_box_bottom"]
 
