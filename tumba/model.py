@@ -39,6 +39,7 @@ class Part:
     edges: dict = field(default_factory=dict)
     holes: list = field(default_factory=list)
     note: str = ""
+    material: str = "box"
 
 
 def _all_edges(band):
@@ -81,35 +82,32 @@ def build(c):
         + [face(rear_x, t + y) for y in rb_conf]
     )
     parts.append(Part("K1", "Боковина", "Корпус", D, H, t, 2,
-                      {"left": "B2", "right": "B08", "bottom": "B08", "top": "B08"},
-                      side_holes,
-                      "x - глубина от переднего торца, y - высота от низа. Левая и правая одинаковые."))
+                      {}, side_holes,
+                      "x - глубина от переднего торца, y - высота от низа. Левая и правая одинаковые.", "corpus"))
 
-    parts.append(Part("K2", "Дно", "Корпус", iw, D, t, 1,
-                      {"bottom": "B2", "left": "B08", "right": "B08", "top": "B08"},
+    parts.append(Part("K2", "Дно", "Корпус", iw, D, t, 1, {},
                       [edge("left", z) for z in bottom_conf]
                       + [edge("right", z) for z in bottom_conf]
                       + [face(x, D - half) for x in rail_bottom_x],
-                      "Нижний торец (y=0) - передний."))
+                      "Нижний торец (y=0) - передний.", "corpus"))
 
-    parts.append(Part("K3", "Царга передняя верхняя", "Корпус", iw, rail_f, t, 1,
-                      {"bottom": "B2", "left": "B08", "right": "B08", "top": "B08"},
+    parts.append(Part("K3", "Царга передняя верхняя", "Корпус", iw, rail_f, t, 1, {},
                       [edge("left", y) for y in front_rail_conf]
                       + [edge("right", y) for y in front_rail_conf],
-                      "Лежит плашмя под умывальником, нижний торец - передний."))
+                      "Лежит плашмя под умывальником, нижний торец - передний.", "corpus"))
 
-    parts.append(Part("K4", "Царга задняя верхняя", "Корпус", iw, rt_h, t, 1,
-                      _all_edges("B08"),
+    parts.append(Part("K4", "Царга задняя верхняя", "Корпус", iw, rt_h, t, 1, {},
                       [edge("left", y) for y in rt_conf] + [edge("right", y) for y in rt_conf],
-                      "Стоит вертикально заподлицо с задним краем. Через неё тумба крепится к стене."))
+                      "Стоит вертикально заподлицо с задним краем. Через неё тумба крепится к стене.", "corpus"))
 
-    parts.append(Part("K5", "Царга задняя нижняя", "Корпус", iw, rb_h, t, 1,
-                      _all_edges("B08"),
+    parts.append(Part("K5", "Царга задняя нижняя", "Корпус", iw, rb_h, t, 1, {},
                       [edge("left", y) for y in rb_conf] + [edge("right", y) for y in rb_conf]
                       + [edge("bottom", x) for x in rail_bottom_x],
-                      "Стоит вертикально на дне, заподлицо с задним краем."))
+                      "Стоит вертикально на дне, заподлицо с задним краем.", "corpus"))
 
     # ------------------------------------------------------------------ ящики
+    t = c["t_box"]
+    half = t / 2
     L = c["drawer_len"]
     wi = iw - c["drawer_inner_deduct"]         # внутренняя ширина короба
     rec = c["drawer_bottom_recess"]
@@ -200,6 +198,6 @@ def build(c):
         "inner_width": iw, "drawer_inner_width": wi, "drawer_outer_width": wi + 2 * t,
         "u_from": zf, "wing_w": wing_w, "facade_w": fw, "facade_h": fh,
         "top_drawer_box_bottom": c["facade_bottom_gap"] + fh + c["facade_mid_gap"] + 20,
-        "bottom_drawer_box_bottom": t + 3,
+        "bottom_drawer_box_bottom": c["t"] + 3,
     }
     return parts, facades, geometry

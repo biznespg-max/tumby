@@ -43,7 +43,7 @@ def main():
     out = pathlib.Path(__file__).parent / "out"
     out.mkdir(exist_ok=True)
     bands = CONFIG["bands"]
-    (out / "tumba.project").write_text(giblab.to_xml(CONFIG["name"], parts, CONFIG["sheet"], bands), encoding="utf-8")
+    (out / "tumba.project").write_text(giblab.to_xml(CONFIG["name"], parts, CONFIG["sheets"], bands), encoding="utf-8")
     (out / "cutlist.csv").write_text(outputs.cutlist_csv(parts, bands), encoding="utf-8-sig")
     (out / "spec.md").write_text(outputs.spec_md(CONFIG, parts, facades, geo, bands), encoding="utf-8")
     (out / "drawing.svg").write_text(outputs.drawing_svg(CONFIG, parts, facades, geo), encoding="utf-8")

@@ -27,9 +27,8 @@ def placements(c, geo):
     """(код детали, начало, ось x детали, ось y детали, нормаль) для каждого экземпляра."""
     t, W, H, D = c["t"], c["width"], c["height"], c["depth"]
     iw, wi, L = geo["inner_width"], geo["drawer_inner_width"], c["drawer_len"]
+    tc = t
     rec, ww, zf = c["drawer_bottom_recess"], geo["wing_w"], geo["u_from"]
-    uf_x0 = (wi - c["u_width"] - 2 * t) / 2
-    wo = wi + 2 * t
     corpus = [
         ("K1", (0, 0, 0), Z, Y, X), ("K1", (W - t, 0, 0), Z, Y, X),
         ("K2", (t, 0, 0), X, Z, Y),
@@ -37,6 +36,9 @@ def placements(c, geo):
         ("K4", (t, H - c["rear_top_rail_h"], D - t), X, Y, Z),
         ("K5", (t, t, D - t), X, Y, Z),
     ]
+    t = c["t_box"]
+    uf_x0 = (wi - c["u_width"] - 2 * t) / 2
+    wo = wi + 2 * t
     bottom_box = [
         ("N1", (0, 0, 0), Z, Y, X), ("N1", (wo - t, 0, 0), Z, Y, X),
         ("N2", (t, 0, 0), X, Y, Z), ("N3", (t, 0, L - t), X, Y, Z),
@@ -51,7 +53,7 @@ def placements(c, geo):
         ("V6", (t, rec, t), X, Z, Y),
         ("V7", (t, rec, zf), X, Z, Y), ("V7", (t + wi - ww, rec, zf), X, Z, Y),
     ]
-    return {"Корпус": corpus, "Нижний ящик": bottom_box, "Верхний ящик": top_box}
+    return {"Корпус": (corpus, tc), "Нижний ящик": (bottom_box, t), "Верхний ящик": (top_box, t)}
 
 
 def holes_3d(part, origin, ex, ey, en):
@@ -98,8 +100,8 @@ def test_assembly():
     by_code = {p.code: p for p in parts}
     total = 0
     problems = []
-    for name, unit in placements(CONFIG, geo).items():
-        n, missing = check_unit(by_code, unit, CONFIG["t"])
+    for name, (unit, t) in placements(CONFIG, geo).items():
+        n, missing = check_unit(by_code, unit, t)
         total += n
         problems += [f"[{name}] {m}" for m in missing]
     assert not problems, "\n".join(problems)
@@ -112,6 +114,8 @@ def test_fits_sink_and_runners():
     assert c["depth"] + c["facade_t"] <= 447, "тумба глубже умывальника"
     assert c["width"] <= 800, "тумба шире умывальника"
     inner_depth = c["depth"] - c["t"]          # до задних царг
+    assert all(p.t == c["sheets"][p.material]["thickness"] for p in parts), "толщина детали не совпадает с материалом"
+    assert not any(p.edges for p in parts if p.material == "corpus"), "МДФ под покраску не кромкуется"
     assert inner_depth >= c["runner_nl"] + 3, "направляющая не помещается по глубине"
     # верх короба верхнего ящика ниже чаши (чаша опускается максимум на 140 мм)
     top_box_top = geo["top_drawer_box_bottom"] + c["drawer_top_box_h"]

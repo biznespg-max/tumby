@@ -45,25 +45,30 @@ class Ids:
         return self.n[kind]
 
 
-def to_xml(project_name, parts, sheet, bands):
+def to_xml(project_name, parts, sheets, bands):
+    """sheets: {ключ материала: {name, length, width, thickness}}; part.material - ключ."""
     ids = Ids()
     now = int(time.time() * 1000)
 
     product_good = ids.next("good")
     saw_good = ids.next("good")
+    used_bands = {k for p in parts for k in p.edges.values()}
     band_info = {}
-    for i, (key, b) in enumerate(bands.items()):
+    for i, (key, b) in enumerate((k, b) for k, b in bands.items() if k in used_bands):
         band_info[key] = {"band": b, "tool": ids.next("good"), "good": ids.next("good"),
                           "op": ids.next("op"), "index": i, "parts": []}
-    sheet_good = ids.next("good")
-    stock_part = ids.next("part")
-    sheet_op = ids.next("op")
+    sheet_info = {}
+    for key, sh in sheets.items():
+        if any(p.material == key for p in parts):
+            sheet_info[key] = {"sheet": sh, "good": ids.next("good"), "stock": ids.next("part"),
+                               "op": ids.next("op"), "parts": []}
 
     part_ids = [ids.next("part") for _ in parts]
 
     product_xml = []
     xnc_xml = []
     for p, pid in zip(parts, part_ids):
+        sheet_info[p.material]["parts"].append(pid)
         for key in set(p.edges.values()):
             band_info[key]["parts"].append(pid)
         product_xml.append(_product_part(p, pid, band_info))
@@ -88,28 +93,32 @@ def to_xml(project_name, parts, sheet, bands):
         x.append(_tag("good", {"typeId": "tool.edgeline", "elRestSide": 0, "elMinSize": 0, "elWidthPreJoint": 0,
                                "elCost": 0, "id": b["tool"]}))
 
-    x.append(_tag("good", {"typeId": "sheet", "w": sheet["width"], "l": sheet["length"], "t": sheet["thickness"],
-                           "count": 0, "cost": 0, "name": sheet["name"], "id": sheet_good}, False))
-    x.append(_tag("part", {"l": sheet["length"], "w": sheet["width"], "count": 1000, "usedCount": 0, "id": stock_part}))
-    x.append("</good>")
+    for s in sheet_info.values():
+        sh = s["sheet"]
+        x.append(_tag("good", {"typeId": "sheet", "w": sh["width"], "l": sh["length"], "t": sh["thickness"],
+                               "count": 0, "cost": 0, "name": sh["name"], "id": s["good"]}, False))
+        x.append(_tag("part", {"l": sh["length"], "w": sh["width"], "count": 1000, "usedCount": 0, "id": s["stock"]}))
+        x.append("</good>")
 
     for b in band_info.values():
         x.append(_tag("good", {"typeId": "band", "w": b["band"]["width"], "t": float(b["band"]["thickness"]),
                                "count": 0, "cost": 0, "name": b["band"]["name"], "id": b["good"]}))
 
-    x.append(_tag("operation", {
-        "l": sheet["length"], "w": sheet["width"], "t": sheet["thickness"], "tool1": saw_good,
-        "cFillRep": 0.9, "cCPF": 0.9, "cCostCut": 0, "cCostType": 0, "cSizeMode": 1, "cTrimL": 10, "cTrimW": 10,
-        "cMinDimRegWaste1": 400, "cMinDimRegWaste2": 100, "cBusinessWaste": 10, "cTrimWaste": True,
-        "cSaveDrawCut": False, "cMinDimDetail": 0, "cMaxPartsOnPattern": 0, "cCostByItem": False,
-        "cCostByItemRound": 11, "cPrefLargePacket": False, "cCombiningParts": False, "cGroupParts": 0,
-        "cAllowanceWorkpiece": 0, "typeId": "CS", "costMaterial": 0, "costOperation": 0, "costTotal": 0,
-        "printable": True, "startNewPage": True, "id": sheet_op, "csDirectCut": 0, "csTexture": True}, False))
-    x.append(_tag("material", {"id": sheet_good, "count": 0}))
-    for pid in part_ids:
-        x.append(_tag("part", {"id": pid}))
-    x.append(_tag("part", {"id": stock_part}))
-    x.append("</operation>")
+    for s in sheet_info.values():
+        sh = s["sheet"]
+        x.append(_tag("operation", {
+            "l": sh["length"], "w": sh["width"], "t": sh["thickness"], "tool1": saw_good,
+            "cFillRep": 0.9, "cCPF": 0.9, "cCostCut": 0, "cCostType": 0, "cSizeMode": 1, "cTrimL": 10, "cTrimW": 10,
+            "cMinDimRegWaste1": 400, "cMinDimRegWaste2": 100, "cBusinessWaste": 10, "cTrimWaste": True,
+            "cSaveDrawCut": False, "cMinDimDetail": 0, "cMaxPartsOnPattern": 0, "cCostByItem": False,
+            "cCostByItemRound": 11, "cPrefLargePacket": False, "cCombiningParts": False, "cGroupParts": 0,
+            "cAllowanceWorkpiece": 0, "typeId": "CS", "costMaterial": 0, "costOperation": 0, "costTotal": 0,
+            "printable": True, "startNewPage": True, "id": s["op"], "csDirectCut": 0, "csTexture": True}, False))
+        x.append(_tag("material", {"id": s["good"], "count": 0}))
+        for pid in s["parts"]:
+            x.append(_tag("part", {"id": pid}))
+        x.append(_tag("part", {"id": s["stock"]}))
+        x.append("</operation>")
 
     for b in band_info.values():
         x.append(_tag("operation", {
