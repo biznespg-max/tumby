@@ -68,6 +68,8 @@ def build(c):
 
     parts = []
     half = t / 2
+    cb = c.get("corpus_band")                  # кромка корпуса и фасадов (None - МДФ под покраску)
+    ce = _all_edges(cb) if cb else {}
 
     # ------------------------------------------------------------------ корпус
     bottom_conf = [50, D / 2, D - 50]          # по глубине, от переднего края
@@ -88,26 +90,34 @@ def build(c):
         + [face(rear_x, rt_y0 + y) for y in rt_conf]
         + [face(rear_x, t + y) for y in rb_conf]
     )
-    parts.append(Part("K1", "Боковина", "Корпус", D, H, t, 2,
-                      {}, side_holes,
-                      "x - глубина от переднего торца, y - высота от низа. Левая и правая одинаковые.", "corpus"))
+    if c.get("one_sided"):
+        # односторонний материал: лицевая сторона наружу, поэтому боковины зеркальные
+        mirrored = [Hole(h.side, D - h.x, h.y, h.d, h.depth) for h in side_holes]
+        parts.append(Part("K1Л", "Боковина левая", "Корпус", D, H, t, 1, dict(ce), mirrored,
+                          "Лицом (декор) наружу. Смотрим снаружи: передний торец справа.", "corpus"))
+        parts.append(Part("K1П", "Боковина правая", "Корпус", D, H, t, 1, dict(ce), side_holes,
+                          "Лицом (декор) наружу. Смотрим снаружи: передний торец слева.", "corpus"))
+    else:
+        parts.append(Part("K1", "Боковина", "Корпус", D, H, t, 2,
+                          dict(ce), side_holes,
+                          "x - глубина от переднего торца, y - высота от низа. Левая и правая одинаковые.", "corpus"))
 
-    parts.append(Part("K2", "Дно", "Корпус", iw, D, t, 1, {},
+    parts.append(Part("K2", "Дно", "Корпус", iw, D, t, 1, dict(ce),
                       [edge("left", z) for z in bottom_conf]
                       + [edge("right", z) for z in bottom_conf]
                       + [face(x, D - half) for x in rail_bottom_x],
-                      "Нижний торец (y=0) - передний.", "corpus"))
+                      "Нижний торец (y=0) - передний." + (" Лицом (декор) вниз." if c.get("one_sided") else ""), "corpus"))
 
-    parts.append(Part("K3", "Царга передняя верхняя", "Корпус", iw, rail_f, t, 1, {},
+    parts.append(Part("K3", "Царга передняя верхняя", "Корпус", iw, rail_f, t, 1, dict(ce),
                       [edge("left", y) for y in front_rail_conf]
                       + [edge("right", y) for y in front_rail_conf],
                       "Стоит на ребре заподлицо с передним краем, верхний торец - под умывальником. Закрыта фасадом.", "corpus"))
 
-    parts.append(Part("K4", "Царга задняя верхняя", "Корпус", iw, rt_h, t, 1, {},
+    parts.append(Part("K4", "Царга задняя верхняя", "Корпус", iw, rt_h, t, 1, dict(ce),
                       [edge("left", y) for y in rt_conf] + [edge("right", y) for y in rt_conf],
                       "Стоит вертикально заподлицо с задним краем. Через неё тумба крепится к стене.", "corpus"))
 
-    parts.append(Part("K5", "Царга задняя нижняя", "Корпус", iw, rb_h, t, 1, {},
+    parts.append(Part("K5", "Царга задняя нижняя", "Корпус", iw, rb_h, t, 1, dict(ce),
                       [edge("left", y) for y in rb_conf] + [edge("right", y) for y in rb_conf]
                       + [edge("bottom", x) for x in rail_bottom_x],
                       "Стоит вертикально на дне, заподлицо с задним краем.", "corpus"))
@@ -208,6 +218,10 @@ def build(c):
     for f in facades:
         f["top"] = y
         y -= f["h"] + c["facade_mid_gap"]
+    if c.get("facades_in_cut"):                # фасады из того же листа - в файл порезки
+        for f in facades:
+            parts.append(Part(f["code"], f["name"], "Фасады", f["w"], f["h"], c["facade_t"], 1,
+                              dict(ce), [], "Лицом (декор) наружу. Текстура вдоль длины.", "corpus"))
 
     geometry = {
         "inner_width": iw, "drawer_inner_width": wi, "drawer_outer_width": wi + 2 * t,

@@ -32,8 +32,11 @@ def placements(c, geo):
     iw, wi, L = geo["inner_width"], geo["drawer_inner_width"], c["drawer_len"]
     tc = t
     rec, ww, zf = c["drawer_bottom_recess"], geo["wing_w"], geo["u_from"]
-    corpus = [
-        ("K1", (0, 0, 0), Z, Y, X), ("K1", (W - t, 0, 0), Z, Y, X),
+    if c.get("one_sided"):
+        sides = [("K1Л", (0, 0, D), mul(Z, -1), Y, X), ("K1П", (W - t, 0, 0), Z, Y, X)]
+    else:
+        sides = [("K1", (0, 0, 0), Z, Y, X), ("K1", (W - t, 0, 0), Z, Y, X)]
+    corpus = sides + [
         ("K2", (t, 0, 0), X, Z, Y),
         ("K3", (t, H - c["front_rail_h"], 0), X, Y, Z),
         ("K4", (t, H - c["rear_top_rail_h"], D - t), X, Y, Z),
@@ -128,7 +131,10 @@ def test_fits_sink_and_runners(prod):
     assert c["width"] <= max_w, "направляющие не для такой ширины"
     inner_depth = c["depth"] - c["t"]          # до задних царг
     assert all(p.t == c["sheets"][p.material]["thickness"] for p in parts), "толщина детали не совпадает с материалом"
-    assert not any(p.edges for p in parts if p.material == "corpus"), "МДФ под покраску не кромкуется"
+    if not c.get("corpus_band"):
+        assert not any(p.edges for p in parts if p.material == "corpus"), "МДФ под покраску не кромкуется"
+    else:
+        assert all(len(p.edges) == 4 for p in parts if p.material == "corpus"), "все торцы корпуса в кромке"
     assert inner_depth >= c["runner_nl"] + 3, "направляющая не помещается по глубине"
     # верх короба верхнего ящика ниже чаши (чаша опускается максимум на 140 мм)
     top_box_top = geo["top_drawer_box_bottom"] + c["drawer_top_box_h"]
