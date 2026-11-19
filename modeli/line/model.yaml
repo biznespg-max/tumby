@@ -11,11 +11,11 @@ title: "Тумба подвесная Line {size} под {brand} {series} {size}
 izdeliya:
   - umyvalnik: adamant-quanto
     sizes: [60, 70, 80]
-  # TL-Q100: корпус 990 мм шире допустимого для Muller L=400 (макс. 900 мм),
-  # поэтому ящики на Hettich Actro YOU (ширина до 1200 мм), короба из ДСП 16 мм
-  # (боковины ящика у Actro YOU не толще 16 мм).
+  # TL-Q90 и TL-Q100: корпус 890 / 990 мм. Для Muller L=400 ВіЯр допускает модуль
+  # не шире 2 x L = 800 мм (и не шире 900), поэтому ящики на Hettich Actro YOU
+  # (ширина до 1200 мм), короба из ДСП 16 мм (боковины ящика у Actro YOU не толще 16 мм).
   - umyvalnik: adamant-quanto
-    sizes: [100]
+    sizes: [90, 100]
     override:
       runner_name: "Направляючі Actro YOU L=400 (40 кг) з Silent System, ліва 9318175 + права 9318176 Hettich (або к-т V2.0, код 180735)"
       runner_code: "178796 + 178797"
