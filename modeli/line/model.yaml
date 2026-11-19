@@ -52,7 +52,6 @@ facade_t: 19
 facade_style: "фарбований МДФ ViyarFronts, фрезерування «Рамка з лініями» (Тип 1), покриття мат"
 facade_color: "NCS S 3010-Y50R (корпус и фасады одним цветом)"
 facade_side_gap: 2
-facade_panel_h: 77       # неподвижная фальш-панель сверху, крепится к царге K3 изнутри
 facade_top_gap: 2
 facade_mid_gap: 3
 facade_bottom_gap: 1
