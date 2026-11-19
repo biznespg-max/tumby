@@ -71,8 +71,9 @@ def build(c):
 
     # ------------------------------------------------------------------ корпус
     bottom_conf = [50, D / 2, D - 50]          # по глубине, от переднего края
-    rail_f = c["front_rail_depth"]
-    front_rail_conf = [30, rail_f - 30]
+    rail_f = c["front_rail_h"]
+    rail_f_y0 = H - rail_f                     # низ передней верхней царги
+    front_rail_conf = [20, rail_f - 20]
     rt_h = c["rear_top_rail_h"]
     rt_y0 = H - rt_h                           # низ задней верхней царги
     rt_conf = [30, rt_h - 30]
@@ -83,7 +84,7 @@ def build(c):
 
     side_holes = (
         [face(z, half) for z in bottom_conf]
-        + [face(z, H - half) for z in front_rail_conf]
+        + [face(half, rail_f_y0 + y) for y in front_rail_conf]
         + [face(rear_x, rt_y0 + y) for y in rt_conf]
         + [face(rear_x, t + y) for y in rb_conf]
     )
@@ -100,7 +101,7 @@ def build(c):
     parts.append(Part("K3", "Царга передняя верхняя", "Корпус", iw, rail_f, t, 1, {},
                       [edge("left", y) for y in front_rail_conf]
                       + [edge("right", y) for y in front_rail_conf],
-                      "Лежит плашмя под умывальником, нижний торец - передний.", "corpus"))
+                      "Стоит на ребре заподлицо с передним краем, верхний торец - под умывальником. Закрыта фасадом.", "corpus"))
 
     parts.append(Part("K4", "Царга задняя верхняя", "Корпус", iw, rt_h, t, 1, {},
                       [edge("left", y) for y in rt_conf] + [edge("right", y) for y in rt_conf],

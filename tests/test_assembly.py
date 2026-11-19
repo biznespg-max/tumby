@@ -35,7 +35,7 @@ def placements(c, geo):
     corpus = [
         ("K1", (0, 0, 0), Z, Y, X), ("K1", (W - t, 0, 0), Z, Y, X),
         ("K2", (t, 0, 0), X, Z, Y),
-        ("K3", (t, H - t, 0), X, Z, Y),
+        ("K3", (t, H - c["front_rail_h"], 0), X, Y, Z),
         ("K4", (t, H - c["rear_top_rail_h"], D - t), X, Y, Z),
         ("K5", (t, t, D - t), X, Y, Z),
     ]
@@ -137,6 +137,8 @@ def test_fits_sink_and_runners(prod):
     assert geo["wing_w"] >= 100, f"крылья верхнего ящика слишком узкие: {geo['wing_w']}"
     # вырез под сифон перекрывает слив
     assert geo["u_from"] <= c["drain_from_front"] - 35
+    # верхний ящик проходит под передней царгой (она стоит на ребре у фасада)
+    assert top_box_top + 5 <= c["height"] - c["front_rail_h"], "короб верхнего ящика упирается в переднюю царгу"
     # короб нижнего ящика не доходит до верхнего
     assert geo["bottom_drawer_box_bottom"] + c["drawer_bottom_box_h"] < geo["top_drawer_box_bottom"]
 

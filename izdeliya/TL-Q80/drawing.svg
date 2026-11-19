@@ -14,7 +14,7 @@
 <text x="495.0" y="40" font-size="13" font-weight="bold">Разрез сбоку (перед слева)</text>
 <rect x="495.0" y="140.0" width="212.5" height="325.0" fill="none" stroke="#333"/>
 <rect x="495.0" y="455.5" width="212.5" height="9.5" fill="#ccc"/>
-<rect x="495.0" y="140.0" width="50.0" height="9.5" fill="#ccc"/>
+<rect x="495.0" y="140.0" width="9.5" height="40.0" fill="#ccc"/>
 <rect x="698.0" y="140.0" width="9.5" height="60.0" fill="#ccc"/>
 <rect x="698.0" y="405.5" width="9.5" height="50.0" fill="#ccc"/>
 <rect x="495.0" y="354.0" width="195.0" height="100.0" fill="#fff6e0" stroke="#b07a00"/>

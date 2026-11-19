@@ -163,7 +163,7 @@ def drawing_svg(c, parts, facades, geo):
     a(f'<text x="{sx}" y="{pad}" font-size="13" font-weight="bold">Разрез сбоку (перед слева)</text>')
     a(f'<rect x="{sx}" y="{oy}" width="{D*s}" height="{H*s}" fill="none" stroke="#333"/>')
     a(f'<rect x="{sx}" y="{oy + (H - t)*s}" width="{D*s}" height="{t*s}" fill="#ccc"/>')
-    a(f'<rect x="{sx}" y="{oy}" width="{c["front_rail_depth"]*s}" height="{t*s}" fill="#ccc"/>')
+    a(f'<rect x="{sx}" y="{oy}" width="{t*s}" height="{c["front_rail_h"]*s}" fill="#ccc"/>')
     a(f'<rect x="{sx + (D - t)*s}" y="{oy}" width="{t*s}" height="{c["rear_top_rail_h"]*s}" fill="#ccc"/>')
     a(f'<rect x="{sx + (D - t)*s}" y="{oy + (H - t - c["rear_bottom_rail_h"])*s}" width="{t*s}" height="{c["rear_bottom_rail_h"]*s}" fill="#ccc"/>')
     for yb, hb in ((geo["bottom_drawer_box_bottom"], c["drawer_bottom_box_h"]),
