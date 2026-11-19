@@ -40,7 +40,7 @@ def product_config(model_key, sink_key, size, override=None):
     c["sink"] = {
         "key": sink_key, "brand": s["brand"], "series": s["series"], "size": size,
         "width": sz["width"], "depth": s["depth"], "height": s["height"],
-        "bowl_width": sz["bowl_width"], "bowl_depth": s["bowl_depth"], "bowl_drop": s["bowl_drop"],
+        "bowl_width": sz.get("bowl_width"), "bowl_depth": s["bowl_depth"], "bowl_drop": s["bowl_drop"],
         "ean": sz.get("ean", ""),
     }
     c["width"] = sz["width"] + m["width_from_sink"]

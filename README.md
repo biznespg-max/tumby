@@ -9,6 +9,9 @@
 ```
 umyvalniki/          каталог умывальников (размеры, слив)
   adamant-quanto.yaml      Quanto 60 / 70 / 80 / 100
+  adamant-flat.yaml        Flat 60 / 70 / 80 / 100
+  adamant-cers.yaml        Cers 60 / 70 / 90
+  adamant-vision.yaml      Vision 70 / 80 / 90 / 100
 modeli/              модели (серии) тумб: конструкция, материалы, фасады
   line/model.yaml          серия TL «Line»
 izdeliya/            готовые файлы для заказа (собираются автоматически)
@@ -17,6 +20,8 @@ generator/           общий код: деталировка, файл ViyarPr
 tests/               проверка сборки для каждого изделия
 build.py             собрать все изделия
 ```
+
+Какие ещё умывальники встают на эти тумбы — [SOVMESTIMOST.md](SOVMESTIMOST.md).
 
 **Артикул** = код серии + код умывальника + размер: **TL-Q80** — серия Line, Adamant Quanto 80.
 Цвет — опция заказа, на файл для ViyarPro не влияет.
