@@ -22,8 +22,15 @@ def load_model(key):
     return load_yaml(ROOT / "modeli" / key / "model.yaml")
 
 
-def product_config(model_key, sink_key, size):
-    m = load_model(model_key)
+def _merge(base, extra):
+    out = dict(base)
+    for k, v in (extra or {}).items():
+        out[k] = _merge(out[k], v) if isinstance(v, dict) and isinstance(out.get(k), dict) else v
+    return out
+
+
+def product_config(model_key, sink_key, size, override=None):
+    m = _merge(load_model(model_key), override)
     s = load_sink(sink_key)
     sz = s["sizes"][size]
     c = {k: v for k, v in m.items() if k not in ("izdeliya", "title", "code", "name")}
@@ -44,7 +51,7 @@ def product_config(model_key, sink_key, size):
 
 
 def all_products():
-    """Все изделия всех моделей: список (model_key, sink_key, size)."""
+    """Все изделия всех моделей: список (model_key, sink_key, size, override)."""
     out = []
     for d in sorted((ROOT / "modeli").iterdir()):
         if not (d / "model.yaml").exists():
@@ -52,5 +59,5 @@ def all_products():
         m = load_model(d.name)
         for item in m.get("izdeliya", []):
             for size in item["sizes"]:
-                out.append((d.name, item["umyvalnik"], size))
+                out.append((d.name, item["umyvalnik"], size, item.get("override")))
     return out

@@ -50,7 +50,9 @@ def build(c):
     t = c["t"]
     W, H, D = c["width"], c["height"], c["depth"]
     iw = W - 2 * t                     # внутренняя ширина корпуса
-    max_w = min(c["runner_max_width"], 2 * c["runner_nl"])
+    max_w = c["runner_max_width"]
+    if c.get("runner_two_l_rule", True):
+        max_w = min(max_w, 2 * c["runner_nl"])
     if W > max_w:
         raise ValueError(f"Корпус {W} мм шире допустимого для направляющих L={c['runner_nl']} "
                          f"(макс. {max_w} мм). Нужны другие направляющие или другая конструкция.")
@@ -137,7 +139,7 @@ def build(c):
                       "К ней изнутри крепится фасад."))
     parts.append(Part("N3", "Задняя стенка ящика", "Нижний ящик", wi, hb, t, 1, edges_box,
                       [edge("left", y) for y in ys] + [edge("right", y) for y in ys],
-                      "Отверстия под задние крючки направляющих - по шаблону Muller при сборке."))
+                      "Отверстия под задние крючки направляющих - по шаблону из инструкции направляющих."))
     parts.append(Part("N4", "Дно ящика", "Нижний ящик", wi, bot_depth, t, 1, _all_edges("B08"),
                       [edge("left", x - t) for x in bot_xs] + [edge("right", x - t) for x in bot_xs]
                       + [edge("bottom", x) for x in front_bottom_conf],

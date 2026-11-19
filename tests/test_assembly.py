@@ -124,7 +124,8 @@ def test_fits_sink_and_runners(prod):
     parts, facades, geo = model.build(c)
     assert c["depth"] + c["facade_t"] <= sk["depth"], "тумба глубже умывальника"
     assert c["width"] <= sk["width"], "тумба шире умывальника"
-    assert c["width"] <= min(c["runner_max_width"], 2 * c["runner_nl"]), "направляющие не для такой ширины"
+    max_w = c["runner_max_width"] if not c.get("runner_two_l_rule", True) else min(c["runner_max_width"], 2 * c["runner_nl"])
+    assert c["width"] <= max_w, "направляющие не для такой ширины"
     inner_depth = c["depth"] - c["t"]          # до задних царг
     assert all(p.t == c["sheets"][p.material]["thickness"] for p in parts), "толщина детали не совпадает с материалом"
     assert not any(p.edges for p in parts if p.material == "corpus"), "МДФ под покраску не кромкуется"

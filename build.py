@@ -39,8 +39,8 @@ def check(parts):
     return errors
 
 
-def build_one(model_key, sink_key, size):
-    c = config.product_config(model_key, sink_key, size)
+def build_one(model_key, sink_key, size, override=None):
+    c = config.product_config(model_key, sink_key, size, override)
     parts, facades, geo = model.build(c)
     errors = check(parts)
     if errors:
@@ -61,8 +61,8 @@ def build_one(model_key, sink_key, size):
 def main():
     only = set(sys.argv[1:])
     rows = []
-    for model_key, sink_key, size in config.all_products():
-        c, parts, facades, area, holes = build_one(model_key, sink_key, size)
+    for prod in config.all_products():
+        c, parts, facades, area, holes = build_one(*prod)
         if only and c["article"] not in only:
             continue
         f = facades[0]

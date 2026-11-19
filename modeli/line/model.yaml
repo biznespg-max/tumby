@@ -11,8 +11,27 @@ title: "Тумба подвесная Line {size} под {brand} {series} {size}
 izdeliya:
   - umyvalnik: adamant-quanto
     sizes: [60, 70, 80]
-  # TL-Q100: корпус 990 мм шире допустимого для Muller Profi Line L=400
-  # (макс. 900 мм). Нужен выбор: другие направляющие или другая конструкция.
+  # TL-Q100: корпус 990 мм шире допустимого для Muller L=400 (макс. 900 мм),
+  # поэтому ящики на Hettich Actro YOU (ширина до 1200 мм), короба из ДСП 16 мм
+  # (боковины ящика у Actro YOU не толще 16 мм).
+  - umyvalnik: adamant-quanto
+    sizes: [100]
+    override:
+      runner_name: "Направляючі Actro YOU L=400 (40 кг) з Silent System, ліва 9318175 + права 9318176 Hettich (або к-т V2.0, код 180735)"
+      runner_code: "178796 + 178797"
+      runner_extra: "Комплект фіксаторів Actro YOU для дерев'яних ящиків (9320320) Hettich, код 179744 — 2 компл."
+      runner_max_width: 1200
+      runner_two_l_rule: false
+      t_box: 16
+      # Hettich, монтажная ширина EB21, боковина 16 мм: наружная ширина короба = LW - 10,
+      # внутренняя = LW - 42. ПРОВЕРИТЬ по инструкции Actro YOU.
+      drawer_inner_deduct: 42
+      sheets:
+        box:
+          name: "ДСП лам. Kronospan 5981 BS Кашемір 2800х2070х16 мм (уточнить код и наличие в ВіЯр)"
+          length: 2800
+          width: 2070
+          thickness: 16
 
 # --- Корпус ------------------------------------------------------------------
 # Ширина корпуса = ширина умывальника - 10 (край раковины выступает на 5 мм с каждой
@@ -40,7 +59,9 @@ facade_bottom_gap: 1
 runner_name: "Направляючі прихованого монтажу SC L=400 Muller Profi Line 18 мм, 3D, повне висування, з дотягувачем"
 runner_code: "42135"
 runner_nl: 400
-runner_max_width: 900     # макс. ширина модуля по ВіЯр; также не шире 2 x L
+runner_max_width: 900     # макс. ширина модуля по ВіЯр
+runner_two_l_rule: true   # модуль не шире 2 x L (рекомендация ВіЯр для Muller)
+runner_extra: ""
 drawer_len: 390           # L - 10
 drawer_inner_deduct: 49   # внутр. ширина короба = внутр. ширина корпуса - 49 (ПРОВЕРИТЬ по схеме Muller)
 drawer_bottom_recess: 13

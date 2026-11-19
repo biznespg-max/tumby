@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="868" height="820" viewBox="0 0 868 820" font-family="Arial" font-size="11">
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="40" font-size="13" font-weight="bold">Вид спереди</text>
+<rect x="40" y="140.0" width="495.0" height="325.0" fill="#f4f4f4" stroke="#999"/>
+<rect x="41.0" y="141.0" width="493.0" height="161.0" fill="#e8eef5" stroke="#333"/>
+<text x="287.5" y="221.5" text-anchor="middle">F1 986×322</text>
+<rect x="41.0" y="303.5" width="493.0" height="161.0" fill="#e8eef5" stroke="#333"/>
+<text x="287.5" y="384.0" text-anchor="middle">F2 986×322</text>
+<rect x="37.5" y="70.0" width="500.0" height="70.0" fill="none" stroke="#1E90FF" stroke-dasharray="4 3"/>
+<text x="287.5" y="109.0" text-anchor="middle" fill="#1E90FF">Adamant Quanto 100 (1000×447×140)</text>
+<text x="40" y="58" fill="#666">TL-Q100 — Тумба подвесная Line 100 под Adamant Quanto 100</text>
+<text x="287.5" y="481.0" text-anchor="middle">990</text>
+<text x="34" y="302.5" text-anchor="end">650</text>
+<text x="595.0" y="40" font-size="13" font-weight="bold">Разрез сбоку (перед слева)</text>
+<rect x="595.0" y="140.0" width="212.5" height="325.0" fill="none" stroke="#333"/>
+<rect x="595.0" y="455.5" width="212.5" height="9.5" fill="#ccc"/>
+<rect x="595.0" y="140.0" width="50.0" height="9.5" fill="#ccc"/>
+<rect x="798.0" y="140.0" width="9.5" height="60.0" fill="#ccc"/>
+<rect x="798.0" y="405.5" width="9.5" height="50.0" fill="#ccc"/>
+<rect x="595.0" y="354.0" width="195.0" height="100.0" fill="#fff6e0" stroke="#b07a00"/>
+<rect x="595.0" y="227.0" width="195.0" height="65.0" fill="#fff6e0" stroke="#b07a00"/>
+<line x1="675.0" y1="110.0" x2="675.0" y2="270.0" stroke="#1E90FF" stroke-dasharray="4 3"/>
+<text x="679.0" y="122.0" fill="#1E90FF">слив 160</text>
+<text x="701.25" y="481.0" text-anchor="middle">425 (+19 фасад)</text>
+<text x="40" y="517.0" font-size="13" font-weight="bold">Верхний ящик, вид сверху (вырез под сифон)</text>
+<rect x="40" y="525.0" width="471.0" height="195.0" fill="#fff6e0" stroke="#b07a00"/>
+<rect x="227.0" y="580.0" width="100.0" height="140.0" fill="white" stroke="#b07a00"/>
+<circle cx="275.5" cy="605.0" r="17.5" fill="none" stroke="#1E90FF"/>
+<text x="275.5" y="710.0" text-anchor="middle">вырез 200</text>
+<text x="517.0" y="537.0">← перед (фасад)</text>
+<text x="517.0" y="720.0">← зад</text>
+<text x="275.5" y="736.0" text-anchor="middle">942 × 390</text>
+</svg>
