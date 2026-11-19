@@ -10,6 +10,7 @@
 umyvalniki/          каталог умывальников (размеры, слив)
   adamant-quanto.yaml      Quanto 60 / 70 / 80 / 90 / 100
   adamant-cers.yaml        Cers 60 / 70 / 90 (встают на тумбы Quanto)
+  adamant-flat.yaml        Flat 60 / 70 / 80 / 100 (встают на тумбы Quanto)
 modeli/              модели (серии) тумб: конструкция, материалы, фасады
   line/model.yaml          серия TL «Line»
 izdeliya/            готовые файлы для заказа (собираются автоматически)
@@ -19,7 +20,7 @@ tests/               проверка сборки для каждого изд�
 build.py             собрать все изделия
 ```
 
-Умывальники Cers 60 / 70 / 90 встают на тумбы TL-Q60 / Q70 / Q90 без изменений — см. [SOVMESTIMOST.md](SOVMESTIMOST.md).
+Умывальники Cers (60 / 70 / 90) и Flat (60 / 70 / 80 / 100) встают на тумбы TL-Q того же размера без изменений — см. [SOVMESTIMOST.md](SOVMESTIMOST.md).
 
 **Артикул** = код серии + код умывальника + размер: **TL-Q80** — серия Line, Adamant Quanto 80.
 Цвет — опция заказа, на файл для ViyarPro не влияет.
