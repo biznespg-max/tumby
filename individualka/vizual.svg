@@ -22,9 +22,12 @@
 <rect x="70.1" y="903.0" width="9" height="47.0" fill="url(#brass)"/>
 <rect x="605.9" y="903.0" width="9" height="47.0" fill="url(#brass)"/>
 <rect x="60.0" y="559.9000000000001" width="564.0" height="343.09999999999997" fill="#cbb9a2" filter="url(#sh)"/>
-<rect x="60.94" y="560.84" width="186.355" height="341.21999999999997" fill="url(#front)" stroke="#bda98f" stroke-width="1.5"/>
-<rect x="248.70499999999998" y="682.8050000000001" width="374.35499999999996" height="219.255" fill="url(#front)" stroke="#bda98f" stroke-width="1.5"/>
-<rect x="248.70499999999998" y="560.84" width="374.35499999999996" height="120.55499999999999" fill="url(#front)" stroke="#bda98f" stroke-width="1.5"/>
+<rect x="69.4" y="561.31" width="186.59" height="341.21999999999997" fill="url(#front)" stroke="#bda98f" stroke-width="1.5"/>
+<rect x="257.4" y="703.72" width="357.2" height="198.81" fill="url(#front)" stroke="#bda98f" stroke-width="1.5"/>
+<rect x="257.4" y="561.31" width="357.2" height="141.0" fill="url(#front)" stroke="#bda98f" stroke-width="1.5"/>
+<rect x="69.4" y="561.31" width="186.59" height="5" fill="#a8957c"/>
+<rect x="257.4" y="561.31" width="357.2" height="5" fill="#a8957c"/>
+<rect x="257.4" y="702.31" width="357.2" height="5" fill="#a8957c"/>
 <rect x="57.65" y="550.5" width="568.6999999999999" height="10.399999999999999" fill="url(#top)" stroke="#d8d1c7"/>
 <path d="M318.5,559.9000000000001 v20 q0,38 30,40 h175.0 q30,-2 30,-40 v-20" fill="none" stroke="#7d6a55" stroke-width="2" stroke-dasharray="7 5"/>
 <line x1="436.0" y1="470.5" x2="436.0" y2="897.0" stroke="#c0392b" stroke-width="1.8" stroke-dasharray="10 6"/>
@@ -105,9 +108,9 @@
 <rect x="1040" y="0" width="496" height="1024" fill="#f6f1ea"/>
 <text x="1298" y="40" font-size="23" font-weight="700" text-anchor="middle" fill="#2b2622">Стільниця з чашею Boat 500 <tspan font-weight="400" font-size="18">(зверху)</tspan></text>
 <rect x="1090.0" y="105.0" width="420.0" height="185.5" fill="#fbf9f6" stroke="#2b2622" stroke-width="2"/>
-<rect x="1279.0" y="148.75" width="182.0" height="127.74999999999999" fill="#eef2ef" stroke="#2f5a46" stroke-width="2" stroke-dasharray="6 4"/>
-<rect x="1282.5" y="152.25" width="175.0" height="120.74999999999999" rx="8" fill="#e3ebe6" stroke="#2f5a46" stroke-width="2"/>
-<circle cx="1370.0" cy="212.625" r="7" fill="none" stroke="#2f5a46" stroke-width="2"/>
+<rect x="1279.0" y="143.5" width="182.0" height="127.74999999999999" fill="#eef2ef" stroke="#2f5a46" stroke-width="2" stroke-dasharray="6 4"/>
+<rect x="1282.5" y="147.0" width="175.0" height="120.74999999999999" rx="8" fill="#e3ebe6" stroke="#2f5a46" stroke-width="2"/>
+<circle cx="1370.0" cy="207.375" r="7" fill="none" stroke="#2f5a46" stroke-width="2"/>
 <rect x="1366.0" y="117.25" width="8" height="22" rx="2" fill="url(#brass)"/>
 <line x1="1370.0" y1="98.0" x2="1370.0" y2="301.0" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="8 5"/>
 <g stroke="#2b2622" stroke-width="2" fill="#2b2622"><line x1="1090.0" y1="83" x2="1510.0" y2="83"/><path d="M1090.0,83 l10,-5 v10 z M1510.0,83 l-10,-5 v10 z" stroke="none"/></g>
@@ -120,15 +123,15 @@
 <text x="1485.5" y="307.5" font-size="15" font-weight="700" text-anchor="middle" fill="#c0392b">140</text>
 <g stroke="#c0392b" stroke-width="2" fill="#c0392b"><line x1="1090.0" y1="352.5" x2="1370.0" y2="352.5"/><path d="M1090.0,352.5 l10,-5 v10 z M1370.0,352.5 l-10,-5 v10 z" stroke="none"/></g>
 <text x="1230.0" y="343.5" font-size="15" font-weight="700" text-anchor="middle" fill="#c0392b">вісь зливу 800 (було 880)</text>
-<g stroke="#2b2622" stroke-width="2" fill="#2b2622"><line x1="1080.0" y1="105.0" x2="1080.0" y2="148.75"/><path d="M1080.0,105.0 l-5,10 h10 z M1080.0,148.75 l-5,-10 h10 z" stroke="none"/></g>
-<text x="1066.0" y="126.875" font-size="1" font-weight="700" text-anchor="middle" fill="#2b2622" transform="rotate(-90 1066.0 126.875)" dy="7"></text>
-<text x="1073.0" y="131.875" font-size="13" font-weight="700" text-anchor="end" fill="#2b2622">125</text>
-<g stroke="#2b2622" stroke-width="2" fill="#2b2622"><line x1="1080.0" y1="148.75" x2="1080.0" y2="276.5"/><path d="M1080.0,148.75 l-5,10 h10 z M1080.0,276.5 l-5,-10 h10 z" stroke="none"/></g>
-<text x="1066.0" y="212.625" font-size="1" font-weight="700" text-anchor="middle" fill="#2b2622" transform="rotate(-90 1066.0 212.625)" dy="7"></text>
-<text x="1073.0" y="217.625" font-size="13" font-weight="700" text-anchor="end" fill="#2b2622">365</text>
-<g stroke="#2b2622" stroke-width="2" fill="#2b2622"><line x1="1080.0" y1="276.5" x2="1080.0" y2="290.5"/><path d="M1080.0,276.5 l-5,10 h10 z M1080.0,290.5 l-5,-10 h10 z" stroke="none"/></g>
-<text x="1066.0" y="283.5" font-size="1" font-weight="700" text-anchor="middle" fill="#2b2622" transform="rotate(-90 1066.0 283.5)" dy="7"></text>
-<text x="1073.0" y="288.5" font-size="13" font-weight="700" text-anchor="end" fill="#2b2622">40</text>
+<g stroke="#2b2622" stroke-width="2" fill="#2b2622"><line x1="1080.0" y1="105.0" x2="1080.0" y2="143.5"/><path d="M1080.0,105.0 l-5,10 h10 z M1080.0,143.5 l-5,-10 h10 z" stroke="none"/></g>
+<text x="1066.0" y="124.25" font-size="1" font-weight="700" text-anchor="middle" fill="#2b2622" transform="rotate(-90 1066.0 124.25)" dy="7"></text>
+<text x="1073.0" y="129.25" font-size="13" font-weight="700" text-anchor="end" fill="#2b2622">110</text>
+<g stroke="#2b2622" stroke-width="2" fill="#2b2622"><line x1="1080.0" y1="143.5" x2="1080.0" y2="271.25"/><path d="M1080.0,143.5 l-5,10 h10 z M1080.0,271.25 l-5,-10 h10 z" stroke="none"/></g>
+<text x="1066.0" y="207.375" font-size="1" font-weight="700" text-anchor="middle" fill="#2b2622" transform="rotate(-90 1066.0 207.375)" dy="7"></text>
+<text x="1073.0" y="212.375" font-size="13" font-weight="700" text-anchor="end" fill="#2b2622">365</text>
+<g stroke="#2b2622" stroke-width="2" fill="#2b2622"><line x1="1080.0" y1="271.25" x2="1080.0" y2="290.5"/><path d="M1080.0,271.25 l-5,10 h10 z M1080.0,290.5 l-5,-10 h10 z" stroke="none"/></g>
+<text x="1066.0" y="280.875" font-size="1" font-weight="700" text-anchor="middle" fill="#2b2622" transform="rotate(-90 1066.0 280.875)" dy="7"></text>
+<text x="1073.0" y="285.875" font-size="13" font-weight="700" text-anchor="end" fill="#2b2622">55</text>
 <text x="1298" y="395" font-size="21" font-weight="700" text-anchor="middle" fill="#2b2622">Розподіл модулів <tspan font-weight="400" font-size="17">(фронтальний вигляд)</tspan></text>
 <rect x="1070.875" y="433" width="452.25" height="7" fill="#fbf9f6" stroke="#2b2622" stroke-width="1.5"/>
 <rect x="1072.0" y="440" width="150.0" height="115" fill="#e2d5c3" stroke="#2b2622" stroke-width="1.5"/>
@@ -173,7 +176,7 @@
 <text x="1082" y="925" font-size="16" fill="#2b2622" font-weight="400">Шухляди (2 шт)</text>
 <rect x="1444.0" y="908" width="56.0" height="23" rx="11" fill="#7a5a3a"/>
 <text x="1472.0" y="925" font-size="14" font-weight="700" text-anchor="middle" fill="#fff">80 см</text>
-<text x="1082" y="953" font-size="16" fill="#2b2622" font-weight="400">Стільниця</text>
+<text x="1082" y="953" font-size="16" fill="#2b2622" font-weight="400">Стільниця (своя)</text>
 <rect x="1352.0" y="936" width="148.0" height="23" rx="11" fill="#7a5a3a"/>
 <text x="1426.0" y="953" font-size="14" font-weight="700" text-anchor="middle" fill="#fff">120 × 53 × 2 см</text>
 <text x="1082" y="981" font-size="16" fill="#2b2622" font-weight="400">Висота тумби</text>

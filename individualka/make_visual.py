@@ -64,10 +64,14 @@ g = 3  # зазор, мм
 def front(x1, x2, y1, y2):
     a(f'<rect x="{X(x1)}" y="{Y(y2)}" width="{(x2-x1)*S}" height="{(y2-y1)*S}" fill="url(#front)" stroke="#bda98f" stroke-width="1.5"/>')
 fb, ft = leg + 2, leg + body - 2
-front(2, 400 - g/2, fb, ft)                       # кошик
-split = leg + 470                                  # межа між шухлядами
-front(400 + g/2, 1198, fb, split - g/2)            # нижня шухляда
-front(400 + g/2, 1198, split + g/2, ft)            # верхня шухляда
+# фасади вкладні між боковинами (18 мм), як у spec.md
+fb, ft = leg + 1, leg + 727
+front(20, 417, fb, ft)                             # кошик 397 x 726
+front(420, 1180, fb, fb + 423)                     # нижня шухляда 760 x 423
+front(420, 1180, fb + 426, ft)                     # верхня шухляда 760 x 300
+for (h1, h2) in ((20, 417), (420, 1180)):          # фрезерована ручка 45° по верхньому торцю
+    a(f'<rect x="{X(h1)}" y="{Y(ft)}" width="{(h2-h1)*S}" height="5" fill="#a8957c"/>')
+a(f'<rect x="{X(420)}" y="{Y(fb+426)}" width="{760*S}" height="5" fill="#a8957c"/>')
 # стільниця
 a(f'<rect x="{X(-5)}" y="{Y(leg+body+top)}" width="{1210*S}" height="{top*S+1}" fill="url(#top)" stroke="#d8d1c7"/>')
 # чаша (прихована, пунктир) та вісь
@@ -132,9 +136,9 @@ tx0, ty0 = PX + 30, 105
 def TX(mm): return tx0 + mm * s2
 def TY(mm): return ty0 + mm * s2      # від задньої крайки
 a(f'<rect x="{TX(0)}" y="{TY(0)}" width="{1200*s2}" height="{530*s2}" fill="#fbf9f6" stroke="{INK}" stroke-width="2"/>')
-a(f'<rect x="{TX(540)}" y="{TY(125)}" width="{520*s2}" height="{365*s2}" fill="#eef2ef" stroke="#2f5a46" stroke-width="2" stroke-dasharray="6 4"/>')
-a(f'<rect x="{TX(550)}" y="{TY(135)}" width="{500*s2}" height="{345*s2}" rx="8" fill="#e3ebe6" stroke="#2f5a46" stroke-width="2"/>')
-a(f'<circle cx="{TX(800)}" cy="{TY(135+345/2)}" r="7" fill="none" stroke="#2f5a46" stroke-width="2"/>')
+a(f'<rect x="{TX(540)}" y="{TY(110)}" width="{520*s2}" height="{365*s2}" fill="#eef2ef" stroke="#2f5a46" stroke-width="2" stroke-dasharray="6 4"/>')
+a(f'<rect x="{TX(550)}" y="{TY(120)}" width="{500*s2}" height="{345*s2}" rx="8" fill="#e3ebe6" stroke="#2f5a46" stroke-width="2"/>')
+a(f'<circle cx="{TX(800)}" cy="{TY(120+345/2)}" r="7" fill="none" stroke="#2f5a46" stroke-width="2"/>')
 a(f'<rect x="{TX(800)-4}" y="{TY(35)}" width="8" height="22" rx="2" fill="url(#brass)"/>')
 a(f'<line x1="{TX(800)}" y1="{TY(-20)}" x2="{TX(800)}" y2="{TY(560)}" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="8 5"/>')
 dim_h(TX(0), TX(1200), ty0 - 22, "1200", size=15)
@@ -142,7 +146,7 @@ dim_h(TX(0), TX(540), TY(530) + 26, "540", size=15, color="#c0392b")
 dim_h(TX(540), TX(1060), TY(530) + 26, "виріз 520", size=15, color="#c0392b")
 dim_h(TX(1060), TX(1200), TY(530) + 26, "140", size=15, color="#c0392b")
 dim_h(TX(0), TX(800), TY(530) + 62, "вісь зливу 800 (було 880)", size=15, color="#c0392b")
-for (d1, d2, lab) in ((0, 125, "125"), (125, 490, "365"), (490, 530, "40")):
+for (d1, d2, lab) in ((0, 110, "110"), (110, 475, "365"), (475, 530, "55")):
     dim_v(TX(0) - 10, TY(d1), TY(d2), "", size=1)
     a(f'<text x="{TX(0)-17}" y="{(TY(d1)+TY(d2))/2+5}" font-size="13" font-weight="700" text-anchor="end" fill="{INK}">{lab}</text>')
 
@@ -173,7 +177,7 @@ rows = [("Загальна ширина стіни", "200 см"), ("Стільн
         ("Пральна машина", "60 см"), ("Комунікації", "12 см"),
         ("Чаша Boat 500", "по центру шухляд"), ("Вісь чаші від лівого краю", "80 см"),
         ("Кошик для білизни", "40 см"), ("Шухляди (2 шт)", "80 см"),
-        ("Стільниця", "120 × 53 × 2 см"), ("Висота тумби", "85 см (ніжки 10)")]
+        ("Стільниця (своя)", "120 × 53 × 2 см"), ("Висота тумби", "85 см (ніжки 10)")]
 for i, (k, v) in enumerate(rows):
     y = py + 74 + i * 28
     hl = i in (4, 5)
