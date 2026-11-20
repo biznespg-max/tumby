@@ -94,9 +94,14 @@ def test_fits_sink_and_runners(prod):
     top_box_top = geo["top_drawer_box_bottom"] + c["drawer_top_box_h"]
     assert top_box_top <= c["height"] - sk["height"] + 10, f"короб упирается в чашу: {top_box_top}"
     # вырез под сифон уже коробки и крылья не вырождаются
-    assert geo["wing_w"] >= 100, f"крылья верхнего ящика слишком узкие: {geo['wing_w']}"
-    # вырез под сифон перекрывает слив
-    assert geo["u_from"] <= c["drain_from_front"] - geo["front_offset"] - 35
+    assert geo["wing_w"] >= 200, f"половинка задней стенки короче 200 мм: {geo['wing_w']}"
+    # слив попадает в полукруг выреза под ограничитель сифона: труба Ø40 проходит с запасом
+    import math
+    r = geo["u_width"] / 2
+    zc = geo["u_from"] + r                                  # центр дуги от переда короба
+    zd = c["drain_from_front"] - geo["front_offset"]        # слив от переда короба
+    half = r if zd >= zc else math.sqrt(max(r * r - (zc - zd) ** 2, 0))
+    assert half >= 30, f"слив у самого края выреза под сифон: полуширина {half:.0f} мм"
     # верхний ящик проходит под передней царгой (она стоит на ребре у фасада)
     assert top_box_top + 5 <= c["height"] - c["front_rail_h"], "короб верхнего ящика упирается в переднюю царгу"
     # фальш-панель держится на царге K3 (перекрытие по высоте не меньше 40 мм)

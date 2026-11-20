@@ -85,12 +85,12 @@ def placements(c, geo):
         ("N2", (t, 0, 0), X, Y, Z), ("N3", (t, 0, L - t), X, Y, Z),
         ("N4", (t, rec, t), X, Z, Y),
     ]
+    bw = geo["wing_w"]
     top_box = [
         ("V1", (0, 0, 0), Z, Y, X), ("V1", (wo - t, 0, 0), Z, Y, X),
         ("V2", (t, 0, 0), X, Y, Z),
-        ("V3", (0, 0, L - t), X, Y, Z), ("V3", (wi - ww, 0, L - t), X, Y, Z),
-        ("V4", (t + ww, 0, t), Z, Y, X), ("V4", (wi - ww, 0, t), Z, Y, X),
-        ("V7", (t, rec, t), X, Z, Y), ("V7", (t + wi - ww, rec, t), X, Z, Y),
+        ("V3Л", (t, 0, L - t), X, Y, Z), ("V3П", (t + wi - bw, 0, L - t), X, Y, Z),
+        ("V4", (t, rec, L - t), X, mul(Z, -1), Y),
     ]
     return {"Корпус": corpus, "Нижний ящик": bottom_box, "Верхний ящик": top_box}
 
