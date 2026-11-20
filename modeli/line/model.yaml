@@ -78,5 +78,5 @@ sheets:
     width: 2070
     thickness: 18
 bands:
-  B2:  {name: "Кромка ABS 22x2 мм в цвет Кашемір 5981 (видимые торцы)", thickness: 2, width: 22}
-  B08: {name: "Кромка ABS 22x0,8 мм в цвет Кашемір 5981 (остальные торцы)", thickness: 0.8, width: 22}
+  B2:  {name: "Кромка ABS REHAU 79098 Кашемір сірий 23x2 мм (ВіЯр 39865, видимые торцы)", thickness: 2, width: 23}
+  B08: {name: "Кромка ABS REHAU 79098 Кашемір сірий 23x0,8 мм (ВіЯр 56550, остальные торцы)", thickness: 0.8, width: 23}
