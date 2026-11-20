@@ -129,11 +129,11 @@ corpus_parts, _ = joints.apply_minifix({}, list(corpus.values()), geo_c)
 joints.placements = _orig
 
 # ------------------------------------------------------------------ ящики: из генератора серий
-# Секция ящиков 754 мм внутри = как у TG-Q80 (корпус 790), направляющие Muller L=400 подходят.
+# Секция ящиков 754 мм внутри = как у TG-Q80 (корпус 790). Направляющие — Häfele Matrix Runner UM A30 NL=400.
 c = config.product_config("gold", "adamant-quanto", 80)
 c.update({"t": t, "height": H, "depth": D, "facade_t": FT, "facade_inset": True,
           "drawer_bottom_box_h": 280, "drawer_top_box_h": 130,
-          "drain_from_front": drain_from_front, "facades_in_cut": False, "one_sided": False,
+          "drain_from_front": drain_from_front, "rear_bottom_rail_lift": 0, "facades_in_cut": False, "one_sided": False,
           "facade_top_gap": G_TOP, "facade_bottom_gap": G_BOT, "facade_mid_gap": G_MID})
 c["width"] = iw_r + 2 * t
 dparts, _, dgeo = model.build(c)
@@ -150,7 +150,7 @@ top_box_top = top_box_bottom + c["drawer_top_box_h"]
 bowl_bottom = H - BOWL_H
 assert top_box_top + 15 <= bowl_bottom, "короб верхнего ящика упирается в чашу"
 assert bowl_front_z - (f0 + t) >= 5, "передняя царга K3b упирается в чашу"
-assert (W - t - (XP + t)) <= 800, "секция ящиков шире 2xL для Muller L=400"
+assert D - f0 - t >= c["runner_min_depth"], "мало глубины под направляющие"
 
 name = "IND-120 Тумба напольна 1200: кошик + 2 шухляди, під Boat 500"
 (OUT / "IND-120.project").write_text(giblab.to_xml(name, parts, SHEETS, BANDS), encoding="utf-8")
@@ -241,7 +241,7 @@ a("## Сборка\n")
 a("1. Корпус на минификсах: дно K2 между боковинами K1Л/K1П, перегородка K6 на дно, царги K3a/K3b (спереди сверху, за фасадами), "
   "K4a/K4b (сзади сверху), K5a/K5b (сзади на дне) — между боковиной и перегородкой.")
 a("2. Ножки к дну снизу: по 2 у каждой боковины и 2 под перегородкой, ~50 мм от краёв.")
-a(f"3. Направляющие Muller — к перегородке и правой боковине, передний край с отступом {f0} + 2 мм (вкладной фасад).")
+a(f"3. Направляющие Häfele Matrix — к перегородке и правой боковине, передний край с отступом {f0} + 2 мм (вкладной фасад).")
 a("4. Ящики (как в серии TG): нижний — обычный короб, верхний — с вырезом под сифон.")
 a("5. Корзина: петли для откидного фасада внизу, ограничители, корзина на фасад.")
 a("6. Выставить ножками, закрепить к стене через K4a/K4b, столешницу — на уголки и силикон, чашу — снизу к столешнице.")

@@ -83,6 +83,12 @@ def build(c):
     rt_conf = [30, rt_h - 30]
     rb_h = c["rear_bottom_rail_h"]
     rb_conf = [27, rb_h - 23]
+    rb_lift = c.get("rear_bottom_rail_lift", 0)  # K5 поднята над дном: под ней проходят направляющие
+    min_depth = c.get("runner_min_depth")
+    if min_depth:
+        free = D - f0 - (0 if rb_lift else t)
+        if free < min_depth:
+            raise ValueError(f"Глубина под направляющие {free} мм < {min_depth} мм (мин. по направляющим)")
     rear_x = D - half                          # ось задних царг на боковине
     rail_bottom_x = [100, iw / 2, iw - 100]    # конфирматы дно -> задняя нижняя царга
 
@@ -90,7 +96,7 @@ def build(c):
         [face(z, half) for z in bottom_conf]
         + [face(f0 + half, rail_f_y0 + y) for y in front_rail_conf]
         + [face(rear_x, rt_y0 + y) for y in rt_conf]
-        + [face(rear_x, t + y) for y in rb_conf]
+        + [face(rear_x, t + rb_lift + y) for y in rb_conf]
     )
     if c.get("one_sided"):
         # односторонний материал: лицевая сторона наружу, поэтому боковины зеркальные
@@ -109,7 +115,7 @@ def build(c):
     parts.append(Part("K2", "Дно", "Корпус", iw, Db, t, 1, be,
                       [edge("left", z - f0) for z in bottom_conf]
                       + [edge("right", z - f0) for z in bottom_conf]
-                      + [face(x, Db - half) for x in rail_bottom_x],
+                      + ([] if rb_lift else [face(x, Db - half) for x in rail_bottom_x]),
                       "Нижний торец (y=0) - передний."
                       + (f" Отступает от переднего края боковин на {f0} мм (за фасадом)." if f0 else "")
                       + (" Лицом (декор) вниз." if c.get("one_sided") and bm == "corpus" else ""), bm))
@@ -126,8 +132,10 @@ def build(c):
 
     parts.append(Part("K5", "Царга задняя нижняя", "Корпус", iw, rb_h, t, 1, dict(ce),
                       [edge("left", y) for y in rb_conf] + [edge("right", y) for y in rb_conf]
-                      + [edge("bottom", x) for x in rail_bottom_x],
-                      "Стоит вертикально на дне, заподлицо с задним краем.", "corpus"))
+                      + ([] if rb_lift else [edge("bottom", x) for x in rail_bottom_x]),
+                      (f"Стоит вертикально заподлицо с задним краем, поднята на {rb_lift} мм над дном "
+                       "(под ней проходят задние концы направляющих)." if rb_lift
+                       else "Стоит вертикально на дне, заподлицо с задним краем."), "corpus"))
 
     # ------------------------------------------------------------------ ящики
     t = c["t_box"]

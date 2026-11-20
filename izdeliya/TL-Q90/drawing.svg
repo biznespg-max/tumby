@@ -17,17 +17,17 @@
 <rect x="545.0" y="140.0" width="9.5" height="40.0" fill="#ccc"/>
 <rect x="748.0" y="140.0" width="9.5" height="60.0" fill="#ccc"/>
 <rect x="748.0" y="405.5" width="9.5" height="50.0" fill="#ccc"/>
-<rect x="545.0" y="354.0" width="195.0" height="100.0" fill="#fff6e0" stroke="#b07a00"/>
-<rect x="545.0" y="227.0" width="195.0" height="65.0" fill="#fff6e0" stroke="#b07a00"/>
+<rect x="545.0" y="354.0" width="200.0" height="100.0" fill="#fff6e0" stroke="#b07a00"/>
+<rect x="545.0" y="227.0" width="200.0" height="65.0" fill="#fff6e0" stroke="#b07a00"/>
 <line x1="625.0" y1="110.0" x2="625.0" y2="270.0" stroke="#1E90FF" stroke-dasharray="4 3"/>
 <text x="629.0" y="122.0" fill="#1E90FF">слив 160</text>
 <text x="651.25" y="481.0" text-anchor="middle">425 (+19 фасад)</text>
 <text x="40" y="517.0" font-size="13" font-weight="bold">Верхний ящик, вид сверху (вырез под сифон)</text>
-<rect x="40" y="525.0" width="421.0" height="195.0" fill="#fff6e0" stroke="#b07a00"/>
-<rect x="202.0" y="580.0" width="100.0" height="140.0" fill="white" stroke="#b07a00"/>
-<circle cx="250.5" cy="605.0" r="17.5" fill="none" stroke="#1E90FF"/>
-<text x="250.5" y="710.0" text-anchor="middle">вырез 200</text>
-<text x="467.0" y="537.0">← перед (фасад)</text>
-<text x="467.0" y="720.0">← зад</text>
-<text x="250.5" y="736.0" text-anchor="middle">842 × 390</text>
+<rect x="40" y="525.0" width="419.5" height="200.0" fill="#fff6e0" stroke="#b07a00"/>
+<rect x="200.25" y="580.0" width="100.0" height="145.0" fill="white" stroke="#b07a00"/>
+<circle cx="249.75" cy="605.0" r="17.5" fill="none" stroke="#1E90FF"/>
+<text x="249.75" y="715.0" text-anchor="middle">вырез 200</text>
+<text x="465.5" y="537.0">← перед (фасад)</text>
+<text x="465.5" y="725.0">← зад</text>
+<text x="249.75" y="741.0" text-anchor="middle">839 × 400</text>
 </svg>

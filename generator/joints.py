@@ -74,7 +74,7 @@ def placements(c, geo):
         ("K2", (t, 0, f0), X, Z, Y),
         ("K3", (t, H - c["front_rail_h"], f0), X, Y, Z),
         ("K4", (t, H - c["rear_top_rail_h"], D - t), X, Y, Z),
-        ("K5", (t, t, D - t), X, Y, Z),
+        ("K5", (t, t + c.get("rear_bottom_rail_lift", 0), D - t), X, Y, Z),
     ]
     t = tb
     uf_w = c["u_width"] + 2 * t
