@@ -171,51 +171,44 @@ def build(c):
                       + [edge("bottom", x) for x in front_bottom_conf],
                       "Нижний торец - передний. Поднято на 13 мм от низа боковин."))
 
-    # --- верхний ящик: П-образный вырез под сифон
+    # --- верхний ящик: П-образный вырез под сифон на всю глубину (от передней стенки до зада)
+    # Два «крыла» по бокам: боковина V1 + стенка выреза V4 + дно крыла V7, сзади их закрывает V3.
+    # ViyarPro не сверлит детали короче 200 мм (по длинной стороне): задняя стенка крыла V3
+    # (wing_w + 2t) должна быть >= 200, поэтому на узких тумбах вырез под сифон сужается.
     ht = c["drawer_top_box_h"]
-    uw = c["u_width"]
-    zf = c["drain_from_front"] - f0 - c["siphon_clearance"]   # задняя грань передней стенки выреза (от переда короба)
-    wing_w = (wi - uw - 2 * t) / 2                        # ширина "крыла"
-    lu = L - zf                                           # длина стенки выреза
-    strip_d = zf - t                                      # глубина передней полосы дна
-    wing_d = (L - t) - zf                                 # глубина дна крыла
-    strip_x = (t + zf) / 2                                # конфирмат боковина -> передняя полоса
-    wing_xs = [zf + 60, zf + wing_d - 52]                 # конфирматы в дно крыла
-    uf_h = ht - (rec + t)                                 # передняя стенка выреза стоит на полосе дна
-    uf_w = uw + 2 * t
-    uf_ys = [25, uf_h - 24]
-    uf_x0 = (wi - uf_w) / 2
+    min_drill = c.get("min_drill_len", 200)
+    uw = min(c["u_width"], wi + 2 * t - 2 * min_drill)
+    if uw < 120:
+        raise ValueError(f"Вырез под сифон {uw} мм - слишком узкий (короб {wi} мм)")
+    wing_w = (wi - uw - 2 * t) / 2                        # ширина дна крыла (между V1 и V4)
+    zf = t                                                # вырез начинается сразу за передней стенкой V2
+    wd = L - 2 * t                                        # глубина крыла между V2 и V3
+    wing_zs = [t + 60, t + wd / 2, L - t - 60]            # стыки дна крыла с V1/V4 (z от переда короба)
+    wing_front = [50, wing_w - 50]                        # стыки дна крыла с V2 (вдоль ширины крыла)
+    v3_l = wing_w + 2 * t
+    ys = [30, ht - 30] if ht <= 150 else [35, ht - 35]
 
-    ys, holes = box_side_holes(ht, [strip_x] + wing_xs)
-    parts.append(Part("V1", "Боковина ящика", "Верхний ящик (под сифон)", L, ht, t, 2, edges_box, holes,
-                      "x - от переднего торца короба."))
+    parts.append(Part("V1", "Боковина ящика", "Верхний ящик (под сифон)", L - t, ht, t, 2, edges_box,
+                      [face(half, y) for y in ys] + [face(z, yb) for z in wing_zs]
+                      + [edge("right", y) for y in ys],
+                      "x - от переднего торца короба. Задний торец упирается в заднюю стенку крыла V3."))
+    v4_x = [wing_w + half, wi - wing_w - half]            # оси стенок выреза на V2 (от её левого торца)
     parts.append(Part("V2", "Передняя стенка ящика", "Верхний ящик (под сифон)", wi, ht, t, 1, edges_box,
                       [edge("left", y) for y in ys] + [edge("right", y) for y in ys]
-                      + [face(x, yb) for x in front_bottom_conf],
+                      + [face(x, y) for x in v4_x for y in ys]
+                      + [face(x, yb) for x in wing_front + [wi - wing_w + x for x in wing_front]],
                       "К ней изнутри крепится фасад."))
-    parts.append(Part("V3", "Задняя стенка (половинка)", "Верхний ящик (под сифон)", wing_w, ht, t, 2, edges_box,
-                      [edge("left", y) for y in ys] + [edge("right", y) for y in ys],
-                      "Между боковиной и стенкой выреза. Отверстия под крючки направляющих - по шаблону."))
-    parts.append(Part("V4", "Стенка выреза боковая", "Верхний ящик (под сифон)", lu, ht, t, 2, edges_box,
-                      [face(lu - half, y) for y in ys]
-                      + [face(x - zf, yb) for x in wing_xs]
-                      + [edge("left", rec + t + y) for y in uf_ys],
-                      "x - от переднего торца (у передней стенки выреза) к задней стенке."))
-    parts.append(Part("V5", "Стенка выреза передняя", "Верхний ящик (под сифон)", uf_w, uf_h, t, 1,
-                      {"top": "B2", "left": "B08", "right": "B08", "bottom": "B08"},
-                      [face(half, y) for y in uf_ys] + [face(uf_w - half, y) for y in uf_ys]
-                      + [edge("bottom", x) for x in (60, uf_w - 60)],
-                      "Стоит на передней полосе дна, закрывает торцы боковых стенок выреза."))
-    parts.append(Part("V6", "Дно - передняя полоса", "Верхний ящик (под сифон)", wi, strip_d, t, 1,
-                      _all_edges("B08"),
-                      [edge("left", strip_x - t), edge("right", strip_x - t)]
-                      + [edge("bottom", x) for x in front_bottom_conf]
-                      + [face(uf_x0 + x, strip_d - half) for x in (60, uf_w - 60)],
-                      "Нижний торец - передний."))
-    parts.append(Part("V7", "Дно крыла", "Верхний ящик (под сифон)", wing_w, wing_d, t, 2,
-                      _all_edges("B08"),
-                      [edge("left", x - zf) for x in wing_xs] + [edge("right", x - zf) for x in wing_xs],
-                      "Нижний торец - передний (стык с передней полосой)."))
+    parts.append(Part("V3", "Задняя стенка крыла", "Верхний ящик (под сифон)", v3_l, ht, t, 2, edges_box,
+                      [face(half, y) for y in ys] + [face(v3_l - half, y) for y in ys],
+                      "Перекрывает торцы боковины V1 и стенки выреза V4. Отверстия под крючки направляющих - по шаблону."))
+    parts.append(Part("V4", "Стенка выреза боковая", "Верхний ящик (под сифон)", wd, ht, t, 2, edges_box,
+                      [face(z - t, yb) for z in wing_zs]
+                      + [edge("left", y) for y in ys] + [edge("right", y) for y in ys],
+                      "Между передней стенкой V2 и задней стенкой крыла V3."))
+    parts.append(Part("V7", "Дно крыла", "Верхний ящик (под сифон)", wing_w, wd, t, 2, _all_edges("B08"),
+                      [edge("left", z - t) for z in wing_zs] + [edge("right", z - t) for z in wing_zs]
+                      + [edge("bottom", x) for x in wing_front],
+                      "Нижний торец - передний (к передней стенке V2). Поднято на 13 мм от низа боковин."))
 
     # ------------------------------------------------------------------ фасады (МДФ)
     inset = bool(c.get("facade_inset"))
@@ -243,7 +236,7 @@ def build(c):
 
     geometry = {
         "inner_width": iw, "drawer_inner_width": wi, "drawer_outer_width": wi + 2 * t,
-        "u_from": zf, "wing_w": wing_w, "facade_w": fw, "facade_h": fh, "front_offset": f0,
+        "u_from": zf, "wing_w": wing_w, "u_width": uw, "facade_w": fw, "facade_h": fh, "front_offset": f0,
         "top_drawer_box_bottom": c["facade_bottom_gap"] + fh + c["facade_mid_gap"] + 20,
         "bottom_drawer_box_bottom": c["t"] + 3,
     }

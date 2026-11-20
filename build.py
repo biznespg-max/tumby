@@ -36,6 +36,10 @@ def check(parts):
                     errors.append(f"{p.code}: отверстие в торце {h.side} вне детали ({pos})")
                 if h.depth >= length:
                     errors.append(f"{p.code}: отверстие в торце {h.side} глубже детали")
+    # ViyarPro не сверлит детали короче 200 мм по длинной стороне
+    for p in parts:
+        if p.holes and max(p.l, p.w) < 200:
+            errors.append(f"{p.code}: {p.l:g} x {p.w:g} - ViyarPro сверлит детали от 200 мм")
     # отверстия в одной пласти не пересекаются
     for p in parts:
         for side in ("face", "back"):

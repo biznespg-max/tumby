@@ -77,7 +77,7 @@ def placements(c, geo):
         ("K5", (t, t + c.get("rear_bottom_rail_lift", 0), D - t), X, Y, Z),
     ]
     t = tb
-    uf_w = c["u_width"] + 2 * t
+    uf_w = geo.get("u_width", c["u_width"]) + 2 * t
     uf_x0 = (wi - uf_w) / 2
     wo = wi + 2 * t
     bottom_box = [
@@ -88,11 +88,9 @@ def placements(c, geo):
     top_box = [
         ("V1", (0, 0, 0), Z, Y, X), ("V1", (wo - t, 0, 0), Z, Y, X),
         ("V2", (t, 0, 0), X, Y, Z),
-        ("V3", (t, 0, L - t), X, Y, Z), ("V3", (t + wi - ww, 0, L - t), X, Y, Z),
-        ("V4", (t + ww, 0, zf), Z, Y, X), ("V4", (t + wi - ww - t, 0, zf), Z, Y, X),
-        ("V5", (t + uf_x0, rec + t, zf - t), X, Y, Z),
-        ("V6", (t, rec, t), X, Z, Y),
-        ("V7", (t, rec, zf), X, Z, Y), ("V7", (t + wi - ww, rec, zf), X, Z, Y),
+        ("V3", (0, 0, L - t), X, Y, Z), ("V3", (wi - ww, 0, L - t), X, Y, Z),
+        ("V4", (t + ww, 0, t), Z, Y, X), ("V4", (wi - ww, 0, t), Z, Y, X),
+        ("V7", (t, rec, t), X, Z, Y), ("V7", (t + wi - ww, rec, t), X, Z, Y),
     ]
     return {"Корпус": corpus, "Нижний ящик": bottom_box, "Верхний ящик": top_box}
 

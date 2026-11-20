@@ -24,7 +24,7 @@
 <text x="601.25" y="481.0" text-anchor="middle">425 (+19 фасад)</text>
 <text x="40" y="517.0" font-size="13" font-weight="bold">Верхний ящик, вид сверху (вырез под сифон)</text>
 <rect x="40" y="525.0" width="369.5" height="200.0" fill="#fff6e0" stroke="#b07a00"/>
-<rect x="175.25" y="580.0" width="100.0" height="145.0" fill="white" stroke="#b07a00"/>
+<rect x="175.25" y="534.0" width="100.0" height="191.0" fill="white" stroke="#b07a00"/>
 <circle cx="224.75" cy="605.0" r="17.5" fill="none" stroke="#1E90FF"/>
 <text x="224.75" y="715.0" text-anchor="middle">вырез 200</text>
 <text x="415.5" y="537.0">← перед (фасад)</text>
