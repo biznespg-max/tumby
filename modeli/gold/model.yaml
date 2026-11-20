@@ -85,7 +85,7 @@ sheets:
     thickness: 18
   bottom:
     title: "Дно — ДСП белое влагостойкое"
-    name: "ДСП лам. Kronospan 8685 BS Білий Сніг вологостійке Р3 2800х2070х18 мм (код 205550)"
+    name: "ДСП лам. Kronospan 8100 SM Білий перламутровий вологостійке Р3 2800х2070х18 мм (код 178719, складська програма ВіЯр)"
     length: 2800
     width: 2070
     thickness: 18
@@ -97,7 +97,7 @@ sheets:
     thickness: 18
 bands:
   BG:  {name: "8859HM Крайка ABS Античне золото 23х1мм NIEMANN матова, код 186180 (корпус и фасады)", thickness: 1, width: 23}
-  BW:  {name: "Крайка ABS Білий 23х0,8мм REHAU 11372, код 88169 (дно; подобрать в тон Kronospan 8685)", thickness: 0.8, width: 23}
+  BW:  {name: "Крайка ABS Білий 23х0,8мм REHAU 11372, код 88169 (дно; подобрать в тон Kronospan 8100 SM)", thickness: 0.8, width: 23}
   B2:  {name: "94564 Крайка ABS Шампань 23х2мм REHAU, код 14448 (видимые торцы коробов)", thickness: 2, width: 23}
   B08: {name: "94564 Крайка ABS Шампань 23х0,8мм REHAU, код 87208 (остальные торцы коробов)", thickness: 0.8, width: 23}
 
