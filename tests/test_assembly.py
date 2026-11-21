@@ -108,8 +108,34 @@ def test_fits_sink_and_runners(prod):
     for f in facades:
         if f["code"] == "F0":
             assert min(f["top"], c["height"]) - max(f["top"] - f["h"], c["height"] - c["front_rail_h"]) >= 40
+    # ограничитель сифона Mesan H=86 помещается в верхнем ящике (над дном короба)
+    assert c["drawer_top_box_h"] - c["drawer_bottom_recess"] - c["t_box"] >= 86, "ограничитель сифона выше короба"
     # короб нижнего ящика не доходит до верхнего
     assert geo["bottom_drawer_box_bottom"] + c["drawer_bottom_box_h"] < geo["top_drawer_box_bottom"]
+
+
+
+@pytest.mark.parametrize("prod", PRODUCTS, ids=lambda p: f"{p[0]}-{p[1]}-{p[2]}")
+def test_compatible_sinks(prod):
+    """Другие умывальники из списка compatible встают на ту же тумбу: не уже и не мельче корпуса,
+    чаша не упирается в верхний ящик, слив попадает в вырез под сифон."""
+    import math
+    c = _cfg(prod)
+    parts, facades, geo = model.build(c)
+    size = c["sink"]["size"]
+    for key in c.get("compatible", []):
+        s = config.load_sink(key)
+        if size not in s["sizes"]:
+            continue
+        assert s["sizes"][size]["width"] >= c["width"], f"{key}: уже корпуса"
+        assert c["depth"] + (0 if c.get("facade_inset") else c["facade_t"]) <= s["depth"], f"{key}: мельче тумбы"
+        top_box_top = geo["top_drawer_box_bottom"] + c["drawer_top_box_h"]
+        assert top_box_top <= c["height"] - s["height"] + 10, f"{key}: короб упирается в чашу ({top_box_top})"
+        r = geo["u_width"] / 2
+        zc = geo["u_from"] + r
+        zd = (c["depth"] - s["drain_from_back"]) - geo["front_offset"]
+        half = r if zd >= zc else math.sqrt(max(r * r - (zc - zd) ** 2, 0))
+        assert half >= 30, f"{key}: слив у края выреза под сифон ({half:.0f})"
 
 
 if __name__ == "__main__":

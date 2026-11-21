@@ -213,13 +213,15 @@ def build(c):
     fx = (t if inset else 0) + c["facade_side_gap"]   # левый край фасада от левого края корпуса
     ph = c.get("facade_panel_h", 0)            # фальш-панель (0 - без неё)
     gaps = c["facade_top_gap"] + c["facade_bottom_gap"] + c["facade_mid_gap"] * (2 if ph else 1)
-    fh = (H - gaps - ph) / 2
+    usable = H - gaps - ph
+    fh_bot = c.get("facade_bottom_h") or usable / 2   # нижний фасад (верхний - остаток)
+    fh = usable - fh_bot                       # верхний фасад
     facades = []
     if ph:
         facades.append({"code": "F0", "name": "Фальш-панель (неподвижная, на царгу K3)", "w": fw, "h": ph})
     facades += [
         {"code": "F1", "name": "Фасад верхнего ящика", "w": fw, "h": fh},
-        {"code": "F2", "name": "Фасад нижнего ящика", "w": fw, "h": fh},
+        {"code": "F2", "name": "Фасад нижнего ящика", "w": fw, "h": fh_bot},
     ]
     y = H - c["facade_top_gap"]                # верх фасада, от низа корпуса
     for f in facades:
@@ -234,7 +236,8 @@ def build(c):
     geometry = {
         "inner_width": iw, "drawer_inner_width": wi, "drawer_outer_width": wi + 2 * t,
         "u_from": zf, "wing_w": wing_w, "u_width": uw, "facade_w": fw, "facade_h": fh, "front_offset": f0,
-        "top_drawer_box_bottom": c["facade_bottom_gap"] + fh + c["facade_mid_gap"] + 20,
+        "facade_bottom_h": fh_bot,
+        "top_drawer_box_bottom": c["facade_bottom_gap"] + fh_bot + c["facade_mid_gap"] + c.get("top_box_lift", 20),
         "bottom_drawer_box_bottom": c["t"] + 3,
     }
     if c.get("joint", "minifix") == "minifix":

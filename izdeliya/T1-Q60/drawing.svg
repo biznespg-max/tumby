@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="668" height="905" viewBox="0 0 668 905" font-family="Arial" font-size="11">
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="40" font-size="13" font-weight="bold">Вид спереди</text>
+<rect x="40" y="140.0" width="295.0" height="410.0" fill="#f4f4f4" stroke="#999"/>
+<rect x="41.0" y="141.0" width="293.0" height="187.0" fill="#e8eef5" stroke="#333"/>
+<text x="187.5" y="238.5" text-anchor="middle">F1 586×374</text>
+<rect x="41.0" y="329.5" width="293.0" height="220.0" fill="#e8eef5" stroke="#333"/>
+<text x="187.5" y="443.5" text-anchor="middle">F2 586×440</text>
+<rect x="37.5" y="70.0" width="300.0" height="70.0" fill="none" stroke="#1E90FF" stroke-dasharray="4 3"/>
+<text x="187.5" y="109.0" text-anchor="middle" fill="#1E90FF">Adamant Quanto 60 (600×447×140)</text>
+<text x="40" y="58" fill="#666">T1-Q60 — Тумба напольная Модель 1 60 под Adamant Quanto 60</text>
+<text x="187.5" y="566.0" text-anchor="middle">590</text>
+<text x="34" y="345.0" text-anchor="end">820</text>
+<text x="395.0" y="40" font-size="13" font-weight="bold">Разрез сбоку (перед слева)</text>
+<rect x="395.0" y="140.0" width="212.5" height="410.0" fill="none" stroke="#333"/>
+<rect x="395.0" y="542.0" width="212.5" height="8.0" fill="#ccc"/>
+<rect x="395.0" y="140.0" width="8.0" height="40.0" fill="#ccc"/>
+<rect x="599.5" y="140.0" width="8.0" height="60.0" fill="#ccc"/>
+<rect x="599.5" y="492.0" width="8.0" height="50.0" fill="#ccc"/>
+<rect x="395.0" y="390.5" width="200.0" height="150.0" fill="#fff6e0" stroke="#b07a00"/>
+<rect x="395.0" y="218.0" width="200.0" height="100.0" fill="#fff6e0" stroke="#b07a00"/>
+<line x1="475.0" y1="110.0" x2="475.0" y2="270.0" stroke="#1E90FF" stroke-dasharray="4 3"/>
+<text x="479.0" y="122.0" fill="#1E90FF">слив 160</text>
+<text x="501.25" y="566.0" text-anchor="middle">425 (+19 фасад)</text>
+<text x="40" y="602.0" font-size="13" font-weight="bold">Верхний ящик, вид сверху (вырез под сифон)</text>
+<rect x="40" y="610.0" width="272.5" height="200.0" fill="#fff6e0" stroke="#b07a00"/>
+<path d="M135.25,802.0 V716.0 A40.0,40.0 0 0 1 215.25,716.0 V802.0" fill="white" stroke="#b07a00"/>
+<circle cx="176.25" cy="690.0" r="17.5" fill="none" stroke="#1E90FF"/>
+<text x="176.25" y="800.0" text-anchor="middle">вырез 160</text>
+<text x="318.5" y="622.0">← перед (фасад)</text>
+<text x="318.5" y="810.0">← зад</text>
+<text x="176.25" y="826.0" text-anchor="middle">545 × 400</text>
+</svg>
