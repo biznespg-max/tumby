@@ -7,6 +7,9 @@ SINK_W, SINK_D, SINK_H = 600, 447, 30
 F0, F1, F2, MID = 100, 302, 302, 3
 HANDLE_L, HANDLE_C, HANDLE_T = 192, 160, 14   # длина ручки — ориентировочно (ВіЯр не указывает)
 HANDLE_FROM_TOP = 38
+import sys
+URBAN = 'urban' in sys.argv
+if URBAN: HANDLE_FROM_TOP = 60
 
 # ---------------------------------------------------------------- визуал (кабинетная проекция)
 s = 0.62
@@ -62,10 +65,11 @@ for i, (name, h) in enumerate(fronts):
     top, bot = cur, cur - h
     xl, xr = GAP_S, W - GAP_S
     v.append(poly([P(xl, bot, zf), P(xr, bot, zf), P(xr, top, zf), P(xl, top, zf)], "url(#frontGrad)", "#d8d4cc", 0.6))
-    if name != "F0":
-        # фрезеровка Коррадо (рамка ~55 мм со скосом)
-        b = 55
-        outer = [P(xl + b - 14, bot + b - 14, zf), P(xr - b + 14, bot + b - 14, zf), P(xr - b + 14, top - b + 14, zf), P(xl + b - 14, top - b + 14, zf)]
+    if name != "F0" or URBAN:
+        # фрезеровка: Коррадо (рамка ~55 мм со скосом) или Урбан (~27 мм, скос 77°)
+        b = 27 if URBAN else 55
+        bev = 8 if URBAN else 14
+        outer = [P(xl + b - bev, bot + b - bev, zf), P(xr - b + bev, bot + b - bev, zf), P(xr - b + bev, top - b + bev, zf), P(xl + b - bev, top - b + bev, zf)]
         inner = [P(xl + b, bot + b, zf), P(xr - b, bot + b, zf), P(xr - b, top - b, zf), P(xl + b, top - b, zf)]
         # скос: верх и лево — тень, низ и право — свет
         v.append(poly([outer[3], outer[2], inner[2], inner[3]], "#d9d5cd"))   # верхний скос (тень)
@@ -73,6 +77,7 @@ for i, (name, h) in enumerate(fronts):
         v.append(poly([outer[1], outer[0], inner[0], inner[1]], "#fbfaf7"))   # нижний скос (свет)
         v.append(poly([outer[2], outer[1], inner[1], inner[2]], "#f6f4ef"))   # правый
         v.append(poly(inner, "url(#panelGrad)"))
+    if name != "F0":
         # ручка
         hx = W / 2
         hy = top - HANDLE_FROM_TOP + 14
@@ -127,7 +132,8 @@ viz = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 760" font-fam
 <rect y="{oy + 860*s - 60:.0f}" width="700" height="{760 - (oy + 860*s - 60):.0f}" fill="url(#floor)"/>
 {chr(10).join(v)}
 </svg>'''
-open("/home/claude/viz/vizual.svg", "w").write(viz)
+open("/home/claude/viz/vizual-urban.svg" if URBAN else "/home/claude/viz/vizual.svg", "w").write(viz)
+if URBAN: raise SystemExit
 
 # ---------------------------------------------------------------- чертёж
 k = 0.5
