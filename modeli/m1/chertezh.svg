@@ -5,18 +5,19 @@
 <text x="300.0" y="81.5" font-size="9" text-anchor="middle" fill="#2c7be5" font-weight="normal">умывальник 600 × 447 × 30</text>
 <rect x="152.5" y="85.0" width="295.0" height="355.0" fill="#fafafa" stroke="#999" stroke-width="0.8" />
 <rect x="153.5" y="85.0" width="293.0" height="50.0" fill="#ffffff" stroke="#222" stroke-width="1.2" />
-<text x="300.0" y="114.0" font-size="10" text-anchor="middle" fill="#555" font-weight="normal">F0 царга 586 × 100 (гладкая)</text>
+<rect x="167.0" y="98.5" width="266.0" height="23.0" fill="none" stroke="#888" stroke-width="0.7" stroke-dasharray="3 2"/>
+<text x="300.0" y="114.0" font-size="10" text-anchor="middle" fill="#555" font-weight="normal">F0 царга 586 × 100</text>
 <rect x="153.5" y="136.5" width="293.0" height="151.0" fill="#ffffff" stroke="#222" stroke-width="1.2" />
-<rect x="181.0" y="164.0" width="238.0" height="96.0" fill="none" stroke="#888" stroke-width="0.7" stroke-dasharray="3 2"/>
-<rect x="252.0" y="152.0" width="96.0" height="7" rx="3.5" fill="#111"/>
-<circle cx="260.0" cy="155.5" r="1.8" fill="#fff"/>
-<circle cx="340.0" cy="155.5" r="1.8" fill="#fff"/>
+<rect x="167.0" y="150.0" width="266.0" height="124.0" fill="none" stroke="#888" stroke-width="0.7" stroke-dasharray="3 2"/>
+<rect x="252.0" y="163.0" width="96.0" height="7" rx="3.5" fill="#111"/>
+<circle cx="260.0" cy="166.5" r="1.8" fill="#fff"/>
+<circle cx="340.0" cy="166.5" r="1.8" fill="#fff"/>
 <text x="300.0" y="220.0" font-size="10" text-anchor="middle" fill="#555" font-weight="normal">F1 586 × 302</text>
 <rect x="153.5" y="289.0" width="293.0" height="151.0" fill="#ffffff" stroke="#222" stroke-width="1.2" />
-<rect x="181.0" y="316.5" width="238.0" height="96.0" fill="none" stroke="#888" stroke-width="0.7" stroke-dasharray="3 2"/>
-<rect x="252.0" y="304.5" width="96.0" height="7" rx="3.5" fill="#111"/>
-<circle cx="260.0" cy="308.0" r="1.8" fill="#fff"/>
-<circle cx="340.0" cy="308.0" r="1.8" fill="#fff"/>
+<rect x="167.0" y="302.5" width="266.0" height="124.0" fill="none" stroke="#888" stroke-width="0.7" stroke-dasharray="3 2"/>
+<rect x="252.0" y="315.5" width="96.0" height="7" rx="3.5" fill="#111"/>
+<circle cx="260.0" cy="319.0" r="1.8" fill="#fff"/>
+<circle cx="340.0" cy="319.0" r="1.8" fill="#fff"/>
 <text x="300.0" y="372.5" font-size="10" text-anchor="middle" fill="#555" font-weight="normal">F2 586 × 302</text>
 <polygon points="164.0,440.0 181.0,440.0 181.0,500.0 170.0,500.0" fill="#111"/>
 <polygon points="419.0,440.0 436.0,440.0 436.0,500.0 425.0,500.0" fill="#111"/>
@@ -52,10 +53,10 @@
 <line x1="506.0" y1="85.0" x2="514.0" y2="85.0" stroke="#c0392b" stroke-width="0.8"/>
 <line x1="506.0" y1="440.0" x2="514.0" y2="440.0" stroke="#c0392b" stroke-width="0.8"/>
 <text x="516.0" y="266.5" font-size="10.5" text-anchor="start" fill="#c0392b" font-weight="normal">710</text>
-<line x1="576.0" y1="85.0" x2="576.0" y2="155.5" stroke="#fff" stroke-width="0.8"/>
+<line x1="576.0" y1="85.0" x2="576.0" y2="166.5" stroke="#fff" stroke-width="0.8"/>
 <line x1="572.0" y1="85.0" x2="580.0" y2="85.0" stroke="#fff" stroke-width="0.8"/>
-<line x1="572.0" y1="155.5" x2="580.0" y2="155.5" stroke="#fff" stroke-width="0.8"/>
-<text x="582.0" y="124.2" font-size="10.5" text-anchor="start" fill="#fff" font-weight="normal"></text>
+<line x1="572.0" y1="166.5" x2="580.0" y2="166.5" stroke="#fff" stroke-width="0.8"/>
+<text x="582.0" y="129.8" font-size="10.5" text-anchor="start" fill="#fff" font-weight="normal"></text>
 <line x1="150.0" y1="518.0" x2="450.0" y2="518.0" stroke="#c0392b" stroke-width="0.8"/>
 <line x1="150.0" y1="514.0" x2="150.0" y2="522.0" stroke="#c0392b" stroke-width="0.8"/>
 <line x1="450.0" y1="514.0" x2="450.0" y2="522.0" stroke="#c0392b" stroke-width="0.8"/>
@@ -64,18 +65,18 @@
 <line x1="152.5" y1="536.0" x2="152.5" y2="544.0" stroke="#c0392b" stroke-width="0.8"/>
 <line x1="447.5" y1="536.0" x2="447.5" y2="544.0" stroke="#c0392b" stroke-width="0.8"/>
 <text x="300.0" y="553.0" font-size="10.5" text-anchor="middle" fill="#c0392b" font-weight="normal">590 (корпус), фасады 586</text>
-<line x1="260.0" y1="141.5" x2="340.0" y2="141.5" stroke="#1e6b3a" stroke-width="0.8"/>
-<line x1="260.0" y1="137.5" x2="260.0" y2="145.5" stroke="#1e6b3a" stroke-width="0.8"/>
-<line x1="340.0" y1="137.5" x2="340.0" y2="145.5" stroke="#1e6b3a" stroke-width="0.8"/>
-<text x="300.0" y="136.5" font-size="10.5" text-anchor="middle" fill="#1e6b3a" font-weight="normal">160</text>
+<line x1="260.0" y1="152.5" x2="340.0" y2="152.5" stroke="#1e6b3a" stroke-width="0.8"/>
+<line x1="260.0" y1="148.5" x2="260.0" y2="156.5" stroke="#1e6b3a" stroke-width="0.8"/>
+<line x1="340.0" y1="148.5" x2="340.0" y2="156.5" stroke="#1e6b3a" stroke-width="0.8"/>
+<text x="300.0" y="147.5" font-size="10.5" text-anchor="middle" fill="#1e6b3a" font-weight="normal">160</text>
 <text x="640.0" y="40.0" font-size="14" text-anchor="start" fill="#111" font-weight="bold">Вид сбоку</text>
 <rect x="640.0" y="70.0" width="223.5" height="15.0" fill="#eef6ff" stroke="#2c7be5" stroke-width="1" />
 <rect x="651.0" y="85.0" width="212.5" height="355.0" fill="#fafafa" stroke="#222" stroke-width="1.2" />
 <rect x="641.5" y="85.0" width="9.5" height="50.0" fill="#fff" stroke="#222" stroke-width="1" />
 <rect x="641.5" y="136.5" width="9.5" height="151.0" fill="#fff" stroke="#222" stroke-width="1" />
 <rect x="641.5" y="289.0" width="9.5" height="151.0" fill="#fff" stroke="#222" stroke-width="1" />
-<rect x="628.5" y="152.0" width="13.0" height="7" rx="3" fill="#111"/>
-<rect x="628.5" y="304.5" width="13.0" height="7" rx="3" fill="#111"/>
+<rect x="628.5" y="163.0" width="13.0" height="7" rx="3" fill="#111"/>
+<rect x="628.5" y="315.5" width="13.0" height="7" rx="3" fill="#111"/>
 <polygon points="667.5,440.0 684.5,440.0 681.5,500.0 670.5,500.0" fill="#111"/>
 <polygon points="830.0,440.0 847.0,440.0 844.0,500.0 833.0,500.0" fill="#111"/>
 <line x1="610.0" y1="500.0" x2="893.5" y2="500.0" stroke="#666" stroke-width="1"/>
@@ -91,9 +92,9 @@
 <line x1="875.5" y1="70.0" x2="883.5" y2="70.0" stroke="#2c7be5" stroke-width="0.8"/>
 <line x1="875.5" y1="85.0" x2="883.5" y2="85.0" stroke="#2c7be5" stroke-width="0.8"/>
 <text x="885.5" y="81.5" font-size="10.5" text-anchor="start" fill="#2c7be5" font-weight="normal">30</text>
-<text x="40.0" y="582.0" font-size="11" text-anchor="start" fill="#333" font-weight="normal">Модель 1 (T1-Q60) — по типу Mirater «Естель» 60. Корпус МДФ 16, белый; фасады МДФ 19, белые.</text>
+<text x="40.0" y="582.0" font-size="11" text-anchor="start" fill="#333" font-weight="normal">Модель 1 (T1-Q60) — по типу Mirater «Естель» 60. Корпус МДФ 16, белый; фасады МДФ 19 Урбан, белые.</text>
 <text x="40.0" y="599.0" font-size="11" text-anchor="start" fill="#333" font-weight="normal">F0 — неподвижная царга 100 мм, крепится к царге корпуса K3 изнутри; F1, F2 — ящики, Häfele Matrix Runner.</text>
-<text x="40.0" y="616.0" font-size="11" text-anchor="start" fill="#333" font-weight="normal">Ручки Ferro Fiori M 0734.160 чёрный браш (ВіЯр 191333), межосевое 160, по центру, ось 38 мм от верха фасада.</text>
+<text x="40.0" y="616.0" font-size="11" text-anchor="start" fill="#333" font-weight="normal">Ручки Ferro Fiori M 0734.160 чёрный браш (ВіЯр 191333), межосевое 160, по центру, ось 60 мм от верха фасада.</text>
 <text x="40.0" y="633.0" font-size="11" text-anchor="start" fill="#333" font-weight="normal">Ножки Ferro Fiori PL 737 h=120, чёрные (ВіЯр 218885), 4 шт., центр ~40 мм от боковин.</text>
-<text x="40.0" y="650.0" font-size="11" text-anchor="start" fill="#333" font-weight="normal">Пунктир на F1/F2 — рамка фрезеровки Коррадо (ширина ориентировочно, по листу ViyarFronts).</text>
+<text x="40.0" y="650.0" font-size="11" text-anchor="start" fill="#333" font-weight="normal">Фасады МДФ 19, фрезеровка Урбан (ViyarFronts): пунктир — рамка ≈27 мм от торца, на всех трёх фасадах.</text>
 </svg>

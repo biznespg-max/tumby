@@ -28,28 +28,33 @@
 <polygon points="469.6,419.7 474.5,416.6 474.5,229.4 469.6,232.5" fill="#e7e4dd" stroke="#d4d0c8" stroke-width="0.5" />
 <polygon points="469.6,608.8 474.5,605.7 474.5,418.5 469.6,421.6" fill="#e7e4dd" stroke="#d4d0c8" stroke-width="0.5" />
 <polygon points="106.2,230.6 469.6,230.6 469.6,168.6 106.2,168.6" fill="url(#frontGrad)" stroke="#d8d4cc" stroke-width="0.6" />
+<polygon points="118.0,180.4 457.8,180.4 452.8,185.3 123.0,185.3" fill="#d9d5cd" stroke="none" stroke-width="0" />
+<polygon points="118.0,218.8 118.0,180.4 123.0,185.3 123.0,213.9" fill="#dedad3" stroke="none" stroke-width="0" />
+<polygon points="457.8,218.8 118.0,218.8 123.0,213.9 452.8,213.9" fill="#fbfaf7" stroke="none" stroke-width="0" />
+<polygon points="457.8,180.4 457.8,218.8 452.8,213.9 452.8,185.3" fill="#f6f4ef" stroke="none" stroke-width="0" />
+<polygon points="123.0,213.9 452.8,213.9 452.8,185.3 123.0,185.3" fill="url(#panelGrad)" stroke="none" stroke-width="0" />
 <polygon points="106.2,419.7 469.6,419.7 469.6,232.5 106.2,232.5" fill="url(#frontGrad)" stroke="#d8d4cc" stroke-width="0.6" />
-<polygon points="131.7,257.9 444.1,257.9 435.5,266.6 140.3,266.6" fill="#d9d5cd" stroke="none" stroke-width="0" />
-<polygon points="131.7,394.3 131.7,257.9 140.3,266.6 140.3,385.6" fill="#dedad3" stroke="none" stroke-width="0" />
-<polygon points="444.1,394.3 131.7,394.3 140.3,385.6 435.5,385.6" fill="#fbfaf7" stroke="none" stroke-width="0" />
-<polygon points="444.1,257.9 444.1,394.3 435.5,385.6 435.5,266.6" fill="#f6f4ef" stroke="none" stroke-width="0" />
-<polygon points="140.3,385.6 435.5,385.6 435.5,266.6 140.3,266.6" fill="url(#panelGrad)" stroke="none" stroke-width="0" />
-<line x1="230.9" y1="253.5" x2="349.9" y2="253.5" stroke="rgba(0,0,0,.18)" stroke-width="8.7" stroke-linecap="round" filter="url(#blur)"/>
-<line x1="238.3" y1="247.3" x2="232.6" y2="250.9" stroke="#1d1d1d" stroke-width="5.0"/>
-<line x1="337.5" y1="247.3" x2="331.8" y2="250.9" stroke="#1d1d1d" stroke-width="5.0"/>
-<line x1="222.7" y1="250.9" x2="341.7" y2="250.9" stroke="#141414" stroke-width="8.7" stroke-linecap="round"/>
-<line x1="222.7" y1="248.9" x2="341.7" y2="248.9" stroke="rgba(255,255,255,.28)" stroke-width="1.6" stroke-linecap="round"/>
+<polygon points="118.0,244.2 457.8,244.2 452.8,249.2 123.0,249.2" fill="#d9d5cd" stroke="none" stroke-width="0" />
+<polygon points="118.0,407.9 118.0,244.2 123.0,249.2 123.0,403.0" fill="#dedad3" stroke="none" stroke-width="0" />
+<polygon points="457.8,407.9 118.0,407.9 123.0,403.0 452.8,403.0" fill="#fbfaf7" stroke="none" stroke-width="0" />
+<polygon points="457.8,244.2 457.8,407.9 452.8,403.0 452.8,249.2" fill="#f6f4ef" stroke="none" stroke-width="0" />
+<polygon points="123.0,403.0 452.8,403.0 452.8,249.2 123.0,249.2" fill="url(#panelGrad)" stroke="none" stroke-width="0" />
+<line x1="230.9" y1="267.2" x2="349.9" y2="267.2" stroke="rgba(0,0,0,.18)" stroke-width="8.7" stroke-linecap="round" filter="url(#blur)"/>
+<line x1="238.3" y1="261.0" x2="232.6" y2="264.5" stroke="#1d1d1d" stroke-width="5.0"/>
+<line x1="337.5" y1="261.0" x2="331.8" y2="264.5" stroke="#1d1d1d" stroke-width="5.0"/>
+<line x1="222.7" y1="264.5" x2="341.7" y2="264.5" stroke="#141414" stroke-width="8.7" stroke-linecap="round"/>
+<line x1="222.7" y1="262.5" x2="341.7" y2="262.5" stroke="rgba(255,255,255,.28)" stroke-width="1.6" stroke-linecap="round"/>
 <polygon points="106.2,608.8 469.6,608.8 469.6,421.6 106.2,421.6" fill="url(#frontGrad)" stroke="#d8d4cc" stroke-width="0.6" />
-<polygon points="131.7,447.0 444.1,447.0 435.5,455.7 140.3,455.7" fill="#d9d5cd" stroke="none" stroke-width="0" />
-<polygon points="131.7,583.4 131.7,447.0 140.3,455.7 140.3,574.7" fill="#dedad3" stroke="none" stroke-width="0" />
-<polygon points="444.1,583.4 131.7,583.4 140.3,574.7 435.5,574.7" fill="#fbfaf7" stroke="none" stroke-width="0" />
-<polygon points="444.1,447.0 444.1,583.4 435.5,574.7 435.5,455.7" fill="#f6f4ef" stroke="none" stroke-width="0" />
-<polygon points="140.3,574.7 435.5,574.7 435.5,455.7 140.3,455.7" fill="url(#panelGrad)" stroke="none" stroke-width="0" />
-<line x1="230.9" y1="442.6" x2="349.9" y2="442.6" stroke="rgba(0,0,0,.18)" stroke-width="8.7" stroke-linecap="round" filter="url(#blur)"/>
-<line x1="238.3" y1="436.4" x2="232.6" y2="440.0" stroke="#1d1d1d" stroke-width="5.0"/>
-<line x1="337.5" y1="436.4" x2="331.8" y2="440.0" stroke="#1d1d1d" stroke-width="5.0"/>
-<line x1="222.7" y1="440.0" x2="341.7" y2="440.0" stroke="#141414" stroke-width="8.7" stroke-linecap="round"/>
-<line x1="222.7" y1="438.0" x2="341.7" y2="438.0" stroke="rgba(255,255,255,.28)" stroke-width="1.6" stroke-linecap="round"/>
+<polygon points="118.0,433.3 457.8,433.3 452.8,438.3 123.0,438.3" fill="#d9d5cd" stroke="none" stroke-width="0" />
+<polygon points="118.0,597.0 118.0,433.3 123.0,438.3 123.0,592.1" fill="#dedad3" stroke="none" stroke-width="0" />
+<polygon points="457.8,597.0 118.0,597.0 123.0,592.1 452.8,592.1" fill="#fbfaf7" stroke="none" stroke-width="0" />
+<polygon points="457.8,433.3 457.8,597.0 452.8,592.1 452.8,438.3" fill="#f6f4ef" stroke="none" stroke-width="0" />
+<polygon points="123.0,592.1 452.8,592.1 452.8,438.3 123.0,438.3" fill="url(#panelGrad)" stroke="none" stroke-width="0" />
+<line x1="230.9" y1="456.3" x2="349.9" y2="456.3" stroke="rgba(0,0,0,.18)" stroke-width="8.7" stroke-linecap="round" filter="url(#blur)"/>
+<line x1="238.3" y1="450.1" x2="232.6" y2="453.6" stroke="#1d1d1d" stroke-width="5.0"/>
+<line x1="337.5" y1="450.1" x2="331.8" y2="453.6" stroke="#1d1d1d" stroke-width="5.0"/>
+<line x1="222.7" y1="453.6" x2="341.7" y2="453.6" stroke="#141414" stroke-width="8.7" stroke-linecap="round"/>
+<line x1="222.7" y1="451.6" x2="341.7" y2="451.6" stroke="rgba(255,255,255,.28)" stroke-width="1.6" stroke-linecap="round"/>
 <polygon points="101.1,169.1 473.1,169.1 473.1,150.5 101.1,150.5" fill="url(#sinkFront)" stroke="#cfcfcf" stroke-width="0.6" />
 <polygon points="473.1,169.1 589.5,97.0 589.5,78.4 473.1,150.5" fill="#e9e9e9" stroke="#cfcfcf" stroke-width="0.6" />
 <polygon points="101.1,150.5 473.1,150.5 589.5,78.4 217.5,78.4" fill="#fdfdfd" stroke="#d5d5d5" stroke-width="0.6" />

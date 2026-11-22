@@ -7,9 +7,10 @@ SINK_W, SINK_D, SINK_H = 600, 447, 30
 F0, F1, F2, MID = 100, 302, 302, 3
 HANDLE_L, HANDLE_C, HANDLE_T = 192, 160, 14   # длина ручки — ориентировочно (ВіЯр не указывает)
 HANDLE_FROM_TOP = 38
-import sys
-URBAN = 'urban' in sys.argv
-if URBAN: HANDLE_FROM_TOP = 60
+import sys, pathlib
+OUT = str(pathlib.Path(__file__).resolve().parent) + '/'
+URBAN = True                 # фасады Урбан (22.11.2026)
+HANDLE_FROM_TOP = 60
 
 # ---------------------------------------------------------------- визуал (кабинетная проекция)
 s = 0.62
@@ -132,8 +133,7 @@ viz = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 760" font-fam
 <rect y="{oy + 860*s - 60:.0f}" width="700" height="{760 - (oy + 860*s - 60):.0f}" fill="url(#floor)"/>
 {chr(10).join(v)}
 </svg>'''
-open("/home/claude/viz/vizual-urban.svg" if URBAN else "/home/claude/viz/vizual.svg", "w").write(viz)
-if URBAN: raise SystemExit
+open(OUT + "vizual.svg", "w").write(viz)
 
 # ---------------------------------------------------------------- чертёж
 k = 0.5
@@ -171,8 +171,8 @@ rect(cx0, fy(830), 590*k, 710*k, "#fafafa", "#999", 0.8)
 cur = 830
 for name, h in fronts:
     rect(cx0 + 2*k, fy(cur), 586*k, h*k, "#ffffff", "#222", 1.2)
+    rect(cx0 + 2*k + 27*k, fy(cur) + 27*k, (586 - 54)*k, (h - 54)*k, "none", "#888", 0.7, 'stroke-dasharray="3 2"')
     if name != "F0":
-        rect(cx0 + 2*k + 55*k, fy(cur) + 55*k, (586 - 110)*k, (h - 110)*k, "none", "#888", 0.7, 'stroke-dasharray="3 2"')
         hy = fy(cur) + HANDLE_FROM_TOP*k
         hx = cx0 + 2*k + 293*k
         d.append(f'<rect x="{hx - HANDLE_L/2*k:.1f}" y="{hy - 3.5:.1f}" width="{HANDLE_L*k:.1f}" height="7" rx="3.5" fill="#111"/>')
@@ -180,7 +180,7 @@ for name, h in fronts:
             d.append(f'<circle cx="{hx + c_*k:.1f}" cy="{hy:.1f}" r="1.8" fill="#fff"/>')
         text(cx0 + 2*k + 293*k, fy(cur) + h*k/2 + 8, f"{'F1' if name=='F1' else 'F2'} 586 × {h}", 10, col="#555")
     else:
-        text(cx0 + 2*k + 293*k, fy(cur) + h*k/2 + 4, "F0 царга 586 × 100 (гладкая)", 10, col="#555")
+        text(cx0 + 2*k + 293*k, fy(cur) + h*k/2 + 4, "F0 царга 586 × 100", 10, col="#555")
     cur -= h + MID
 # ножки спереди
 for lx in (40, 550):
@@ -239,11 +239,11 @@ vdim(sb + 16, fy(860), fy(830), "30", "r", "#2c7be5")
 
 # пояснения
 notes = [
- "Модель 1 (T1-Q60) — по типу Mirater «Естель» 60. Корпус МДФ 16, белый; фасады МДФ 19, белые.",
+ "Модель 1 (T1-Q60) — по типу Mirater «Естель» 60. Корпус МДФ 16, белый; фасады МДФ 19 Урбан, белые.",
  "F0 — неподвижная царга 100 мм, крепится к царге корпуса K3 изнутри; F1, F2 — ящики, Häfele Matrix Runner.",
- "Ручки Ferro Fiori M 0734.160 чёрный браш (ВіЯр 191333), межосевое 160, по центру, ось 38 мм от верха фасада.",
+ "Ручки Ferro Fiori M 0734.160 чёрный браш (ВіЯр 191333), межосевое 160, по центру, ось 60 мм от верха фасада.",
  "Ножки Ferro Fiori PL 737 h=120, чёрные (ВіЯр 218885), 4 шт., центр ~40 мм от боковин.",
- "Пунктир на F1/F2 — рамка фрезеровки Коррадо (ширина ориентировочно, по листу ViyarFronts).",
+ "Фасады МДФ 19, фрезеровка Урбан (ViyarFronts): пунктир — рамка ≈27 мм от торца, на всех трёх фасадах.",
 ]
 for i, n in enumerate(notes):
     text(40, fy(0) + 82 + i * 17, n, 11, "start", "#333")
@@ -251,4 +251,4 @@ chert = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 {fy(0) + 82
 <rect width="100%" height="100%" fill="#ffffff"/>
 {chr(10).join(d)}
 </svg>'''
-open("/home/claude/viz/chertezh.svg", "w").write(chert)
+open(OUT + "chertezh.svg", "w").write(chert)
