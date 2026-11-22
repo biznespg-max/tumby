@@ -27,6 +27,9 @@ def handle(v, P, xy, hx, hy, zf=0):
     v.append(f'<line x1="{ax}" y1="{ay-2}" x2="{bx}" y2="{by-2}" stroke="rgba(255,255,255,.25)" stroke-width="1.4" stroke-linecap="round"/>')
 
 
+LT22_DROP = 38   # верх профиля LT22 от верхнего края фасада (модель 2, под рамкой)
+
+
 def handle_lt22(v, P, xy, poly, hx, top, zf=0, L=340, h=22, lip=8):
     """Профиль LT22 (ВіЯр 213758): чёрная накладка вдоль верхнего края фасада, отгиб вперёд-вниз."""
     x0, x1 = hx - L / 2, hx + L / 2
@@ -93,7 +96,8 @@ def render(mkey, style):
     for f in facades:   # ручки поверх фрезеровки
         if f["code"] in ("F1", "F2"):
             if style == "maura":
-                handle_lt22(v, P, xy, poly, f["x"] + f["w"] / 2, Y0 + f["top"])
+                # под рамкой Мауры: рамка ~20 мм + фреза (центр 23) -> верх профиля на 38 мм ниже края
+                handle_lt22(v, P, xy, poly, f["x"] + f["w"] / 2, Y0 + f["top"] - LT22_DROP)
             else:
                 handle(v, P, xy, f["x"] + f["w"] / 2, Y0 + f["top"] - 45)
     # умывальник
