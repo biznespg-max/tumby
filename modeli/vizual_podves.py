@@ -15,6 +15,18 @@ ox, oy = 105, 120
 SINK_W, SINK_D, SINK_H = 600, 447, 30
 
 
+def handle(v, P, xy, hx, hy, zf=0):
+    """Условная накладная ручка: чёрная планка ~192 мм, межосевое 160, вылет 24."""
+    for cc in (hx - 80, hx + 80):
+        (x1, y1), (x2, y2) = xy(P(cc, hy, zf)), xy(P(cc, hy, zf - 24))
+        v.append(f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="#1d1d1d" stroke-width="{8*s:.1f}"/>')
+    (sax, say), (sbx, sby) = xy(P(hx - 96 + 4, hy - 10, zf)), xy(P(hx + 96 + 4, hy - 10, zf))
+    v.append(f'<line x1="{sax}" y1="{say}" x2="{sbx}" y2="{sby}" stroke="rgba(0,0,0,.18)" stroke-width="{12*s:.1f}" stroke-linecap="round" filter="url(#blur)"/>')
+    (ax, ay), (bx, by) = xy(P(hx - 96, hy, zf - 24)), xy(P(hx + 96, hy, zf - 24))
+    v.append(f'<line x1="{ax}" y1="{ay}" x2="{bx}" y2="{by}" stroke="#141414" stroke-width="{12*s:.1f}" stroke-linecap="round"/>')
+    v.append(f'<line x1="{ax}" y1="{ay-2}" x2="{bx}" y2="{by-2}" stroke="rgba(255,255,255,.25)" stroke-width="1.4" stroke-linecap="round"/>')
+
+
 def render(mkey, style):
     c = config.product_config(mkey, "adamant-quanto", 60)
     parts, facades, g = model.build(c)
@@ -57,11 +69,6 @@ def render(mkey, style):
             v.append(poly([o[1], o[0], n[0], n[1]], "#fbfaf7"))
             v.append(poly([o[2], o[1], n[1], n[2]], "#f3f1ec"))
             v.append(poly(n, "url(#panelGrad)"))
-            # фрезерованная проходная ручка в стыке: у F1 по низу, у F2 по верху — скос 45° и тень
-            if f["code"] == "F1":
-                v.append(poly([P(xl, bot, zf), P(xr, bot, zf), P(xr, bot + 12, zf), P(xl, bot + 12, zf)], "url(#pullTop)"))
-            if f["code"] == "F2":
-                v.append(poly([P(xl, top - 12, zf), P(xr, top - 12, zf), P(xr, top, zf), P(xl, top, zf)], "url(#pullBot)"))
         if style == "sunset":
             # вертикальные волны, шаг 64 от центра фасада (CR), у торцов неполная волна
             cx = (xl + xr) / 2
@@ -72,16 +79,9 @@ def render(mkey, style):
                 if b2 - a < 2:
                     continue
                 v.append(poly([P(a, bot, zf), P(b2, bot, zf), P(b2, top, zf), P(a, top, zf)], "url(#wave)"))
-            # ручка (условно: чёрная планка, межосевое 160) — по центру, 45 мм от верха
-            hx, hy = cx, top - 45
-            for cc in (hx - 80, hx + 80):
-                (x1, y1), (x2, y2) = xy(P(cc, hy, zf)), xy(P(cc, hy, zf - 24))
-                v.append(f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="#1d1d1d" stroke-width="{8*s:.1f}"/>')
-            (sax, say), (sbx, sby) = xy(P(hx - 96 + 4, hy - 10, zf)), xy(P(hx + 96 + 4, hy - 10, zf))
-            v.append(f'<line x1="{sax}" y1="{say}" x2="{sbx}" y2="{sby}" stroke="rgba(0,0,0,.18)" stroke-width="{12*s:.1f}" stroke-linecap="round" filter="url(#blur)"/>')
-            (ax, ay), (bx, by) = xy(P(hx - 96, hy, zf - 24)), xy(P(hx + 96, hy, zf - 24))
-            v.append(f'<line x1="{ax}" y1="{ay}" x2="{bx}" y2="{by}" stroke="#141414" stroke-width="{12*s:.1f}" stroke-linecap="round"/>')
-            v.append(f'<line x1="{ax}" y1="{ay-2}" x2="{bx}" y2="{by-2}" stroke="rgba(255,255,255,.25)" stroke-width="1.4" stroke-linecap="round"/>')
+    for f in facades:   # ручки поверх фрезеровки
+        if f["code"] in ("F1", "F2"):
+            handle(v, P, xy, f["x"] + f["w"] / 2, Y0 + f["top"] - 45)
     # умывальник
     sx = (W - SINK_W) / 2
     sz0, sz1 = zb - SINK_D, zb
