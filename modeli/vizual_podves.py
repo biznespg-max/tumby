@@ -27,6 +27,17 @@ def handle(v, P, xy, hx, hy, zf=0):
     v.append(f'<line x1="{ax}" y1="{ay-2}" x2="{bx}" y2="{by-2}" stroke="rgba(255,255,255,.25)" stroke-width="1.4" stroke-linecap="round"/>')
 
 
+def handle_lt22(v, P, xy, poly, hx, top, zf=0, L=340, h=22, lip=8):
+    """Профиль LT22 (ВіЯр 213758): чёрная накладка вдоль верхнего края фасада, отгиб вперёд-вниз."""
+    x0, x1 = hx - L / 2, hx + L / 2
+    v.append(poly([P(x0 + 4, top - h - 9, zf), P(x1 + 4, top - h - 9, zf), P(x1, top - h, zf), P(x0, top - h, zf)], "rgba(0,0,0,.16)", extra='filter="url(#blur)"'))
+    v.append(poly([P(x0, top - h, zf - lip), P(x1, top - h, zf - lip), P(x1, top, zf - lip), P(x0, top, zf - lip)], "#1b1b1b"))
+    v.append(poly([P(x1, top - h, zf - lip), P(x1, top - h, zf), P(x1, top, zf), P(x1, top, zf - lip)], "#0c0c0c"))
+    v.append(poly([P(x0, top, zf - lip), P(x1, top, zf - lip), P(x1, top, zf), P(x0, top, zf)], "#3a3a3a"))
+    (ax, ay), (bx, by) = xy(P(x0, top - h, zf - lip)), xy(P(x1, top - h, zf - lip))
+    v.append(f'<line x1="{ax}" y1="{ay}" x2="{bx}" y2="{by}" stroke="rgba(255,255,255,.22)" stroke-width="1.2"/>')
+
+
 def render(mkey, style):
     c = config.product_config(mkey, "adamant-quanto", 60)
     parts, facades, g = model.build(c)
@@ -81,7 +92,10 @@ def render(mkey, style):
                 v.append(poly([P(a, bot, zf), P(b2, bot, zf), P(b2, top, zf), P(a, top, zf)], "url(#wave)"))
     for f in facades:   # ручки поверх фрезеровки
         if f["code"] in ("F1", "F2"):
-            handle(v, P, xy, f["x"] + f["w"] / 2, Y0 + f["top"] - 45)
+            if style == "maura":
+                handle_lt22(v, P, xy, poly, f["x"] + f["w"] / 2, Y0 + f["top"])
+            else:
+                handle(v, P, xy, f["x"] + f["w"] / 2, Y0 + f["top"] - 45)
     # умывальник
     sx = (W - SINK_W) / 2
     sz0, sz1 = zb - SINK_D, zb
