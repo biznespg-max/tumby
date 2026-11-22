@@ -79,6 +79,10 @@ if F0S:   # внутренней K3 нет: спереди вверху связ
 else:
     rect(FX(t), LEG + H - rf, iw * k, rf, C_RAIL, "#8a6d3b")
     text(FX(W / 2), Y(LEG + H - rf / 2) + 4, f"K3 царга передняя {iw}×{rf}", 9.5)
+MR = c.get("mid_rail")
+if MR:   # средняя царга K3 лёжа между ящиками
+    rect(FX(t), LEG + MR["y"], iw * k, t, C_RAIL, "#8a6d3b")
+    text(FX(0) - 6, Y(LEG + MR["y"] + t / 2) + 4, "K3", 10, "end", "#6b4f1d", "bold")
 # ящики
 for (y0, h, lab) in ((yb_bot, hb_bot, f"нижний ящик (короб {bw}×{hb_bot})"), (yb_top, hb_top, f"верхний ящик (короб {bw}×{hb_top}) — под сифон")):
     xl = FX((W - bw) / 2)
@@ -100,7 +104,10 @@ vdim(xd, LEG + yb_top, LEG + yb_top + hb_top, f"{hb_top}")
 vdim(xd, LEG + H - rf, LEG + H, f"{rf}")
 vdim(xd + 56, LEG, LEG + H, f"{H}")
 # зазоры между коробами
-text(xd + 6, Y(LEG + (yb_bot + hb_bot + yb_top) / 2) + 4, f"{yb_top - yb_bot - hb_bot}", 9, "start", "#888")
+if MR:
+    text(xd + 6, Y(LEG + MR["y"] + t / 2) + 4, f"K3 на {MR['y']}", 9, "start", "#6b4f1d")
+else:
+    text(xd + 6, Y(LEG + (yb_bot + hb_bot + yb_top) / 2) + 4, f"{yb_top - yb_bot - hb_bot}", 9, "start", "#888")
 text(xd + 6, Y(LEG + (yb_top + hb_top + H - rf) / 2) + 4, f"{H - rf - yb_top - hb_top}", 9, "start", "#888")
 hdim(Y(0) + 20, FX(0), FX(W), f"корпус {W}")
 hdim(Y(0) + 42, FX(t), FX(W - t), f"внутри {iw}")
@@ -140,6 +147,9 @@ else:
     text(SZ(t) + 4, Y(LEG + H - rf / 2) + 4, "K3", 9.5, "start", "#6b4f1d", "bold")
 text(SZ(D - t) - 4, Y(LEG + H - rt / 2) + 4, "K4", 9.5, "end", "#6b4f1d", "bold")
 text(SZ(D - t) - 4, Y(LEG + t + rbl + rb / 2) + 4, "K5", 9.5, "end", "#6b4f1d", "bold")
+if MR:
+    rect(SZ(0), LEG + MR["y"], MR["depth"] * k, t, C_RAIL, "#8a6d3b")
+    text(SZ(MR["depth"]) + 4, Y(LEG + MR["y"]) - 2, f"K3 лёжа, {MR['depth']}", 9, "start", "#6b4f1d", "bold")
 # ящики
 for (y0, h, name) in ((yb_bot, hb_bot, "нижний"), (yb_top, hb_top, "верхний")):
     rect(SZ(0), LEG + y0, L * k, h, C_BOX, "#b8860b")
@@ -180,7 +190,10 @@ notes = [
     ("#e9e4da", f"Корпус: боковины K1Л/K1П {D}×{H} и дно K2 {iw}×{D}, МДФ 16 мм, всё на минификсах (снаружи отверстий нет)."),
     ("#c9b48a", (f"Царги: спереди — сама царга-фасад F0 586×100 на 4 минификсах к торцам боковин (как у Естель); K4 задняя верхняя {iw}×{rt} (через неё — к стене),"
                  if g.get("f0_structural") else f"Царги: K3 передняя {iw}×{rf} (на неё крепится фасад-царга F0), K4 задняя верхняя {iw}×{rt} (через неё — к стене),")),
-    (None, f"K5 задняя нижняя {iw}×{rb}, поднята на {rbl} мм над дном — под ней проходят задние концы направляющих."),
+    (None, f"K5 задняя нижняя {iw}×{rb}, поднята на {rbl} мм над дном — под ней проходят задние концы направляющих."
+           ),
+    *([(None, f"K3 средняя {iw}×{c['mid_rail']['depth']} лежит между ящиками (низ на {c['mid_rail']['y']} мм от низа корпуса), на минификсах; "
+               f"до нижнего короба {c['mid_rail']['y'] - yb_bot - hb_bot} мм, до верхнего {yb_top - c['mid_rail']['y'] - t} мм.")] if c.get("mid_rail") else []),
     ("#fbf3dc", f"Ящики: короба ДСП 18, ширина {bw}, длина {L}; дно короба поднято на {rec} мм — под ним направляющие Häfele Matrix Runner."),
     ("#ffffff", f"Верхний ящик: в дне вырез {g['u_width']}×{cut_len} от задней стенки с полукругом R80 + пластиковый ограничитель Mesan; задняя стенка из двух половинок."),
     (C_RUN, "Направляющие Matrix Runner UM (полное выдвижение, доводчик), NL 400, крепятся к боковинам."),

@@ -73,8 +73,12 @@ def placements(c, geo):
     if geo.get("f0_structural_pre"):
         fx, fy0 = geo["f0_structural_pre"]
         front = [("F0", (fx, fy0, -c["facade_t"]), X, Y, Z)]     # царга-фасад перед корпусом
+    elif c.get("mid_rail"):
+        front = []
     else:
         front = [("K3", (t, H - c["front_rail_h"], f0), X, Y, Z)]
+    if c.get("mid_rail"):
+        front = front + [("K3", (t, c["mid_rail"]["y"], f0), X, Z, Y)]   # лежит, как дно
     corpus = sides + front + [
         ("K2", (t, 0, f0), X, Z, Y),
         ("K4", (t, H - c["rear_top_rail_h"], D - t), X, Y, Z),

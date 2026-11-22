@@ -164,6 +164,8 @@ def spec_md(c, parts, facades, geo, bands):
     a(c.get("assembly_step0", "0. Детали корпуса красятся до сборки."))
     jn = "минификсах" if c.get("joint", "minifix") == "minifix" else "конфирматах"
     k3 = "царга-фасад F0 (вместо внутренней передней царги)" if geo.get("f0_structural") else "передняя царга K3"
+    if c.get("mid_rail"):
+        k3 += " + средняя царга K3 (лёжа между ящиками)"
     a(f"1. Корпус: боковины K1Л и K1П + дно K2 + задняя нижняя царга K5 + {k3} + задняя верхняя царга K4 на {jn}. "
       "Штоки вкрутить в боковины (и в дно, если K5 стоит на дне), детали надеть торцами на штоки, затянуть эксцентрики."
       if jn == "минификсах" else f"1. Корпус: боковины K1 + дно K2 + задняя нижняя царга K5 + передняя царга K3 + задняя верхняя царга K4 на {jn}.")
@@ -230,8 +232,11 @@ def drawing_svg(c, parts, facades, geo):
     a(f'<rect x="{sx}" y="{oy}" width="{D*s}" height="{H*s}" fill="none" stroke="#333"/>')
     f0 = geo.get("front_offset", 0)
     a(f'<rect x="{sx + f0*s}" y="{oy + (H - t)*s}" width="{(D - f0)*s}" height="{t*s}" fill="#ccc"/>')
-    if not geo.get("f0_structural"):
+    if not geo.get("f0_structural") and not c.get("mid_rail"):
         a(f'<rect x="{sx + f0*s}" y="{oy}" width="{t*s}" height="{c["front_rail_h"]*s}" fill="#ccc"/>')
+    if c.get("mid_rail"):
+        mr = c["mid_rail"]
+        a(f'<rect x="{sx + f0*s}" y="{oy + (H - mr["y"] - t)*s}" width="{mr["depth"]*s}" height="{t*s}" fill="#ccc"/>')
     a(f'<rect x="{sx + (D - t)*s}" y="{oy}" width="{t*s}" height="{c["rear_top_rail_h"]*s}" fill="#ccc"/>')
     a(f'<rect x="{sx + (D - t)*s}" y="{oy + (H - t - c["rear_bottom_rail_h"])*s}" width="{t*s}" height="{c["rear_bottom_rail_h"]*s}" fill="#ccc"/>')
     for yb, hb in ((geo["bottom_drawer_box_bottom"], c["drawer_bottom_box_h"]),

@@ -119,6 +119,11 @@ def test_fits_sink_and_runners(prod):
         for h in f0["holes"]:
             assert abs((f0["x"] + h.x) - min(c["t"] / 2, c["width"] - c["t"] / 2, key=lambda v: abs(v - (f0["x"] + h.x)))) < 0.01
         assert top_box_top + 5 <= f0["top"] - f0["h"], "короб верхнего ящика упирается в царгу-фасад"
+    # средняя царга K3 лёжа: между коробами ящиков с зазором не меньше 8 мм
+    if c.get("mid_rail"):
+        mr = c["mid_rail"]
+        assert geo["bottom_drawer_box_bottom"] + c["drawer_bottom_box_h"] + 8 <= mr["y"], "нижний короб задевает среднюю царгу"
+        assert mr["y"] + c["t"] + 8 <= geo["top_drawer_box_bottom"], "верхний короб задевает среднюю царгу"
     # ограничитель сифона Mesan H=86 помещается в верхнем ящике (над дном короба)
     assert c["drawer_top_box_h"] - c["drawer_bottom_recess"] - c["t_box"] >= 86, "ограничитель сифона выше короба"
     # короб нижнего ящика не доходит до верхнего

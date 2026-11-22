@@ -102,6 +102,10 @@ def build(c):
         + [face(rear_x, rt_y0 + y) for y in rt_conf]
         + [face(rear_x, t + rb_lift + y) for y in rb_conf]
     )
+    mr = c.get("mid_rail")          # средняя царга K3 лёжа между ящиками: {"y": низ, "depth": глубина}
+    if mr:
+        mr_conf = [30, mr["depth"] - 30]
+        side_holes = side_holes + [face(f0 + z, mr["y"] + half) for z in mr_conf]
     if f0s:   # стык с F0: торец боковины (передний, x=0) -> пласть F0 (шток в F0)
         side_holes = side_holes + [edge("left", f0_y0 + y) for y in f0_conf]
     if c.get("one_sided"):
@@ -126,7 +130,12 @@ def build(c):
                       + (f" Отступает от переднего края боковин на {f0} мм (за фасадом)." if f0 else "")
                       + (" Лицом (декор) вниз." if c.get("one_sided") and bm == "corpus" else ""), bm))
 
-    if not f0s:
+    if mr:
+        parts.append(Part("K3", "Царга средняя (лежит между ящиками)", "Корпус", iw, mr["depth"], t, 1, dict(ce),
+                          [edge("left", z) for z in mr_conf] + [edge("right", z) for z in mr_conf],
+                          f"Лежит горизонтально между ящиками, низ на {mr['y']} мм от низа корпуса, передний торец "
+                          "заподлицо с передним краем боковин. Нижний торец (y=0) - передний. Связывает боковины посередине.", "corpus"))
+    if not f0s and not mr:
         parts.append(Part("K3", "Царга передняя верхняя", "Корпус", iw, rail_f, t, 1, dict(ce),
                         [edge("left", y) for y in front_rail_conf]
                         + [edge("right", y) for y in front_rail_conf],
