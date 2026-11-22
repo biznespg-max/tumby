@@ -101,6 +101,12 @@ def spec_md(c, parts, facades, geo, bands):
     a("|---|---|---|---|")
     for f in facades:
         a(f"| {f['code']} | {f['name']} | {_n(f['w'])} × {_n(f['h'])} | 1 |")
+    for f in facades:
+        if f.get("holes"):
+            pts = ", ".join(f"({_n(h.x)}; {_n(h.y)})" for h in f["holes"])
+            a(f"\n**{f['code']} — присадка в изнанке** (под штоки минификсов к боковинам): {len(f['holes'])} отв. "
+              f"Ø{_n(f['holes'][0].d)} × {_n(f['holes'][0].depth)} мм, координаты от левого нижнего угла, если смотреть на ЛИЦО фасада: {pts}. "
+              "Заказать присадку в ViyarFronts вместе с фасадом или сверлить по шаблону на месте (глубина строго 11 — фасад 19 мм).")
     a(f"\nЗазоры: по {c['facade_side_gap']} мм с боков, {c['facade_mid_gap']} мм между фасадами, "
       f"{c['facade_top_gap']} мм сверху, {c['facade_bottom_gap']} мм снизу.\n")
 
@@ -117,7 +123,7 @@ def spec_md(c, parts, facades, geo, bands):
         a(f"| Конфирмат 7×50 + заглушки в цвет | — | {confirmats} + 10 запас |")
     a("| Саморез 4×16 (направляющие к боковинам) | — | ~24 |")
     a("| Саморез 4×25 (фасад к ящику изнутри) | — | 8 |")
-    if any(f["code"] == "F0" for f in facades):
+    if any(f["code"] == "F0" and not geo.get("f0_structural") for f in facades):
         a("| Саморез 4×30 (фальш-панель F0 к царге K3 изнутри) | — | 4–6 |")
     if c.get("handles", "Ручки (выбрать под фасад)"):
         a(f"| {c.get('handles', 'Ручки (выбрать под фасад)')} | — | 2 |")
@@ -157,7 +163,8 @@ def spec_md(c, parts, facades, geo, bands):
     a("## Сборка\n")
     a(c.get("assembly_step0", "0. Детали корпуса красятся до сборки."))
     jn = "минификсах" if c.get("joint", "minifix") == "minifix" else "конфирматах"
-    a(f"1. Корпус: боковины K1Л и K1П + дно K2 + задняя нижняя царга K5 + передняя царга K3 + задняя верхняя царга K4 на {jn}. "
+    k3 = "царга-фасад F0 (вместо внутренней передней царги)" if geo.get("f0_structural") else "передняя царга K3"
+    a(f"1. Корпус: боковины K1Л и K1П + дно K2 + задняя нижняя царга K5 + {k3} + задняя верхняя царга K4 на {jn}. "
       "Штоки вкрутить в боковины (и в дно, если K5 стоит на дне), детали надеть торцами на штоки, затянуть эксцентрики."
       if jn == "минификсах" else f"1. Корпус: боковины K1 + дно K2 + задняя нижняя царга K5 + передняя царга K3 + задняя верхняя царга K4 на {jn}.")
     if c.get("facade_inset"):
@@ -169,7 +176,10 @@ def spec_md(c, parts, facades, geo, bands):
     a("4. Верхний ящик (на минификсах): боковины V1, передняя V2, половинки задней стенки V3Л и V3П, дно V4 с вырезом. "
       "В вырез дна вставить пластиковый ограничитель сифона (Mesan 228527) и закрепить по инструкции.")
     a("5. Отверстия под задние крючки направляющих в задних стенках — по шаблону из инструкции направляющих.")
-    if any(f["code"] == "F0" for f in facades):
+    if geo.get("f0_structural"):
+        a("6. Царга-фасад F0 уже стоит в корпусе (шаг 1): штоки в изнанке F0, эксцентрики в боковинах изнутри; вровень с верхом корпуса, под умывальник. "
+          "Фасады ящиков — к передним стенкам ящиков изнутри саморезами 4×25, отрегулировать 3D-регулировкой направляющих.")
+    elif any(f["code"] == "F0" for f in facades):
         a(f"6. Фальш-панель F0 — к царге K3 изнутри саморезами 4×30 ("
           + (f"зазор {c['facade_top_gap']:g} мм до умывальника" if c['facade_top_gap'] else "вровень с верхом корпуса, под умывальник")
           + ", по краям вровень с фасадами ящиков). "
@@ -220,7 +230,8 @@ def drawing_svg(c, parts, facades, geo):
     a(f'<rect x="{sx}" y="{oy}" width="{D*s}" height="{H*s}" fill="none" stroke="#333"/>')
     f0 = geo.get("front_offset", 0)
     a(f'<rect x="{sx + f0*s}" y="{oy + (H - t)*s}" width="{(D - f0)*s}" height="{t*s}" fill="#ccc"/>')
-    a(f'<rect x="{sx + f0*s}" y="{oy}" width="{t*s}" height="{c["front_rail_h"]*s}" fill="#ccc"/>')
+    if not geo.get("f0_structural"):
+        a(f'<rect x="{sx + f0*s}" y="{oy}" width="{t*s}" height="{c["front_rail_h"]*s}" fill="#ccc"/>')
     a(f'<rect x="{sx + (D - t)*s}" y="{oy}" width="{t*s}" height="{c["rear_top_rail_h"]*s}" fill="#ccc"/>')
     a(f'<rect x="{sx + (D - t)*s}" y="{oy + (H - t - c["rear_bottom_rail_h"])*s}" width="{t*s}" height="{c["rear_bottom_rail_h"]*s}" fill="#ccc"/>')
     for yb, hb in ((geo["bottom_drawer_box_bottom"], c["drawer_bottom_box_h"]),

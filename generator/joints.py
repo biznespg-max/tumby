@@ -70,9 +70,13 @@ def placements(c, geo):
                  ("K1П", (W - t, 0, 0), Z, Y, X)]         # правая: смотрим снаружи, перед слева
     else:
         sides = [("K1", (0, 0, 0), Z, Y, X), ("K1", (W - t, 0, 0), Z, Y, X)]
-    corpus = sides + [
+    if geo.get("f0_structural_pre"):
+        fx, fy0 = geo["f0_structural_pre"]
+        front = [("F0", (fx, fy0, -c["facade_t"]), X, Y, Z)]     # царга-фасад перед корпусом
+    else:
+        front = [("K3", (t, H - c["front_rail_h"], f0), X, Y, Z)]
+    corpus = sides + front + [
         ("K2", (t, 0, f0), X, Z, Y),
-        ("K3", (t, H - c["front_rail_h"], f0), X, Y, Z),
         ("K4", (t, H - c["rear_top_rail_h"], D - t), X, Y, Z),
         ("K5", (t, t + c.get("rear_bottom_rail_lift", 0), D - t), X, Y, Z),
     ]

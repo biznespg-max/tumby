@@ -69,9 +69,16 @@ text(FX(W/2), Y(LEG + H + SINK_T) - 6, f"чаша {sink['brand']} {sink['series'
 rect(FX(0), LEG, t * k, H, C_CORP)
 rect(FX(W - t), LEG, t * k, H, C_CORP)
 rect(FX(t), LEG, iw * k, t, C_CORP)
-# передняя царга K3 (видна целиком: стоит на ребре у переднего края)
-rect(FX(t), LEG + H - rf, iw * k, rf, C_RAIL, "#8a6d3b")
-text(FX(W / 2), Y(LEG + H - rf / 2) + 4, f"K3 царга передняя {iw}×{rf}", 9.5)
+F0S = g.get("f0_structural")
+F0 = next(f for f in facades if f["code"] == "F0")
+if F0S:   # внутренней K3 нет: спереди вверху связь — сама царга-фасад F0 (снята на этом виде)
+    rect(FX(F0["x"]), LEG + F0["top"] - F0["h"], F0["w"] * k, F0["h"], "none", "#8a6d3b", 1, 'stroke-dasharray="5 3"')
+    text(FX(W / 2), Y(LEG + H - rf / 2) + 4, "здесь царга-фасад F0 (снята) — внутренней царги нет", 9.5, col="#6b4f1d")
+    for h in F0["holes"]:   # минификсы F0 -> боковины
+        a(f'<circle cx="{FX(F0["x"] + h.x):.1f}" cy="{Y(LEG + F0["top"] - F0["h"] + h.y):.1f}" r="3.2" fill="#c0392b"/>')
+else:
+    rect(FX(t), LEG + H - rf, iw * k, rf, C_RAIL, "#8a6d3b")
+    text(FX(W / 2), Y(LEG + H - rf / 2) + 4, f"K3 царга передняя {iw}×{rf}", 9.5)
 # ящики
 for (y0, h, lab) in ((yb_bot, hb_bot, f"нижний ящик (короб {bw}×{hb_bot})"), (yb_top, hb_top, f"верхний ящик (короб {bw}×{hb_top}) — под сифон")):
     xl = FX((W - bw) / 2)
@@ -119,10 +126,18 @@ text(SZ(drain) + 4, Y(LEG + H + SINK_T) - 8, f"слив {drain} от края", 
 # боковина (контур), дно, царги
 rect(SZ(0), LEG, D * k, H, "none", "#222", 1.2)
 rect(SZ(0), LEG, D * k, t, C_CORP, "#222", 0.8)                                   # дно K2
-rect(SZ(0), LEG + H - rf, t * k, rf, C_RAIL, "#8a6d3b")                           # K3
+if not F0S:
+    rect(SZ(0), LEG + H - rf, t * k, rf, C_RAIL, "#8a6d3b")                       # K3
 rect(SZ(D - t), LEG + H - rt, t * k, rt, C_RAIL, "#8a6d3b")                       # K4
 rect(SZ(D - t), LEG + t + rbl, t * k, rb, C_RAIL, "#8a6d3b")                      # K5
-text(SZ(t) + 4, Y(LEG + H - rf / 2) + 4, "K3", 9.5, "start", "#6b4f1d", "bold")
+if F0S:
+    for h in F0["holes"][:2]:   # минификс: шток в F0, эксцентрик в боковине на 24 мм от торца
+        yy = Y(LEG + F0["top"] - F0["h"] + h.y)
+        line(S0 + FT * k / 2, yy, SZ(24), yy, "#c0392b", 1.6)
+        a(f'<circle cx="{SZ(24):.1f}" cy="{yy:.1f}" r="4.2" fill="#fff" stroke="#c0392b" stroke-width="1.4"/>')
+    text(SZ(32), Y(LEG + H - 50) + 4, "F0 на минификсах к боковинам", 9, "start", "#c0392b")
+else:
+    text(SZ(t) + 4, Y(LEG + H - rf / 2) + 4, "K3", 9.5, "start", "#6b4f1d", "bold")
 text(SZ(D - t) - 4, Y(LEG + H - rt / 2) + 4, "K4", 9.5, "end", "#6b4f1d", "bold")
 text(SZ(D - t) - 4, Y(LEG + t + rbl + rb / 2) + 4, "K5", 9.5, "end", "#6b4f1d", "bold")
 # ящики
@@ -163,11 +178,13 @@ text((SZ(zc0) + SZ(L - tb)) / 2, yy - 4, f"вырез {cut_len}", 9.5, "middle",
 # ===================================================================== легенда
 notes = [
     ("#e9e4da", f"Корпус: боковины K1Л/K1П {D}×{H} и дно K2 {iw}×{D}, МДФ 16 мм, всё на минификсах (снаружи отверстий нет)."),
-    ("#c9b48a", f"Царги: K3 передняя {iw}×{rf} (на неё крепится фасад-царга F0), K4 задняя верхняя {iw}×{rt} (через неё — к стене),"),
+    ("#c9b48a", (f"Царги: спереди — сама царга-фасад F0 586×100 на 4 минификсах к торцам боковин (как у Естель); K4 задняя верхняя {iw}×{rt} (через неё — к стене),"
+                 if g.get("f0_structural") else f"Царги: K3 передняя {iw}×{rf} (на неё крепится фасад-царга F0), K4 задняя верхняя {iw}×{rt} (через неё — к стене),")),
     (None, f"K5 задняя нижняя {iw}×{rb}, поднята на {rbl} мм над дном — под ней проходят задние концы направляющих."),
     ("#fbf3dc", f"Ящики: короба ДСП 18, ширина {bw}, длина {L}; дно короба поднято на {rec} мм — под ним направляющие Häfele Matrix Runner."),
     ("#ffffff", f"Верхний ящик: в дне вырез {g['u_width']}×{cut_len} от задней стенки с полукругом R80 + пластиковый ограничитель Mesan; задняя стенка из двух половинок."),
     (C_RUN, "Направляющие Matrix Runner UM (полное выдвижение, доводчик), NL 400, крепятся к боковинам."),
+    ("#c0392b", "Красные точки — минификсы F0: штоки Ø5×11 в изнанке F0 (6 мм от торцов, на 25 и 75 мм от низа), эксцентрики в боковинах изнутри."),
 ]
 ny = Y(0) + 100
 for i, (col, n) in enumerate(notes):

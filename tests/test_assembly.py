@@ -29,6 +29,9 @@ def test_minifix_assembly(prod):
     c = _cfg(prod)
     parts, facades, geo = model.build(c)
     by_code = {p.code: p for p in parts}
+    if geo.get("f0_structural"):   # несущая царга-фасад F0 не в файле порезки, но стыкуется с боковинами
+        f0 = next(f for f in facades if f["code"] == "F0")
+        by_code["F0"] = model.Part("F0", f0["name"], "Фасады", f0["w"], f0["h"], c["facade_t"], 1, {}, f0["holes"])
     problems = []
     for uname, unit in geo["units"].items():
         center = _box_center(by_code, unit)
@@ -103,11 +106,19 @@ def test_fits_sink_and_runners(prod):
     half = r if zd >= zc else math.sqrt(max(r * r - (zc - zd) ** 2, 0))
     assert half >= 30, f"слив у самого края выреза под сифон: полуширина {half:.0f} мм"
     # верхний ящик проходит под передней царгой (она стоит на ребре у фасада)
-    assert top_box_top + 5 <= c["height"] - c["front_rail_h"], "короб верхнего ящика упирается в переднюю царгу"
+    if not geo.get("f0_structural"):
+        assert top_box_top + 5 <= c["height"] - c["front_rail_h"], "короб верхнего ящика упирается в переднюю царгу"
     # фальш-панель держится на царге K3 (перекрытие по высоте не меньше 40 мм)
     for f in facades:
-        if f["code"] == "F0":
+        if f["code"] == "F0" and not geo.get("f0_structural"):
             assert min(f["top"], c["height"]) - max(f["top"] - f["h"], c["height"] - c["front_rail_h"]) >= 40
+    # царга-фасад F0 несущая: 4 штока, каждый попадает на ось боковины, короб верхнего ящика ниже F0
+    if geo.get("f0_structural"):
+        f0 = next(f for f in facades if f["code"] == "F0")
+        assert len(f0["holes"]) == 4
+        for h in f0["holes"]:
+            assert abs((f0["x"] + h.x) - min(c["t"] / 2, c["width"] - c["t"] / 2, key=lambda v: abs(v - (f0["x"] + h.x)))) < 0.01
+        assert top_box_top + 5 <= f0["top"] - f0["h"], "короб верхнего ящика упирается в царгу-фасад"
     # ограничитель сифона Mesan H=86 помещается в верхнем ящике (над дном короба)
     assert c["drawer_top_box_h"] - c["drawer_bottom_recess"] - c["t_box"] >= 86, "ограничитель сифона выше короба"
     # короб нижнего ящика не доходит до верхнего

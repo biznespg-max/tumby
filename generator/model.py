@@ -75,6 +75,7 @@ def build(c):
     f0 = c["facade_t"] if c.get("facade_inset") else 0   # вкладные фасады: дно и царга K3 отступают на толщину фасада
     Db = D - f0                                # глубина дна
     bottom_conf = [f0 + 50, f0 + Db / 2, D - 50]   # по глубине боковины, от её переднего торца
+    f0s = bool(c.get("f0_structural") and c.get("facade_panel_h"))   # царга-фасад F0 сама связывает боковины (как у Mirater «Естель»), K3 нет
     rail_f = c["front_rail_h"]
     rail_f_y0 = H - rail_f                     # низ передней верхней царги
     front_rail_conf = [20, rail_f - 20]
@@ -92,12 +93,17 @@ def build(c):
     rear_x = D - half                          # ось задних царг на боковине
     rail_bottom_x = [100, iw / 2, iw - 100]    # конфирматы дно -> задняя нижняя царга
 
+    ph0 = c.get("facade_panel_h", 0)
+    f0_y0 = H - c["facade_top_gap"] - ph0                 # низ царги-фасада F0
+    f0_conf = [25, ph0 - 25]
     side_holes = (
         [face(z, half) for z in bottom_conf]
-        + [face(f0 + half, rail_f_y0 + y) for y in front_rail_conf]
+        + ([] if f0s else [face(f0 + half, rail_f_y0 + y) for y in front_rail_conf])
         + [face(rear_x, rt_y0 + y) for y in rt_conf]
         + [face(rear_x, t + rb_lift + y) for y in rb_conf]
     )
+    if f0s:   # стык с F0: торец боковины (передний, x=0) -> пласть F0 (шток в F0)
+        side_holes = side_holes + [edge("left", f0_y0 + y) for y in f0_conf]
     if c.get("one_sided"):
         # односторонний материал: лицевая сторона наружу, поэтому боковины зеркальные
         mirrored = [Hole(h.side, D - h.x, h.y, h.d, h.depth) for h in side_holes]
@@ -120,11 +126,12 @@ def build(c):
                       + (f" Отступает от переднего края боковин на {f0} мм (за фасадом)." if f0 else "")
                       + (" Лицом (декор) вниз." if c.get("one_sided") and bm == "corpus" else ""), bm))
 
-    parts.append(Part("K3", "Царга передняя верхняя", "Корпус", iw, rail_f, t, 1, dict(ce),
-                      [edge("left", y) for y in front_rail_conf]
-                      + [edge("right", y) for y in front_rail_conf],
-                      ("Стоит на ребре" + (f" с отступом {f0} мм от переднего края боковин (за вкладным фасадом)" if f0 else " заподлицо с передним краем")
-                       + ", верхний торец - под умывальником. Закрыта фасадом."), "corpus"))
+    if not f0s:
+        parts.append(Part("K3", "Царга передняя верхняя", "Корпус", iw, rail_f, t, 1, dict(ce),
+                        [edge("left", y) for y in front_rail_conf]
+                        + [edge("right", y) for y in front_rail_conf],
+                        ("Стоит на ребре" + (f" с отступом {f0} мм от переднего края боковин (за вкладным фасадом)" if f0 else " заподлицо с передним краем")
+                         + ", верхний торец - под умывальником. Закрыта фасадом."), "corpus"))
 
     parts.append(Part("K4", "Царга задняя верхняя", "Корпус", iw, rt_h, t, 1, dict(ce),
                       [edge("left", y) for y in rt_conf] + [edge("right", y) for y in rt_conf],
@@ -233,6 +240,12 @@ def build(c):
             parts.append(Part(f["code"], f["name"], "Фасады", f["w"], f["h"], c["facade_t"], 1,
                               dict(ce), [], "Лицом (декор) наружу. Текстура вдоль длины.", "corpus"))
 
+    if f0s:
+        # F0 из ViyarFronts в файл порезки не идёт; деталь нужна только чтобы разметить стыки (шток Ø5 в изнанке F0)
+        fx0 = (t if inset else 0) + c["facade_side_gap"]
+        parts.append(Part("F0", "Царга-фасад", "Фасады", fw, ph, c["facade_t"], 1, {},
+                          [face(c["t"] / 2 - fx0, y) for y in f0_conf] + [face(W - c["t"] / 2 - fx0, y) for y in f0_conf],
+                          "", "facade"))
     geometry = {
         "inner_width": iw, "drawer_inner_width": wi, "drawer_outer_width": wi + 2 * t,
         "u_from": zf, "wing_w": wing_w, "u_width": uw, "facade_w": fw, "facade_h": fh, "front_offset": f0,
@@ -240,8 +253,18 @@ def build(c):
         "top_drawer_box_bottom": c["facade_bottom_gap"] + fh_bot + c["facade_mid_gap"] + c.get("top_box_lift", 20),
         "bottom_drawer_box_bottom": c["t"] + 3,
     }
+    if f0s:
+        geometry["f0_structural_pre"] = (fx0, f0_y0)
     if c.get("joint", "minifix") == "minifix":
         from . import joints
         fixed = {p.code for p in parts if p.material == "corpus"} if c.get("one_sided") else set()
         parts, geometry["units"] = joints.apply_minifix(c, parts, geometry, fixed)
+    if f0s:
+        f0p = next(p for p in parts if p.code == "F0")
+        parts = [p for p in parts if p.code != "F0"]
+        for f in facades:
+            if f["code"] == "F0":
+                f["name"] = "Царга-фасад (неподвижная, на минификсах к боковинам)"
+                f["holes"] = f0p.holes
+    geometry["f0_structural"] = f0s
     return parts, facades, geometry
