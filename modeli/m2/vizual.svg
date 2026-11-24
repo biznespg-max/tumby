@@ -3,7 +3,8 @@
  <linearGradient id="frontGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#efece6"/></linearGradient>
  <linearGradient id="panelGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbfaf7"/><stop offset="1" stop-color="#eeebe4"/></linearGradient>
  <linearGradient id="sideGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e6e3dc"/><stop offset="1" stop-color="#d6d2ca"/></linearGradient>
- <linearGradient id="wave" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fbfaf8"/><stop offset=".12" stop-color="#e2ded6"/><stop offset=".5" stop-color="#f3f0ea"/><stop offset=".88" stop-color="#ffffff"/><stop offset="1" stop-color="#f7f5f1"/></linearGradient>
+ <linearGradient id="wave" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff"/><stop offset=".18" stop-color="#e9e5dd"/><stop offset=".5" stop-color="#ddd8cf"/><stop offset=".8" stop-color="#f1eee8"/><stop offset="1" stop-color="#ffffff"/></linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8d3a0"/><stop offset=".45" stop-color="#c9a965"/><stop offset="1" stop-color="#9c7c42"/></linearGradient>
  <linearGradient id="pullTop" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#6d6a64"/><stop offset=".35" stop-color="#bdb8af"/><stop offset="1" stop-color="#f4f2ed"/></linearGradient>
  <linearGradient id="pullBot" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#57544f"/><stop offset=".4" stop-color="#b3aea5"/><stop offset="1" stop-color="#f4f2ed"/></linearGradient>
  <linearGradient id="sinkFront" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#ececec"/></linearGradient>

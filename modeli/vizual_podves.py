@@ -27,6 +27,27 @@ def handle(v, P, xy, hx, hy, zf=0):
     v.append(f'<line x1="{ax}" y1="{ay-2}" x2="{bx}" y2="{by-2}" stroke="rgba(255,255,255,.25)" stroke-width="1.4" stroke-linecap="round"/>')
 
 
+def handle_sunrise(v, P, xy, hx, hy, zf=0, cc=320, L=372, proj=26):
+    """Bravo Sunrise FX-050-320-16, матове золото: круглая штанга Ø12, стойки Ø15 на ±cc/2, вылет ≈26 (ось штанги)."""
+    gold = "#c4a66a"   # матове золото (сплошной цвет: градиент на линии без высоты не рисуется)
+    (sax, say), (sbx, sby) = xy(P(hx - L / 2 + 6, hy - 12, zf)), xy(P(hx + L / 2 + 6, hy - 12, zf))
+    v.append(f'<line x1="{sax}" y1="{say}" x2="{sbx}" y2="{sby}" stroke="rgba(0,0,0,.16)" stroke-width="{10*s:.1f}" stroke-linecap="round" filter="url(#blur)"/>')
+    for c in (hx - cc / 2, hx + cc / 2):
+        (x1, y1), (x2, y2) = xy(P(c, hy, zf)), xy(P(c, hy, zf - proj))
+        v.append(f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="#9b7f4a" stroke-width="{15*s:.1f}" stroke-linecap="round"/>')
+        v.append(f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="{gold}" stroke-width="{11*s:.1f}" stroke-linecap="round"/>')
+    (ax, ay), (bx, by) = xy(P(hx - L / 2, hy, zf - proj)), xy(P(hx + L / 2, hy, zf - proj))
+    v.append(f'<line x1="{ax}" y1="{ay}" x2="{bx}" y2="{by}" stroke="#9b7f4a" stroke-width="{13*s:.1f}" stroke-linecap="round"/>')
+    v.append(f'<line x1="{ax}" y1="{ay}" x2="{bx}" y2="{by}" stroke="{gold}" stroke-width="{10*s:.1f}" stroke-linecap="round"/>')
+    v.append(f'<line x1="{ax}" y1="{ay-1.6}" x2="{bx}" y2="{by-1.6}" stroke="#e6d4a6" stroke-width="1.6" stroke-linecap="round"/>')
+    for c in (hx - cc / 2, hx + cc / 2):   # кольцо стойки на штанге
+        cx_, cy_ = xy(P(c, hy, zf - proj))
+        v.append(f'<ellipse cx="{cx_}" cy="{cy_}" rx="{9*s:.1f}" ry="{8*s:.1f}" fill="#c9ab6f" stroke="#9b7f4a" stroke-width="1.2"/>')
+
+
+SUNRISE_AXIS = 60  # ось ручки от верхнего края фасада, мм
+
+
 LT22_DROP = 38   # верх профиля LT22 от верхнего края фасада (модель 2, под рамкой)
 
 
@@ -88,7 +109,7 @@ def render(mkey, style):
             cx = (xl + xr) / 2
             k0 = -int((cx - xl) // 64) - 1
             for kk in range(k0, -k0 + 1):
-                a, b2 = cx + kk * 64 - 32, cx + kk * 64 + 32
+                a, b2 = cx + kk * 64, cx + kk * 64 + 64   # от гребня до гребня: гребень в центре, дно волн на ±32, ±96, ±160…
                 a, b2 = max(a, xl), min(b2, xr)
                 if b2 - a < 2:
                     continue
@@ -98,6 +119,8 @@ def render(mkey, style):
             if style == "maura":
                 # под рамкой Мауры: рамка ~20 мм + фреза (центр 23) -> верх профиля на 38 мм ниже края
                 handle_lt22(v, P, xy, poly, f["x"] + f["w"] / 2, Y0 + f["top"] - LT22_DROP)
+            elif style == "sunset":
+                handle_sunrise(v, P, xy, f["x"] + f["w"] / 2, Y0 + f["top"] - SUNRISE_AXIS)
             else:
                 handle(v, P, xy, f["x"] + f["w"] / 2, Y0 + f["top"] - 45)
     # умывальник
@@ -118,7 +141,8 @@ def render(mkey, style):
  <linearGradient id="frontGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#efece6"/></linearGradient>
  <linearGradient id="panelGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbfaf7"/><stop offset="1" stop-color="#eeebe4"/></linearGradient>
  <linearGradient id="sideGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e6e3dc"/><stop offset="1" stop-color="#d6d2ca"/></linearGradient>
- <linearGradient id="wave" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fbfaf8"/><stop offset=".12" stop-color="#e2ded6"/><stop offset=".5" stop-color="#f3f0ea"/><stop offset=".88" stop-color="#ffffff"/><stop offset="1" stop-color="#f7f5f1"/></linearGradient>
+ <linearGradient id="wave" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff"/><stop offset=".18" stop-color="#e9e5dd"/><stop offset=".5" stop-color="#ddd8cf"/><stop offset=".8" stop-color="#f1eee8"/><stop offset="1" stop-color="#ffffff"/></linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8d3a0"/><stop offset=".45" stop-color="#c9a965"/><stop offset="1" stop-color="#9c7c42"/></linearGradient>
  <linearGradient id="pullTop" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#6d6a64"/><stop offset=".35" stop-color="#bdb8af"/><stop offset="1" stop-color="#f4f2ed"/></linearGradient>
  <linearGradient id="pullBot" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#57544f"/><stop offset=".4" stop-color="#b3aea5"/><stop offset="1" stop-color="#f4f2ed"/></linearGradient>
  <linearGradient id="sinkFront" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#ececec"/></linearGradient>

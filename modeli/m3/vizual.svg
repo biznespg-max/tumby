@@ -3,7 +3,8 @@
  <linearGradient id="frontGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#efece6"/></linearGradient>
  <linearGradient id="panelGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbfaf7"/><stop offset="1" stop-color="#eeebe4"/></linearGradient>
  <linearGradient id="sideGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e6e3dc"/><stop offset="1" stop-color="#d6d2ca"/></linearGradient>
- <linearGradient id="wave" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fbfaf8"/><stop offset=".12" stop-color="#e2ded6"/><stop offset=".5" stop-color="#f3f0ea"/><stop offset=".88" stop-color="#ffffff"/><stop offset="1" stop-color="#f7f5f1"/></linearGradient>
+ <linearGradient id="wave" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff"/><stop offset=".18" stop-color="#e9e5dd"/><stop offset=".5" stop-color="#ddd8cf"/><stop offset=".8" stop-color="#f1eee8"/><stop offset="1" stop-color="#ffffff"/></linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8d3a0"/><stop offset=".45" stop-color="#c9a965"/><stop offset="1" stop-color="#9c7c42"/></linearGradient>
  <linearGradient id="pullTop" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#6d6a64"/><stop offset=".35" stop-color="#bdb8af"/><stop offset="1" stop-color="#f4f2ed"/></linearGradient>
  <linearGradient id="pullBot" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#57544f"/><stop offset=".4" stop-color="#b3aea5"/><stop offset="1" stop-color="#f4f2ed"/></linearGradient>
  <linearGradient id="sinkFront" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#ececec"/></linearGradient>
@@ -18,39 +19,47 @@
 <polygon points="469.6,348.8 475.3,345.2 475.3,161.1 469.6,164.6" fill="#e7e4dd" stroke="#d4d0c8" stroke-width="0.5" />
 <polygon points="469.6,534.8 475.3,531.2 475.3,347.1 469.6,350.6" fill="#e7e4dd" stroke="#d4d0c8" stroke-width="0.5" />
 <polygon points="106.2,348.8 469.6,348.8 469.6,164.6 106.2,164.6" fill="url(#frontGrad)" stroke="#d8d4cc" stroke-width="0.6" />
-<polygon points="106.2,348.8 109.3,348.8 109.3,164.6 106.2,164.6" fill="url(#wave)" stroke="none" stroke-width="0" />
-<polygon points="109.3,348.8 149.0,348.8 149.0,164.6 109.3,164.6" fill="url(#wave)" stroke="none" stroke-width="0" />
-<polygon points="149.0,348.8 188.7,348.8 188.7,164.6 149.0,164.6" fill="url(#wave)" stroke="none" stroke-width="0" />
-<polygon points="188.7,348.8 228.4,348.8 228.4,164.6 188.7,164.6" fill="url(#wave)" stroke="none" stroke-width="0" />
-<polygon points="228.4,348.8 268.1,348.8 268.1,164.6 228.4,164.6" fill="url(#wave)" stroke="none" stroke-width="0" />
-<polygon points="268.1,348.8 307.7,348.8 307.7,164.6 268.1,164.6" fill="url(#wave)" stroke="none" stroke-width="0" />
-<polygon points="307.7,348.8 347.4,348.8 347.4,164.6 307.7,164.6" fill="url(#wave)" stroke="none" stroke-width="0" />
-<polygon points="347.4,348.8 387.1,348.8 387.1,164.6 347.4,164.6" fill="url(#wave)" stroke="none" stroke-width="0" />
-<polygon points="387.1,348.8 426.8,348.8 426.8,164.6 387.1,164.6" fill="url(#wave)" stroke="none" stroke-width="0" />
-<polygon points="426.8,348.8 466.5,348.8 466.5,164.6 426.8,164.6" fill="url(#wave)" stroke="none" stroke-width="0" />
-<polygon points="466.5,348.8 469.6,348.8 469.6,164.6 466.5,164.6" fill="url(#wave)" stroke="none" stroke-width="0" />
+<polygon points="106.2,348.8 129.2,348.8 129.2,164.6 106.2,164.6" fill="url(#wave)" stroke="none" stroke-width="0" />
+<polygon points="129.2,348.8 168.9,348.8 168.9,164.6 129.2,164.6" fill="url(#wave)" stroke="none" stroke-width="0" />
+<polygon points="168.9,348.8 208.5,348.8 208.5,164.6 168.9,164.6" fill="url(#wave)" stroke="none" stroke-width="0" />
+<polygon points="208.5,348.8 248.2,348.8 248.2,164.6 208.5,164.6" fill="url(#wave)" stroke="none" stroke-width="0" />
+<polygon points="248.2,348.8 287.9,348.8 287.9,164.6 248.2,164.6" fill="url(#wave)" stroke="none" stroke-width="0" />
+<polygon points="287.9,348.8 327.6,348.8 327.6,164.6 287.9,164.6" fill="url(#wave)" stroke="none" stroke-width="0" />
+<polygon points="327.6,348.8 367.3,348.8 367.3,164.6 327.6,164.6" fill="url(#wave)" stroke="none" stroke-width="0" />
+<polygon points="367.3,348.8 406.9,348.8 406.9,164.6 367.3,164.6" fill="url(#wave)" stroke="none" stroke-width="0" />
+<polygon points="406.9,348.8 446.6,348.8 446.6,164.6 406.9,164.6" fill="url(#wave)" stroke="none" stroke-width="0" />
+<polygon points="446.6,348.8 469.6,348.8 469.6,164.6 446.6,164.6" fill="url(#wave)" stroke="none" stroke-width="0" />
 <polygon points="106.2,534.8 469.6,534.8 469.6,350.6 106.2,350.6" fill="url(#frontGrad)" stroke="#d8d4cc" stroke-width="0.6" />
-<polygon points="106.2,534.8 109.3,534.8 109.3,350.6 106.2,350.6" fill="url(#wave)" stroke="none" stroke-width="0" />
-<polygon points="109.3,534.8 149.0,534.8 149.0,350.6 109.3,350.6" fill="url(#wave)" stroke="none" stroke-width="0" />
-<polygon points="149.0,534.8 188.7,534.8 188.7,350.6 149.0,350.6" fill="url(#wave)" stroke="none" stroke-width="0" />
-<polygon points="188.7,534.8 228.4,534.8 228.4,350.6 188.7,350.6" fill="url(#wave)" stroke="none" stroke-width="0" />
-<polygon points="228.4,534.8 268.1,534.8 268.1,350.6 228.4,350.6" fill="url(#wave)" stroke="none" stroke-width="0" />
-<polygon points="268.1,534.8 307.7,534.8 307.7,350.6 268.1,350.6" fill="url(#wave)" stroke="none" stroke-width="0" />
-<polygon points="307.7,534.8 347.4,534.8 347.4,350.6 307.7,350.6" fill="url(#wave)" stroke="none" stroke-width="0" />
-<polygon points="347.4,534.8 387.1,534.8 387.1,350.6 347.4,350.6" fill="url(#wave)" stroke="none" stroke-width="0" />
-<polygon points="387.1,534.8 426.8,534.8 426.8,350.6 387.1,350.6" fill="url(#wave)" stroke="none" stroke-width="0" />
-<polygon points="426.8,534.8 466.5,534.8 466.5,350.6 426.8,350.6" fill="url(#wave)" stroke="none" stroke-width="0" />
-<polygon points="466.5,534.8 469.6,534.8 469.6,350.6 466.5,350.6" fill="url(#wave)" stroke="none" stroke-width="0" />
-<line x1="238.3" y1="192.5" x2="232.1" y2="196.4" stroke="#1d1d1d" stroke-width="5.0"/>
-<line x1="337.5" y1="192.5" x2="331.3" y2="196.4" stroke="#1d1d1d" stroke-width="5.0"/>
-<line x1="230.9" y1="198.7" x2="349.9" y2="198.7" stroke="rgba(0,0,0,.18)" stroke-width="7.4" stroke-linecap="round" filter="url(#blur)"/>
-<line x1="222.1" y1="196.4" x2="341.2" y2="196.4" stroke="#141414" stroke-width="7.4" stroke-linecap="round"/>
-<line x1="222.1" y1="194.4" x2="341.2" y2="194.4" stroke="rgba(255,255,255,.25)" stroke-width="1.4" stroke-linecap="round"/>
-<line x1="238.3" y1="378.5" x2="232.1" y2="382.4" stroke="#1d1d1d" stroke-width="5.0"/>
-<line x1="337.5" y1="378.5" x2="331.3" y2="382.4" stroke="#1d1d1d" stroke-width="5.0"/>
-<line x1="230.9" y1="384.7" x2="349.9" y2="384.7" stroke="rgba(0,0,0,.18)" stroke-width="7.4" stroke-linecap="round" filter="url(#blur)"/>
-<line x1="222.1" y1="382.4" x2="341.2" y2="382.4" stroke="#141414" stroke-width="7.4" stroke-linecap="round"/>
-<line x1="222.1" y1="380.4" x2="341.2" y2="380.4" stroke="rgba(255,255,255,.25)" stroke-width="1.4" stroke-linecap="round"/>
+<polygon points="106.2,534.8 129.2,534.8 129.2,350.6 106.2,350.6" fill="url(#wave)" stroke="none" stroke-width="0" />
+<polygon points="129.2,534.8 168.9,534.8 168.9,350.6 129.2,350.6" fill="url(#wave)" stroke="none" stroke-width="0" />
+<polygon points="168.9,534.8 208.5,534.8 208.5,350.6 168.9,350.6" fill="url(#wave)" stroke="none" stroke-width="0" />
+<polygon points="208.5,534.8 248.2,534.8 248.2,350.6 208.5,350.6" fill="url(#wave)" stroke="none" stroke-width="0" />
+<polygon points="248.2,534.8 287.9,534.8 287.9,350.6 248.2,350.6" fill="url(#wave)" stroke="none" stroke-width="0" />
+<polygon points="287.9,534.8 327.6,534.8 327.6,350.6 287.9,350.6" fill="url(#wave)" stroke="none" stroke-width="0" />
+<polygon points="327.6,534.8 367.3,534.8 367.3,350.6 327.6,350.6" fill="url(#wave)" stroke="none" stroke-width="0" />
+<polygon points="367.3,534.8 406.9,534.8 406.9,350.6 367.3,350.6" fill="url(#wave)" stroke="none" stroke-width="0" />
+<polygon points="406.9,534.8 446.6,534.8 446.6,350.6 406.9,350.6" fill="url(#wave)" stroke="none" stroke-width="0" />
+<polygon points="446.6,534.8 469.6,534.8 469.6,350.6 446.6,350.6" fill="url(#wave)" stroke="none" stroke-width="0" />
+<line x1="176.3" y1="209.3" x2="406.9" y2="209.3" stroke="rgba(0,0,0,.16)" stroke-width="6.2" stroke-linecap="round" filter="url(#blur)"/>
+<line x1="188.7" y1="201.8" x2="181.9" y2="206.0" stroke="#9b7f4a" stroke-width="9.3" stroke-linecap="round"/>
+<line x1="188.7" y1="201.8" x2="181.9" y2="206.0" stroke="#c4a66a" stroke-width="6.8" stroke-linecap="round"/>
+<line x1="387.1" y1="201.8" x2="380.3" y2="206.0" stroke="#9b7f4a" stroke-width="9.3" stroke-linecap="round"/>
+<line x1="387.1" y1="201.8" x2="380.3" y2="206.0" stroke="#c4a66a" stroke-width="6.8" stroke-linecap="round"/>
+<line x1="165.8" y1="206.0" x2="396.4" y2="206.0" stroke="#9b7f4a" stroke-width="8.1" stroke-linecap="round"/>
+<line x1="165.8" y1="206.0" x2="396.4" y2="206.0" stroke="#c4a66a" stroke-width="6.2" stroke-linecap="round"/>
+<line x1="165.8" y1="204.4" x2="396.4" y2="204.4" stroke="#e6d4a6" stroke-width="1.6" stroke-linecap="round"/>
+<ellipse cx="181.9" cy="206.0" rx="5.6" ry="5.0" fill="#c9ab6f" stroke="#9b7f4a" stroke-width="1.2"/>
+<ellipse cx="380.3" cy="206.0" rx="5.6" ry="5.0" fill="#c9ab6f" stroke="#9b7f4a" stroke-width="1.2"/>
+<line x1="176.3" y1="395.3" x2="406.9" y2="395.3" stroke="rgba(0,0,0,.16)" stroke-width="6.2" stroke-linecap="round" filter="url(#blur)"/>
+<line x1="188.7" y1="387.8" x2="181.9" y2="392.0" stroke="#9b7f4a" stroke-width="9.3" stroke-linecap="round"/>
+<line x1="188.7" y1="387.8" x2="181.9" y2="392.0" stroke="#c4a66a" stroke-width="6.8" stroke-linecap="round"/>
+<line x1="387.1" y1="387.8" x2="380.3" y2="392.0" stroke="#9b7f4a" stroke-width="9.3" stroke-linecap="round"/>
+<line x1="387.1" y1="387.8" x2="380.3" y2="392.0" stroke="#c4a66a" stroke-width="6.8" stroke-linecap="round"/>
+<line x1="165.8" y1="392.0" x2="396.4" y2="392.0" stroke="#9b7f4a" stroke-width="8.1" stroke-linecap="round"/>
+<line x1="165.8" y1="392.0" x2="396.4" y2="392.0" stroke="#c4a66a" stroke-width="6.2" stroke-linecap="round"/>
+<line x1="165.8" y1="390.4" x2="396.4" y2="390.4" stroke="#e6d4a6" stroke-width="1.6" stroke-linecap="round"/>
+<ellipse cx="181.9" cy="392.0" rx="5.6" ry="5.0" fill="#c9ab6f" stroke="#9b7f4a" stroke-width="1.2"/>
+<ellipse cx="380.3" cy="392.0" rx="5.6" ry="5.0" fill="#c9ab6f" stroke="#9b7f4a" stroke-width="1.2"/>
 <polygon points="101.1,163.9 473.1,163.9 473.1,145.3 101.1,145.3" fill="url(#sinkFront)" stroke="#cfcfcf" stroke-width="0.6" />
 <polygon points="473.1,163.9 589.5,91.8 589.5,73.2 473.1,145.3" fill="#e9e9e9" stroke="#cfcfcf" stroke-width="0.6" />
 <polygon points="101.1,145.3 473.1,145.3 589.5,73.2 217.5,73.2" fill="#fdfdfd" stroke="#d5d5d5" stroke-width="0.6" />
